@@ -22,6 +22,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
 import_secrets()
 
+# Static
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 STATICFILES_DIRS = [
@@ -33,6 +34,10 @@ STATIC_ROOT = os.path.join(ROOT_DIR, '.static')
 # Auth
 AUTH_USER_MODEL = 'members.User'
 
+# django-phonenumber-field
+PHONENUMBER_DEFAULT_REGION = 'KO'
+# PHONENUMBER_DB_FORMAT = 'NATIONAL'
+
 INSTALLED_APPS = [
     'members.apps.MembersConfig',
 
@@ -42,6 +47,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django_extensions',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [
@@ -58,11 +66,24 @@ ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+    {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'DIRS': [
             TEMPLATES_DIR,
         ],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [],
             'environment': 'config.jinja2.environment',

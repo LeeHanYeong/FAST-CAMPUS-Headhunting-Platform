@@ -9,6 +9,8 @@ djangorestframework = "*"
 django-extensions = "*"
 django-json-secrets = "*"
 "jinja2" = "*"
+django-phonenumber-field = "*"
+phonenumbers = "*"
 
 [dev-packages]
 ipython = "*"
