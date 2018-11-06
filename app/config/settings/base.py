@@ -38,6 +38,20 @@ AUTH_USER_MODEL = 'members.User'
 PHONENUMBER_DEFAULT_REGION = 'KO'
 # PHONENUMBER_DB_FORMAT = 'NATIONAL'
 
+# Date/Time Format
+DATE_FORMAT = 'Y-m-d'
+
+# django-modeladmin-reorder
+ADMIN_REORDER = (
+    {'app': 'members', 'label': '사용자 관리', 'models': (
+        'members.ApplicantUser',
+        'members.CompanyUser')},
+    {'app': 'members', 'label': '이력서 항목 관리', 'models': (
+        'members.Link',
+        'members.Skill',
+    )},
+)
+
 INSTALLED_APPS = [
     'members.apps.MembersConfig',
 
@@ -48,6 +62,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'admin_reorder',
     'django_extensions',
     'phonenumber_field',
 ]
@@ -60,6 +75,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'admin_reorder.middleware.ModelAdminReorder',
 ]
 
 ROOT_URLCONF = 'config.urls'

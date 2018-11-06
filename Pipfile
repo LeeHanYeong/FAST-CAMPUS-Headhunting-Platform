@@ -11,6 +11,8 @@ django-json-secrets = "*"
 "jinja2" = "*"
 django-phonenumber-field = "*"
 phonenumbers = "*"
+pillow = "*"
+django-modeladmin-reorder = "*"
 
 [dev-packages]
 ipython = "*"
