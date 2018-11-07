@@ -1,3 +1,6 @@
+# CSS files
+/app/static/css
+
 # Static dirs
 /.media
 /.static

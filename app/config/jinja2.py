@@ -1,4 +1,4 @@
-from django.templatetags import static
+from django.templatetags.static import static
 from django.urls import reverse
 from jinja2 import Environment
 
