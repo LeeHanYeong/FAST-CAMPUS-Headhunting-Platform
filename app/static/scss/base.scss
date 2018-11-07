@@ -1,0 +1,14 @@
+html, body {
+  font-size: 14px;
+}
+a {
+  text-decoration: none;
+}
+
+.clearfix {
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}

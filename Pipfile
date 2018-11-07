@@ -13,6 +13,10 @@ django-phonenumber-field = "*"
 phonenumbers = "*"
 pillow = "*"
 django-modeladmin-reorder = "*"
+django-storages = "*"
+django-sass-processor = "*"
+django-compressor = "*"
+libsass = "*"
 
 [dev-packages]
 ipython = "*"

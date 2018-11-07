@@ -14,6 +14,8 @@ import os
 
 from djs import import_secrets
 
+from ..jinja2 import environment
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ROOT_DIR = os.path.dirname(BASE_DIR)
 SECRETS_DIR = os.path.join(ROOT_DIR, '.secrets')
@@ -30,6 +32,11 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 STATIC_ROOT = os.path.join(ROOT_DIR, '.static')
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'sass_processor.finders.CssFinder',
+]
 
 # Auth
 AUTH_USER_MODEL = 'members.User'
@@ -52,6 +59,9 @@ ADMIN_REORDER = (
     )},
 )
 
+# compressor
+COMPRESS_JINJA2_GET_ENVIRONMENT = environment
+
 INSTALLED_APPS = [
     'members.apps.MembersConfig',
 
@@ -65,6 +75,8 @@ INSTALLED_APPS = [
     'admin_reorder',
     'django_extensions',
     'phonenumber_field',
+    'sass_processor',
+    'storages',
 ]
 
 MIDDLEWARE = [

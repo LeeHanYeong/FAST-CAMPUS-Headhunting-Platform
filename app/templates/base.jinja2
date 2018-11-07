@@ -5,31 +5,40 @@
 	<meta name="viewport"
 	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="{% sass_src 'scss/base.scss' %}">
 	<link rel="stylesheet" href="{{ static('bootstrap/bootstrap.css') }}">
+	<link rel="stylesheet" href="{% sass_src 'scss/bootstrap.scss' %}">
+	<link rel="stylesheet" href="{% sass_src 'scss/layout.scss' %}">
 	<title>FAST CAMPUS</title>
 </head>
 <body>
 	<div id="wrap">
-		<header>
-			<div class="header-top">
-				<a href="#">SCHOOL Facebook</a>
-				<a href="#">패스트캠퍼스 홈</a>
+		<header class="main-header">
+			<div class="header-top clearfix">
+				<div class="btn-container clearfix">
+					<a href="#" class="header-item">SCHOOL Facebook</a>
+					<a href="#" class="header-item">패스트캠퍼스 홈</a>
+				</div>
 			</div>
 			<div class="header-content">
 
 			</div>
-			<nav class="navbar navbar-expand-md navbar-dark bg-primary">
-				<div id="main-navbar" class="collapse navbar-collapse">
-					<ul class="navbar-nav">
-						<li class="nav-item">
-							<a href="#" class="nav-link">지원자 현황</a>
-						</li>
-						<li class="nav-item">
-							<a href="#" class="nav-link">채용연계 기업</a>
-						</li>
-					</ul>
-				</div>
+			<nav class="nav nav-fill bg-primary">
+				<a href="#" class="nav-item nav-link text-light">지원자 현황</a>
+				<a href="#" class="nav-item nav-link text-light">채용연계 기업</a>
 			</nav>
+{#			<nav id="main-navbar" class="navbar navbar-expand-md navbar-dark bg-primary">#}
+{#				<div class="collapse navbar-collapse">#}
+{#					<ul class="navbar-nav nav-fill">#}
+{#						<li class="nav-item">#}
+{#							<a href="#" class="nav-link">지원자 현황</a>#}
+{#						</li>#}
+{#						<li class="nav-item">#}
+{#							<a href="#" class="nav-link">채용연계 기업</a>#}
+{#						</li>#}
+{#					</ul>#}
+{#				</div>#}
+{#			</nav>#}
 		</header>
 		<div class="container-fluid">
 			{% block content %}

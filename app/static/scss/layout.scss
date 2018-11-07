@@ -1,0 +1,24 @@
+@import '../bootstrap/_variables.scss';
+@import '_variables.scss';
+
+header.main-header {
+  > .header-top {
+    border-top: $border-light-gray;
+    border-bottom: $border-light-gray;
+    box-sizing: border-box;
+
+    > .btn-container {
+      float: right;
+      > a.header-item {
+        float: left;
+        padding: .4rem .8rem;
+        border-left: $border-light-gray;
+
+        &:last-of-type {
+          border-right: $border-light-gray;
+        }
+      }
+    }
+
+  }
+}

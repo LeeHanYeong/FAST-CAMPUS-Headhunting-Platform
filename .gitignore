@@ -1,5 +1,5 @@
 # CSS files
-/app/static/css
+/app/static/scss/*.css
 
 # Static dirs
 /.media

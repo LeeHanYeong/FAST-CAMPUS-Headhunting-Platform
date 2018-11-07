@@ -171,14 +171,14 @@ sup {
 }
 
 a {
-  color: #18BC9C;
+  color: #212529;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
 }
 
 a:hover {
-  color: #0f7864;
+  color: black;
   text-decoration: underline;
 }
 
@@ -3093,12 +3093,12 @@ fieldset:disabled a.btn {
 
 .btn-link {
   font-weight: 400;
-  color: #18BC9C;
+  color: #212529;
   background-color: transparent;
 }
 
 .btn-link:hover {
-  color: #0f7864;
+  color: black;
   text-decoration: underline;
   background-color: transparent;
   border-color: transparent;
