@@ -50,6 +50,10 @@ class User(AbstractUser):
     type = models.CharField('타입', max_length=1, choices=CHOICES_TYPE, default=TYPE_STAFF)
     email = models.EmailField('이메일', unique=True)
     phone_number = PhoneNumberField('전화번호', blank=True)
+    # 기업회원 필드
+    _company_name = models.CharField('회사명', max_length=80, blank=True)
+    _position = models.CharField('직책', max_length=50, blank=True)
+
     # 지원자 필드
     birth_date = models.DateField('생년월일', blank=True, null=True)
     introduce = models.TextField('소개', blank=True)
@@ -62,10 +66,6 @@ class User(AbstractUser):
         'Skill', verbose_name='보유 기술 목록', blank=True,
         through='ApplicantSkill', related_name='users', related_query_name='user',
     )
-
-    # 기업회원 필드
-    _company_name = models.CharField('회사명', max_length=80, blank=True)
-    _position = models.CharField('직책', max_length=50, blank=True)
 
     objects = UserManager()
 

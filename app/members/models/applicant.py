@@ -111,6 +111,10 @@ class Education(models.Model):
     end_date = models.DateField('종료일자', blank=True, null=True)
     content = models.TextField('내역')
 
+    class Meta:
+        verbose_name = '교육과정'
+        verbose_name_plural = f'{verbose_name} 목록'
+
     def __str__(self):
         return '{content} ({start_date}{end_date})'.format(
             content=textwrap.shorten(self.content, width=14, placeholder='...'),
@@ -126,6 +130,10 @@ class Career(models.Model):
     end_date = models.DateField('종료일자', blank=True, null=True)
     content = models.TextField('내역')
 
+    class Meta:
+        verbose_name = '경력'
+        verbose_name_plural = f'{verbose_name} 목록'
+
     def __str__(self):
         return '{content} ({start_date}{end_date})'.format(
             content=textwrap.shorten(self.content, width=14, placeholder='...'),
@@ -140,6 +148,10 @@ class License(models.Model):
     get_date = models.DateField('취득일자')
     organization = models.CharField('발급기관', max_length=100)
     title = models.CharField('이름', max_length=100)
+
+    class Meta:
+        verbose_name = '자격증'
+        verbose_name_plural = f'{verbose_name} 목록'
 
     def __str__(self):
         return f'{self.organization} - {self.title} ({self.get_date})'
