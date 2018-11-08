@@ -4,5 +4,9 @@ from .serializers import ApplicantUserSerializer
 
 
 class ApplicantUserRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
-    queryset = ApplicantUser.objects.all()
+    queryset = ApplicantUser.objects.prefetch_related(
+        'education_set',
+        'career_set',
+        'license_set',
+    )
     serializer_class = ApplicantUserSerializer
