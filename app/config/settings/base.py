@@ -57,12 +57,17 @@ ADMIN_REORDER = (
         'members.Link',
         'members.Skill',
     )},
+    {'app': 'courses', 'label': '과정 관리', 'models': (
+        'courses.Course',
+        'courses.CoursePeriod',
+    )},
 )
 
 # compressor
 COMPRESS_JINJA2_GET_ENVIRONMENT = environment
 
 INSTALLED_APPS = [
+    'courses.apps.CoursesConfig',
     'members.apps.MembersConfig',
 
     'django.contrib.admin',
