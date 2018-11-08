@@ -17,6 +17,7 @@ django-storages = "*"
 django-sass-processor = "*"
 django-compressor = "*"
 libsass = "*"
+drf-writable-nested = "*"
 
 [dev-packages]
 ipython = "*"
