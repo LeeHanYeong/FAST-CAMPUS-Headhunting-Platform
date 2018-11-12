@@ -1,2 +1,5 @@
-from django.shortcuts import render
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import TemplateView
+
+
+class ApplicantUpdateView(TemplateView):
+    template_name = 'members/applicant_update.jinja2'

@@ -7,6 +7,8 @@ from ..models import Education, Career, License, ApplicantLink, Link, ApplicantS
 User = get_user_model()
 
 __all__ = (
+    'LinkSerializer',
+    'SkillSerializer',
     'ApplicantUserSerializer',
     'ApplicantLinkSerializer',
     'ApplicantLinkCreateSerializer',
@@ -20,9 +22,11 @@ class EducationSerializer(serializers.ModelSerializer):
         model = Education
         fields = (
             'pk',
+            'school',
+            'major',
+            'type',
             'start_date',
             'end_date',
-            'content',
         )
 
 
@@ -31,6 +35,9 @@ class CareerSerializer(serializers.ModelSerializer):
         model = Career
         fields = (
             'pk',
+            'organization',
+            'responsibility',
+            'position',
             'start_date',
             'end_date',
             'content',
@@ -60,6 +67,10 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
             'last_name',
             'first_name',
             'email',
+            'phone_number',
+            'birth_date',
+            'short_intro',
+            'introduce',
 
             'education_set',
             'career_set',

@@ -4,16 +4,17 @@ from .models import (
     ApplicantUser,
     ApplicantLink,
     ApplicantSkill,
-)
+    Link, Skill)
 from .serializers import (
     ApplicantLinkSerializer,
     ApplicantLinkCreateSerializer,
-    ApplicantSkillCreateSerializer
-)
+    ApplicantSkillCreateSerializer,
+    LinkSerializer, SkillSerializer)
 from .serializers import (
     ApplicantUserSerializer,
     ApplicantSkillSerializer,
 )
+from .permissions import ObjIsRequestUserOrReadOnly
 
 
 class ApplicantUserRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
@@ -23,6 +24,28 @@ class ApplicantUserRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
         'license_set',
     )
     serializer_class = ApplicantUserSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        ObjIsRequestUserOrReadOnly,
+    )
+
+    def get_object(self):
+        # /applicant/profile/ 접속 시 request.user를 retrieve
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+        if lookup_url_kwarg not in self.kwargs and self.request.user.is_authenticated:
+            self.kwargs[lookup_url_kwarg] = getattr(self.request.user, self.lookup_field)
+        return super().get_object()
+
+
+
+class LinkListAPIView(generics.ListAPIView):
+    queryset = Link.objects.all()
+    serializer_class = LinkSerializer
+
+
+class SkillListAPIView(generics.ListAPIView):
+    queryset = Skill.objects.all()
+    serializer_class = SkillSerializer
 
 
 class ApplicantLinkListCreateAPIView(generics.ListCreateAPIView):

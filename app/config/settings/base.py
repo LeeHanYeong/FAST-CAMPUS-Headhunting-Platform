@@ -38,6 +38,14 @@ STATICFILES_FINDERS = [
     'sass_processor.finders.CssFinder',
 ]
 
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+
 # Auth
 AUTH_USER_MODEL = 'members.User'
 

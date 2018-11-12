@@ -105,19 +105,31 @@ class ApplicantSkill(models.Model):
 
 
 class Education(models.Model):
+    EDU_TYPE_GRAD = 'grad'
+    EDU_TYPE_GRAD_EX = 'grad_ex'
+    EDU_TYPE_ATTEND = 'attend'
+    EDU_TYPE_DROPOUT = 'dropout'
+    CHOICES_EDU_TYPE = (
+        (EDU_TYPE_GRAD, '졸업'),
+        (EDU_TYPE_GRAD_EX, '졸업예정'),
+        (EDU_TYPE_ATTEND, '재학'),
+        (EDU_TYPE_DROPOUT, '중퇴'),
+    )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, verbose_name='지원자', on_delete=models.CASCADE)
+    school = models.CharField('학교명', max_length=50)
+    major = models.CharField('전공', max_length=50, blank=True)
+    type = models.CharField('상태', choices=CHOICES_EDU_TYPE, max_length=12)
     start_date = models.DateField('시작일자')
     end_date = models.DateField('종료일자', blank=True, null=True)
-    content = models.TextField('내역')
 
     class Meta:
         verbose_name = '교육과정'
         verbose_name_plural = f'{verbose_name} 목록'
 
     def __str__(self):
-        return '{content} ({start_date}{end_date})'.format(
-            content=textwrap.shorten(self.content, width=14, placeholder='...'),
+        return '{school} ({start_date}{end_date})'.format(
+            school=self.school,
             start_date=self.start_date,
             end_date=self.end_date,
         )
@@ -126,6 +138,9 @@ class Education(models.Model):
 class Career(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, verbose_name='지원자', on_delete=models.CASCADE)
+    organization = models.CharField('근무처', max_length=50)
+    responsibility = models.CharField('담당 업무', max_length=50)
+    position = models.CharField('직위', max_length=30)
     start_date = models.DateField('시작일자')
     end_date = models.DateField('종료일자', blank=True, null=True)
     content = models.TextField('내역')
@@ -135,8 +150,8 @@ class Career(models.Model):
         verbose_name_plural = f'{verbose_name} 목록'
 
     def __str__(self):
-        return '{content} ({start_date}{end_date})'.format(
-            content=textwrap.shorten(self.content, width=14, placeholder='...'),
+        return '{organization} ({start_date}{end_date})'.format(
+            organization=self.organization,
             start_date=self.start_date,
             end_date=self.end_date,
         )
@@ -145,9 +160,9 @@ class Career(models.Model):
 class License(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, verbose_name='지원자', on_delete=models.CASCADE)
-    get_date = models.DateField('취득일자')
+    title = models.CharField('자격증명', max_length=100)
     organization = models.CharField('발급기관', max_length=100)
-    title = models.CharField('이름', max_length=100)
+    get_date = models.DateField('취득일자')
 
     class Meta:
         verbose_name = '자격증'

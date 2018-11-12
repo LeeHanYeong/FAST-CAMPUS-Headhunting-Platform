@@ -56,6 +56,7 @@ class User(AbstractUser):
 
     # 지원자 필드
     birth_date = models.DateField('생년월일', blank=True, null=True)
+    short_intro = models.CharField('한 줄 소개', max_length=200, blank=True)
     introduce = models.TextField('소개', blank=True)
 
     _links = models.ManyToManyField(
