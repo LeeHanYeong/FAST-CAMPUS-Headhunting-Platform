@@ -24,10 +24,12 @@
 				</div>
 			</div>
 			<div class="header-content">
-				<img class="header-icon" src="{{ static('images/icon_logo.png') }}" alt="">
+				<a href="{{ url('index') }}">
+					<img class="header-icon" src="{{ static('images/icon_logo.png') }}" alt="">
+				</a>
 				{% if request.user.is_authenticated %}
 					<div class="btn-container child-middle">
-						<a href="#" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
+						<a href="{{ url('members:applicant-update') }}" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
 						<a href="{{ url('members:logout') }}" class="btn btn-outline-dark">LOGOUT</a>
 					</div>
 				{% else %}

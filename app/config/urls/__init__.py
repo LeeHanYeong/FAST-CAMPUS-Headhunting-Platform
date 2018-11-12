@@ -27,7 +27,7 @@ admin.site.index_title = 'Index'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.IndexView.as_view(), name='index'),
-    path('members/', include('members.urls.views')),
+    path('', include('members.urls.views')),
 
     path('api/', include('config.urls.apis')),
 ]
