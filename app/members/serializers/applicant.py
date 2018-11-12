@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from drf_writable_nested import WritableNestedModelSerializer
+from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 
 from ..models import Education, Career, License, ApplicantLink, Link, ApplicantSkill, Skill
@@ -56,6 +57,7 @@ class LicenseSerializer(serializers.ModelSerializer):
 
 
 class ApplicantUserSerializer(WritableNestedModelSerializer):
+    phone_number = PhoneNumberField()
     education_set = EducationSerializer(many=True)
     career_set = CareerSerializer(many=True)
     license_set = LicenseSerializer(many=True)
@@ -64,6 +66,7 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
         model = User
         fields = (
             'pk',
+            'img_profile',
             'last_name',
             'first_name',
             'email',
@@ -76,6 +79,18 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
             'career_set',
             'license_set',
         )
+        read_only_fields = (
+            'img_profile',
+        )
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        ret['phone_number'] = instance.phone_number.as_national
+        return ret
+    #
+    # def to_internal_value(self, data):
+    #     data['phone_number'] = '+82' + data['phone_number']
+    #     return data
 
 
 class LinkSerializer(serializers.ModelSerializer):

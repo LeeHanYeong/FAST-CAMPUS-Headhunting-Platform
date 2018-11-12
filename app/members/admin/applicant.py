@@ -76,8 +76,3 @@ class ApplicantUserAdmin(BaseUserAdmin):
         if obj:
             form.base_fields['type'].disabled = True
         return form
-
-    def get_changeform_initial_data(self, request):
-        return {
-            'phone_number': '+82-010-',
-        }
