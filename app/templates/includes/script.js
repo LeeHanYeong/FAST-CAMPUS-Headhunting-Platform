@@ -32,13 +32,29 @@ var app = new Vue({
       console.log('getApplicantProfile');
       $.ajax({
         method: 'GET',
-        url: '/members/applicant/2/'
+        url: '/members/applicant/profile/'
       }).done(function (response) {
         vm.applicantDetail = response;
       }).fail(function (response) {
         console.log('fail');
         console.log(response);
       });
+    },
+    updateApplicantProfile: function () {
+      const vm = this;
+      console.log(vm.applicantDetail);
+      $.ajax({
+        method: 'PATCH',
+        url: '/members/applicant/profile/',
+        data: JSON.stringify(vm.applicantDetail),
+        contentType: 'application/json',
+        processData: false,
+        dataType: 'JSON'
+      }).done(function (response) {
+        vm.applicantDetail = response;
+      }).fail(function (response) {
+        console.log(response);
+      })
     }
   }
 });

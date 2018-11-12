@@ -1,6 +1,9 @@
 @import '../bootstrap/_variables.scss';
 @import '_variables.scss';
 
+#content {
+  background-color: $color-bg-default;
+}
 header.main-header {
   > .header-top {
     border-top: $border-light-gray;
@@ -20,5 +23,30 @@ header.main-header {
       }
     }
 
+  }
+}
+header.content-header {
+  padding: 1.5rem 1rem 2rem;
+  background-color: $color-bg-content-header;
+  color: white;
+  font-weight: bold;
+  font-size: 1.3rem;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    left: 0;
+    top: 0;
+    height: .9rem;
+    width: .9rem;
+    margin-right: .4rem;
+    background-size: cover;
+    background-image: url(/static/images/icon_content_header_title.png);
+  }
+
+  > * {
+    vertical-align: middle;
   }
 }

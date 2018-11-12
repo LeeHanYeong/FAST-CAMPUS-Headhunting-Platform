@@ -31,7 +31,9 @@
 				<a href="#" class="nav-item nav-link text-light">채용연계 기업</a>
 			</nav>
 		</header>
-		<div class="container-fluid">
+		{% block content_header %}
+		{% endblock %}
+		<div id="content" class="container-fluid">
 			{% block content %}
 			{% endblock %}
 		</div>

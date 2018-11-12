@@ -1,7 +1,11 @@
 html, body {
   font-size: 14px;
+  height: 100%;
 }
-
+#content {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
 .clearfix {
   &::after {
     content: '';

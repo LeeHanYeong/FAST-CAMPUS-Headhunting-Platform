@@ -4,5 +4,5 @@ from .. import views
 
 app_name = 'members'
 urlpatterns = [
-    path('applicant/<int:pk>/', views.ApplicantUpdateView.as_view(), name='applicant-update'),
+    path('applicant/profile/', views.ApplicantUpdateView.as_view(), name='applicant-update'),
 ]

@@ -1,3 +1,5 @@
+@import '_variables.scss';
+
 header.main-header nav#main-navbar  {
   padding-top: .35rem;
   padding-bottom: .35rem;
@@ -6,5 +8,18 @@ header.main-header nav#main-navbar  {
   li.nav-item a.nav-link {
     padding-top: 0;
     padding-bottom: 0;
+  }
+}
+.btn {
+  border-radius: 1px;
+}
+.card {
+  border: none;
+  border-radius: 1px;
+
+  .card-header {
+    font-weight: bold;
+    border: none;
+    background-color: $color-bg-card-header;
   }
 }

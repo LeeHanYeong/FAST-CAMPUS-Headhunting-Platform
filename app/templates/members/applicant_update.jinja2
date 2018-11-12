@@ -1,45 +1,56 @@
 {% extends 'base.jinja2' %}
 
+{% block content_header %}
+<header class="content-header">
+	<span class="title">지원자 이력서 수정</span>
+	<button v-on:click="updateApplicantProfile()" class="btn btn-primary float-right">수정 완료</button>
+</header>
+{% endblock %}
+
 {% block content %}
 <div class="resume">
-	<section v-if="applicantDetail" class="resume-section">
-		<h2>기본정보</h2>
-		<form action="">
-			<div class="form-group row">
-				<label for="id-lastname" class="col-sm-2 col-form-label">이름</label>
-				<div class="col-sm-3">
-					<input v-model="applicantDetail.last_name" id="id-lastname" type="text" class="form-control" placeholder="성">
+	<section v-if="applicantDetail" class="card resume-section">
+		<div class="card-header">기본정보</div>
+		<div class="card-body">
+			<form action="">
+				<div class="form-group row">
+					<label for="id-img-profile" class="col-sm-2 col-form-label">프로필 이미지</label>
+					<div class="col-sm-10 col-md-4">
+						<input type="file" id="id-img-profile" class="form-control-file">
+					</div>
 				</div>
-				<div class="col-sm-7">
-					<input v-model="applicantDetail.first_name" id="id-firstname" type="text" class="form-control" placeholder="이름">
+				<div class="form-group row">
+					<label for="id-lastname" class="col-sm-2 col-form-label">이름</label>
+					<div class="col-4 col-sm-3 col-md-2 col-lg-1 mr-0">
+						<input v-model="applicantDetail.last_name" id="id-lastname" type="text" class="form-control" placeholder="성" autocomplete="off">
+					</div>
+					<div class="col-8 col-sm-7 col-md-2 col-lg-1 pl-0">
+						<input v-model="applicantDetail.first_name" id="id-firstname" type="text" class="form-control" placeholder="이름" autocomplete="off">
+					</div>
 				</div>
-			</div>
-			<div class="form-group row">
-				<label for="id-email" class="col-sm-2 col-form-label">이메일</label>
-				<div class="col-sm-10">
-					<input v-model="applicantDetail.email" type="email" id="id-email" class="form-control" placeholder="">
+				<div class="form-group row">
+					<label for="id-email" class="col-sm-2 col-form-label">이메일</label>
+					<div class="col-sm-10 col-md-4">
+						<input v-model="applicantDetail.email" type="email" id="id-email" class="form-control" placeholder="" autocomplete="off">
+					</div>
 				</div>
-			</div>
-			<div class="form-group row">
-				<label for="id-birth" class="col-sm-2 col-form-label">생년월일</label>
-				<div class="col-sm-10">
-					<input v-model="applicantDetail.birth_date" type="text" id="id-birth" class="form-control" placeholder="YYYY-MM-DD (ex: 1990-01-01)">
+				<div class="form-group row">
+					<label for="id-birth" class="col-sm-2 col-form-label">생년월일</label>
+					<div class="col-sm-10 col-md-4">
+						<input v-model="applicantDetail.birth_date" type="text" id="id-birth" class="form-control" placeholder="YYYY-MM-DD (ex: 1990-01-01)" autocomplete="off">
+					</div>
 				</div>
-			</div>
-			<div class="form-group row">
-				<label for="id-birth" class="col-sm-2 col-form-label">한줄소개</label>
-				<div class="col-sm-10">
-					<input v-model="applicantDetail.short_intro" type="text" id="id-birth" class="form-control" placeholder="">
+				<div class="form-group row">
+					<label for="id-birth" class="col-sm-2 col-form-label">한줄소개</label>
+					<div class="col-sm-10">
+						<input v-model="applicantDetail.short_intro" type="text" id="id-birth" class="form-control" placeholder="" autocomplete="off">
+					</div>
 				</div>
-			</div>
-
-			<div class="form-group row">
-				<label>학력사항</label>
-			</div>
-		</form>
+				<hr>
+			</form>
+		</div>
 	</section>
-	<button v-on:click="getSkillLinkList()">Click</button>
-	<button v-on:click="getApplicantProfile()">Click</button>
+	<button >Click</button>
 </div>
 {% endblock %}
 
