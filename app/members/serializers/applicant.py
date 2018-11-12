@@ -79,18 +79,18 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
             'career_set',
             'license_set',
         )
-        read_only_fields = (
-            'img_profile',
-        )
+        # read_only_fields = (
+        #     'img_profile',
+        # )
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
         ret['phone_number'] = instance.phone_number.as_national
         return ret
-    #
-    # def to_internal_value(self, data):
-    #     data['phone_number'] = '+82' + data['phone_number']
-    #     return data
+
+    def to_internal_value(self, data):
+        print(data)
+        return data
 
 
 class LinkSerializer(serializers.ModelSerializer):

@@ -6,6 +6,9 @@ html, body {
   padding-top: 15px;
   padding-bottom: 15px;
 }
+img {
+  max-width: 100%;
+}
 .clearfix {
   &::after {
     content: '';

@@ -42,19 +42,37 @@ var app = new Vue({
     },
     updateApplicantProfile: function () {
       const vm = this;
-      console.log(vm.applicantDetail);
+      var obj = $.extend({}, vm.applicantDetail);
+      delete obj.img_profile;
       $.ajax({
         method: 'PATCH',
         url: '/members/applicant/profile/',
-        data: JSON.stringify(vm.applicantDetail),
+        data: JSON.stringify(obj),
         contentType: 'application/json',
         processData: false,
         dataType: 'JSON'
       }).done(function (response) {
-        vm.applicantDetail = response;
+        var formData = new FormData();
+        var file = $('#id-img-profile')[0].files[0];
+        if (file) {
+          formData.append('img_profile', file);
+          console.log(formData);
+          $.ajax({
+            method: 'PATCH',
+            url: '/members/applicant/profile/',
+            data: formData,
+            processData: false,
+            contentType: false,
+          }).done(function (response) {
+            vm.applicantDetail = response;
+            $('#id-img-profile').val('');
+          });
+        } else {
+          vm.applicantDetail = response;
+        }
       }).fail(function (response) {
         console.log(response);
-      })
+      });
     }
   }
 });
