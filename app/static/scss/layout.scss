@@ -24,6 +24,20 @@ header.main-header {
     }
 
   }
+  > .header-content {
+    position: relative;
+    padding: 1rem;
+
+    img.header-icon {
+      height: 4rem;
+    }
+    > .btn-container {
+      position: absolute;
+      top: 0;
+      right: 1rem;
+      height: 100%;
+    }
+  }
 }
 header.content-header {
   padding: 1.5rem 1rem 2rem;

@@ -24,7 +24,18 @@
 				</div>
 			</div>
 			<div class="header-content">
-
+				<img class="header-icon" src="{{ static('images/icon_logo.png') }}" alt="">
+				{% if request.user.is_authenticated %}
+					<div class="btn-container child-middle">
+						<a href="#" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
+						<a href="{{ url('members:logout') }}" class="btn btn-outline-dark">LOGOUT</a>
+					</div>
+				{% else %}
+					<div class="btn-container child-middle">
+						<button class="btn btn-outline-primary mr-1">LOGIN</button>
+						<button class="btn btn-outline-dark">SIGNUP</button>
+					</div>
+				{% endif %}
 			</div>
 			<nav class="nav nav-fill bg-primary">
 				<a href="#" class="nav-item nav-link text-light">지원자 현황</a>

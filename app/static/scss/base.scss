@@ -16,3 +16,21 @@ img {
     clear: both;
   }
 }
+.child-middle {
+  height: 100%;
+  > * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  &::before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em;
+  }
+}
+#djDebug #djDebugToolbarHandle {
+  top: inherit !important;
+  bottom: 30px !important;
+}

@@ -48,6 +48,7 @@ REST_FRAMEWORK = {
 
 # Auth
 AUTH_USER_MODEL = 'members.User'
+LOGOUT_REDIRECT_URL = 'index'
 
 # django-phonenumber-field
 PHONENUMBER_DEFAULT_REGION = 'KR'
