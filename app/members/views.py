@@ -2,8 +2,16 @@ from django.contrib.auth.views import (
     LogoutView as DjangoLogoutView,
     LoginView as DjangoLoginView,
 )
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
+
 from .forms import LoginForm
+from .models import ApplicantUser
+
+
+class ApplicantListView(ListView):
+    model = ApplicantUser
+    template_name = 'members/applicant_list.jinja2'
+    context_object_name = 'applicants'
 
 
 class ApplicantUpdateView(TemplateView):

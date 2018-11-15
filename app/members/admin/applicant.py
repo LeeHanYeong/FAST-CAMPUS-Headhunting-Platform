@@ -47,8 +47,10 @@ class ApplicantUserAdmin(BaseUserAdmin):
             'first_name',
             'phone_number',
             'birth_date',
+            'img_profile',
         )}),
         ('추가정보', {'fields': (
+            'short_intro',
             'introduce',
         )}),
     )

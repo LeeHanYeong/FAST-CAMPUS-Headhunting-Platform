@@ -11,6 +11,8 @@
 	<link rel="stylesheet" href="{% sass_src 'scss/layout.scss' %}">
 	<script type="text/javascript" src="{{ static('js/ajax.js') }}"></script>
 	<script type="text/javascript" src="{{ static('js/jquery.js') }}"></script>
+	<script type="text/javascript" src="{{ static('js/popper.js') }}"></script>
+	<script type="text/javascript" src="{{ static('bootstrap/js/bootstrap.js') }}"></script>
 	<script type="text/javascript" src="{{ static('js/vue.js') }}"></script>
 	<title>FAST CAMPUS</title>
 </head>
@@ -40,7 +42,7 @@
 				{% endif %}
 			</div>
 			<nav class="nav nav-fill bg-primary">
-				<a href="#" class="nav-item nav-link text-light">지원자 현황</a>
+				<a href="{{ url('members:applicant-list') }}" class="nav-item nav-link text-light">지원자 현황</a>
 				<a href="#" class="nav-item nav-link text-light">채용연계 기업</a>
 			</nav>
 		</header>

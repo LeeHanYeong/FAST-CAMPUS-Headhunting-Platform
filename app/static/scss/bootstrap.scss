@@ -26,3 +26,8 @@ header.main-header nav#main-navbar  {
 .form-control {
   border-radius: 1px;
 }
+.shadow-xs {
+  $shadow: 0 0.15rem 0.15rem rgba(0, 0, 0, 0.35) !important;
+  -webkit-box-shadow: $shadow;
+  box-shadow: $shadow;
+}

@@ -1,0 +1,51 @@
+{% extends 'base.jinja2' %}
+
+{% block content_header %}
+<header class="content-header clearfix child-middle">
+	<div class="title">
+		<span>지원자 현황</span>
+	</div>
+	<div class="right-menu child-middle">
+		<div class="dropdown d-inline-block h-input">
+			<button class="btn btn-dark dropdown-toggle pl-4 pr-4 mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    보기 조건
+		  </button>
+		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+		    <a class="dropdown-item" href="#">구직 중</a>
+		    <a class="dropdown-item" href="#">취업완료</a>
+		    <a class="dropdown-item" href="#">전체</a>
+		  </div>
+		</div>
+		<form action="" class="d-inline-block h-input">
+			<input type="text" class="form-control" placeholder="학생/키워드 검색하기">
+		</form>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="applicant-list row">
+	{% for applicant in applicants %}
+		<div class="col-lg-6 mb-5">
+			<a href="#" class="user">
+				<div class="user-profile shadow-xs" style="background-image: url('{{ applicant.img_profile.url }}');">
+					<button class="btn-star btn btn-sm btn-outline-primary">별</button>
+				</div>
+				<div class="content">
+					<div class="name-course">
+						<span class="name">{{ applicant.name }}</span>
+					</div>
+					<p class="short-intro">{{ applicant.short_intro }}</p>
+					<div class="badge-list">
+						<span class="badge badge-pill badge-light">#sketch</span>
+						<span class="badge badge-pill badge-light">#invision</span>
+						<span class="badge badge-pill badge-light">#photoshop</span>
+						<span class="badge badge-pill badge-light">#illustrator</span>
+					</div>
+					<button class="btn-status shadow-xs btn btn-primary btn-lg pl-5 pr-5">구직 중</button>
+				</div>
+			</a>
+		</div>
+	{% endfor %}
+</div>
+{% endblock %}

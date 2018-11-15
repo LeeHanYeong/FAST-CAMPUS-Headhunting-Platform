@@ -18,6 +18,7 @@ django-sass-processor = "*"
 django-compressor = "*"
 libsass = "*"
 drf-writable-nested = "*"
+django-default-imagefield = "*"
 
 [dev-packages]
 ipython = "*"

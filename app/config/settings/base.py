@@ -89,6 +89,7 @@ INSTALLED_APPS = [
 
     'admin_reorder',
     'django_extensions',
+    'django_fields',
     'phonenumber_field',
     'rest_framework',
     'sass_processor',
