@@ -48,6 +48,7 @@ REST_FRAMEWORK = {
 
 # Auth
 AUTH_USER_MODEL = 'members.User'
+LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 
 # django-phonenumber-field

@@ -46,21 +46,29 @@ header.content-header {
   font-weight: bold;
   font-size: 1.3rem;
 
-  &::before {
-    content: '';
+  div.title {
     display: inline-block;
-    vertical-align: middle;
-    position: relative;
-    left: 0;
-    top: 0;
-    height: .9rem;
-    width: .9rem;
-    margin-right: .4rem;
-    background-size: cover;
-    background-image: url(/static/images/icon_content_header_title.png);
+    > * {
+      vertical-align: middle;
+    }
+    &::before {
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+      position: relative;
+      left: 0;
+      top: 0;
+      height: .9rem;
+      width: .9rem;
+      margin-right: .4rem;
+      background-size: cover;
+      background-image: url(/static/images/icon_content_header_title.png);
+    }
   }
 
-  > * {
-    vertical-align: middle;
-  }
+}
+
+// Login
+.login-card {
+  padding: 2.8rem;
 }
