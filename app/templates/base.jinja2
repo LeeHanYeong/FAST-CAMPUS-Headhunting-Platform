@@ -55,7 +55,7 @@
 	</div>
 	<script>
 		var csrftoken = getCookie('csrftoken');
-		var baseURL = '{{ request.scheme }}://{{ request.META.HTTP_HOST }}/api';
+		var baseURL = '{{ request.scheme }}://{{ request.META.HTTP_HOST }}';
 		$.ajaxSetup({
 			beforeSend: function(xhr, settings) {
 			  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {

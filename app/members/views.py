@@ -10,6 +10,7 @@ from .models import ApplicantUser
 
 class ApplicantListView(ListView):
     model = ApplicantUser
+    queryset = ApplicantUser.objects.prefetch_related('followers')
     template_name = 'members/applicant_list.jinja2'
     context_object_name = 'applicants'
 

@@ -109,6 +109,12 @@ header.content-header {
         position: absolute;
         left: .2rem;
         top: .2rem;
+
+        &.btn-outline-primary:hover {
+          color: #ed234b;
+          background-color: transparent;
+          border-color: #ed234b;
+        }
       }
     }
 

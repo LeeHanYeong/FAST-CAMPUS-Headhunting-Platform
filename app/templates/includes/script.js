@@ -4,17 +4,62 @@ var app = new Vue({
   data: {
     applicantDetail: {},
     skillList: [],
-    linkList: []
+    linkList: [],
+    failCount: 0
   },
   methods: {
     // ApplicantList
+    toggleUserLike: function (event) {
+      const vm = this;
+      function addLikeClass(el) {
+        console.log('addLikeClass');
+        el.addClass('btn-primary');
+        el.removeClass('btn-outline-primary');
+      }
+      function removeLikeClass(el) {
+        console.log('removeLikeClass');
+        el.addClass('btn-outline-primary');
+        el.removeClass('btn-primary');
+      }
+      var el = $(event.target);
+      var method = 'POST';
+      var likeClass = 'btn-primary';
+      var unlikeClass = 'btn-outline-primary';
+      var isLiked = el.hasClass(likeClass);
+      console.log(isLiked);
+      if (isLiked) {
+        method = 'DELETE';
+        removeLikeClass(el);
+      } else {
+        addLikeClass(el);
+      }
+      $.ajax({
+        method: method,
+        url: "{{ url('api:members:userlike') }}",
+        data: {
+          to_user: el.attr('data-user-pk')
+        }
+      }).done(function (response) {
+
+      }).fail(function (response) {
+        vm.failCount += 1;
+        if (isLiked) {
+          addLikeClass(el);
+        } else {
+          removeLikeClass(el);
+        }
+        if (vm.failCount > 2) {
+          location.reload();
+        }
+      });
+    },
 
     // ApplicantUpdate
     getSkillLinkList: function () {
       const vm = this;
       $.ajax({
         method: 'GET',
-        url: '/members/skill/'
+        url: "{{ url('api:members:skill-list') }}"
       }).done(function (response) {
         vm.skillList = response;
       }).fail(function (response) {
@@ -23,7 +68,7 @@ var app = new Vue({
 
       $.ajax({
         method: 'GET',
-        url: '/members/link/'
+        url: "{{ url('api:members:link-list') }}"
       }).done(function (response) {
         vm.linkList = response;
       }).fail(function (response) {
@@ -35,7 +80,7 @@ var app = new Vue({
       console.log('getApplicantProfile');
       $.ajax({
         method: 'GET',
-        url: '/members/applicant/profile/'
+        url: "{{ url('api:members:profile') }}"
       }).done(function (response) {
         vm.applicantDetail = response;
       }).fail(function (response) {
@@ -49,7 +94,7 @@ var app = new Vue({
       delete obj.img_profile;
       $.ajax({
         method: 'PATCH',
-        url: '/members/applicant/profile/',
+        url: "{{ url('api:members:profile') }}",
         data: JSON.stringify(obj),
         contentType: 'application/json',
         processData: false,
@@ -62,7 +107,7 @@ var app = new Vue({
           console.log(formData);
           $.ajax({
             method: 'PATCH',
-            url: '/members/applicant/profile/',
+            url: "{{ url('api:members:profile') }}",
             data: formData,
             processData: false,
             contentType: false,

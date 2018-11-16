@@ -29,7 +29,14 @@
 		<div class="col-lg-6 mb-5">
 			<a href="#" class="user">
 				<div class="user-profile shadow-xs" style="background-image: url('{{ applicant.img_profile.url }}');">
-					<button class="btn-star btn btn-sm btn-outline-primary">별</button>
+					<button v-on:click="toggleUserLike($event)"
+					        class="btn-star btn btn-sm
+					        {% if request.user in applicant.followers.all() %}
+					          btn-primary
+					        {% else %}
+					          btn-outline-primary
+									{% endif %}"
+					        data-user-pk="{{ applicant.pk }}">별</button>
 				</div>
 				<div class="content">
 					<div class="name-course">
