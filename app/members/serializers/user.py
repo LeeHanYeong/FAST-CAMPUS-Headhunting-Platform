@@ -4,11 +4,11 @@ from rest_framework.validators import UniqueTogetherValidator
 from ..models import UserLike
 
 __all__ = (
-    'UserLikeCreateSerializer',
+    'UserLikeCreateDeleteSerializer',
 )
 
 
-class UserLikeCreateSerializer(serializers.ModelSerializer):
+class UserLikeCreateDeleteSerializer(serializers.ModelSerializer):
     from_user = serializers.HiddenField(
         default=serializers.CurrentUserDefault(),
     )
