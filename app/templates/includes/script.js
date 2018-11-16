@@ -122,5 +122,8 @@ var app = new Vue({
         console.log(response);
       });
     }
+  },
+  computed: {
+    
   }
 });

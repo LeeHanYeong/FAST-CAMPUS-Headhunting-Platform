@@ -49,7 +49,18 @@
 						<span class="badge badge-pill badge-light">#photoshop</span>
 						<span class="badge badge-pill badge-light">#illustrator</span>
 					</div>
-					<button class="btn-status shadow-xs btn btn-primary btn-lg pl-5 pr-5">구직 중</button>
+					<button class="btn-status shadow-xs btn btn-lg pl-5 pr-5
+									{% if applicant.is_looking %}
+										btn-primary
+									{% else %}
+										btn-secondary
+									{% endif %}">
+						{% if applicant.is_looking %}
+							구직 중
+						{% else %}
+							재직 중
+						{% endif %}
+					</button>
 				</div>
 			</a>
 		</div>

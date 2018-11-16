@@ -66,6 +66,7 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
         model = User
         fields = (
             'pk',
+            'is_looking',
             'img_profile',
             'last_name',
             'first_name',
@@ -79,9 +80,6 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
             'career_set',
             'license_set',
         )
-        # read_only_fields = (
-        #     'img_profile',
-        # )
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
@@ -89,7 +87,6 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
         return ret
 
     def to_internal_value(self, data):
-        print(data)
         return data
 
 

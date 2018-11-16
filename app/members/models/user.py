@@ -63,6 +63,7 @@ class User(TimeStampedMixin, AbstractUser):
     _position = models.CharField('직책', max_length=50, blank=True)
 
     # 지원자 필드
+    is_looking = models.BooleanField('구직 여부', default=True)
     img_profile = DefaultStaticImageField(
         '프로필 이미지', upload_to='user', blank=True,
         default_image_path='images/blank_user.png',

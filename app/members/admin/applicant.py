@@ -50,6 +50,7 @@ class ApplicantUserAdmin(BaseUserAdmin):
             'img_profile',
         )}),
         ('추가정보', {'fields': (
+            'is_looking',
             'short_intro',
             'introduce',
         )}),

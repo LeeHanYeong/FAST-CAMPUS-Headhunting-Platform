@@ -62,6 +62,15 @@
 					</div>
 				</div>
 				<hr>
+				<div class="form-group row">
+					<label for="id-is-looking" class="col-sm-2 col-form-label">구직 여부</label>
+					<div class="col-sm-10">
+						<div class="btn-group" role="group">
+						  <button v-on:click="applicantDetail.is_looking = true" type="button" class="btn" v-bind:class="{'btn-primary': applicantDetail.is_looking, 'btn-dark': !applicantDetail.is_looking}">구직 중</button>
+						  <button v-on:click="applicantDetail.is_looking = false" type="button" class="btn" v-bind:class="{'btn-primary': !applicantDetail.is_looking, 'btn-dark': applicantDetail.is_looking}">재직 중</button>
+						</div>
+					</div>
+				</div>
 			</form>
 		</div>
 	</section>
