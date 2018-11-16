@@ -21,6 +21,9 @@ class ApplicantUserManager(UserManager):
     def get_queryset(self):
         return super().get_queryset().filter(type=User.TYPE_APPLICANT)
 
+    def published(self):
+        return self.get_queryset().filter(is_published=True)
+
 
 class ApplicantUser(User):
     objects = ApplicantUserManager()

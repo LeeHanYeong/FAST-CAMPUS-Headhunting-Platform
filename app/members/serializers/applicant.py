@@ -67,6 +67,7 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
         fields = (
             'pk',
             'is_looking',
+            'is_published',
             'img_profile',
             'last_name',
             'first_name',
