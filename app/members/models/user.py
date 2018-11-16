@@ -4,9 +4,12 @@ from django.utils import timezone
 from django_fields import DefaultStaticImageField
 from phonenumber_field.modelfields import PhoneNumberField
 
+from utils.models import TimeStampedMixin
+
 __all__ = (
     'UserManager',
     'User',
+    'UserLike',
 )
 
 
@@ -37,7 +40,7 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class User(AbstractUser):
+class User(TimeStampedMixin, AbstractUser):
     TYPE_STAFF = 's'
     TYPE_APPLICANT = 'a'
     TYPE_COMPANY = 'c'
@@ -51,6 +54,10 @@ class User(AbstractUser):
     type = models.CharField('타입', max_length=1, choices=CHOICES_TYPE, default=TYPE_STAFF)
     email = models.EmailField('이메일', unique=True)
     phone_number = PhoneNumberField('전화번호', blank=True)
+    like_users = models.ManyToManyField(
+        'self', symmetrical=False, through='UserLike',
+        verbose_name='즐겨찾기 한 유저 목록', related_name='followers', blank=True)
+
     # 기업회원 필드
     _company_name = models.CharField('회사명', max_length=80, blank=True)
     _position = models.CharField('직책', max_length=50, blank=True)
@@ -88,3 +95,19 @@ class User(AbstractUser):
         return f'{self.last_name}{self.first_name}'
 
     name.fget.short_description = '이름'
+
+
+class UserLike(TimeStampedMixin, models.Model):
+    from_user = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name='from_user_userlike_set',
+    )
+    to_user = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name='to_user_userlike_set',
+    )
+
+    class Meta:
+        unique_together = (
+            ('from_user', 'to_user'),
+        )

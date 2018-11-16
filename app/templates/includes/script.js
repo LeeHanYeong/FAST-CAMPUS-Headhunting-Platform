@@ -7,6 +7,9 @@ var app = new Vue({
     linkList: []
   },
   methods: {
+    // ApplicantList
+
+    // ApplicantUpdate
     getSkillLinkList: function () {
       const vm = this;
       $.ajax({
