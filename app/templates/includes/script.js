@@ -1,10 +1,14 @@
 var app = new Vue({
   el: '#wrap',
   delimiters: ['${', '}'],
+  mixins: [
+    mixin
+  ],
   data: {
     applicantDetail: {},
     skillList: [],
     linkList: [],
+
     failCount: 0
   },
   methods: {
@@ -52,79 +56,18 @@ var app = new Vue({
           location.reload();
         }
       });
-    },
-
-    // ApplicantUpdate
-    getSkillLinkList: function () {
-      const vm = this;
-      $.ajax({
-        method: 'GET',
-        url: "{{ url('api:members:skill-list') }}"
-      }).done(function (response) {
-        vm.skillList = response;
-      }).fail(function (response) {
-        console.log(response);
-      });
-
-      $.ajax({
-        method: 'GET',
-        url: "{{ url('api:members:link-list') }}"
-      }).done(function (response) {
-        vm.linkList = response;
-      }).fail(function (response) {
-        console.log(response);
-      });
-    },
-    getApplicantProfile: function () {
-      const vm = this;
-      console.log('getApplicantProfile');
-      $.ajax({
-        method: 'GET',
-        url: "{{ url('api:members:profile') }}"
-      }).done(function (response) {
-        vm.applicantDetail = response;
-      }).fail(function (response) {
-        console.log('fail');
-        console.log(response);
-      });
-    },
-    updateApplicantProfile: function (extraData) {
-      const vm = this;
-      var obj = $.extend(vm.applicantDetail, extraData);
-      console.log(obj);
-      delete obj.img_profile;
-      $.ajax({
-        method: 'PATCH',
-        url: "{{ url('api:members:profile') }}",
-        data: JSON.stringify(obj),
-        contentType: 'application/json',
-        processData: false,
-        dataType: 'JSON'
-      }).done(function (response) {
-        var formData = new FormData();
-        var file = $('#id-img-profile')[0].files[0];
-        if (file) {
-          formData.append('img_profile', file);
-          console.log(formData);
-          $.ajax({
-            method: 'PATCH',
-            url: "{{ url('api:members:profile') }}",
-            data: formData,
-            processData: false,
-            contentType: false,
-          }).done(function (response) {
-            vm.applicantDetail = response;
-            $('#id-img-profile').val('');
-          });
-        } else {
-          vm.applicantDetail = response;
-        }
-      }).fail(function (response) {
-        console.log(response);
-      });
     }
   },
   computed: {
     
+  },
+  directives: {
+    focus: {
+      inserted: function (el) {
+        Vue.nextTick(function () {
+          el.focus();
+        });
+      }
+    }
   }
 });

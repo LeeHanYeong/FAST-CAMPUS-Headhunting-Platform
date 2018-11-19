@@ -31,3 +31,29 @@ header.main-header nav#main-navbar  {
   -webkit-box-shadow: $shadow;
   box-shadow: $shadow;
 }
+
+.table-edit {
+  tr.editable {
+    line-height: 1;
+    td {
+      vertical-align: middle;
+      padding: 0;
+      box-sizing: border-box;
+      .form-control {
+        width: inherit;
+      }
+      input[type=text], input[type=password] {
+        border: none;
+        padding: 0.75rem;
+        box-sizing: border-box;
+      }
+      select, button {
+        margin: 0.75rem;
+      }
+      small.form-text {
+        border-top: 1px solid $color-border-theme;
+        padding: .2rem .75rem .5rem;
+      }
+    }
+  }
+}
