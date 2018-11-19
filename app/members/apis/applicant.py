@@ -1,14 +1,12 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
+from rest_framework.response import Response
 
 from ..models import (
     ApplicantUser,
-    ApplicantLink,
-    ApplicantSkill,
-    Link, Skill)
-from ..permissions import ObjIsRequestUser
+    Link, Skill, ApplicantLink)
+from ..permissions import ObjIsRequestUser, IsUserOrReadOnly
 from ..serializers import (
     ApplicantLinkSerializer,
-    ApplicantLinkCreateSerializer,
     ApplicantSkillCreateSerializer,
     LinkSerializer, SkillSerializer)
 from ..serializers import (
@@ -21,7 +19,7 @@ __all__ = (
     'ApplicantUserRetrieveAPIView',
     'LinkListAPIView',
     'SkillListAPIView',
-    'ApplicantLinkListCreateAPIView',
+    'ApplicantLinkListUpdateAPIView',
     'ApplicantSkillListCreateAPIView',
 )
 
@@ -67,24 +65,34 @@ class SkillListAPIView(generics.ListAPIView):
     serializer_class = SkillSerializer
 
 
-class ApplicantLinkListCreateAPIView(generics.ListCreateAPIView):
-    queryset = ApplicantLink.objects.all()
+class ApplicantLinkListUpdateAPIView(generics.ListAPIView):
+    serializer_class = ApplicantLinkSerializer
     permission_classes = (
-        permissions.IsAuthenticatedOrReadOnly,
+        permissions.IsAuthenticated,
+        IsUserOrReadOnly,
     )
 
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return ApplicantLinkSerializer
-        elif self.request.method == 'POST':
-            return ApplicantLinkCreateSerializer
+    def get_queryset(self):
+        return ApplicantLink.objects.filter(user=self.request.user)
+
+    def put(self, request):
+        links = ApplicantLink.objects.filter(user=self.request.user)
+        serializer = self.serializer_class(
+            links, data=request.data, many=True, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class ApplicantSkillListCreateAPIView(generics.ListCreateAPIView):
-    queryset = ApplicantSkill.objects.all()
     permission_classes = (
-        permissions.IsAuthenticatedOrReadOnly,
+        permissions.IsAuthenticated,
+        IsUserOrReadOnly,
     )
+
+    def get_queryset(self):
+        return ApplicantLink.objects.filter(user=self.request.user)
 
     def get_serializer_class(self):
         if self.request.method == 'GET':

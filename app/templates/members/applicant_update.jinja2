@@ -79,6 +79,27 @@
 						<input v-model="applicantDetail.short_intro" type="text" id="id-birth" class="form-control" placeholder="" autocomplete="off">
 					</div>
 				</div>
+				<hr>
+				<div v-if="applicantLinkList">
+					<div v-for="(applicantLink, index) in applicantLinkList" class="form-group row">
+						<div class="col-sm-2">
+							<select v-model="applicantLink.link">
+								<option v-bind:value="link" v-for="link in linkList">${ link.title }</option>
+							</select>
+						</div>
+						<div class="col-sm-8">
+							<input v-model="applicantLink.url" type="text" class="form-control" placeholder="" autocomplete="off">
+						</div>
+						<div class="col-sm-2">
+							<button v-on:click="deleteApplicantLink(index)" class="btn btn-dark btn-block">삭제</button>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col">
+							<button v-on:click="addApplicantLink()" class="btn btn-primary">추가</button>
+						</div>
+					</div>
+				</div>
 			</form>
 		</div>
 	</section>
@@ -133,7 +154,7 @@
 								${ error }</small>
 						</td>
 						<td>
-							<button v-on:click="deleteApplicantItem('edu', index)" class="btn btn-sm btn-danger">삭제</button>
+							<button v-on:click="deleteApplicantItem('edu', index)" class="btn btn-sm btn-dark">삭제</button>
 						</td>
 					</tr>
 					<tr>
@@ -193,7 +214,7 @@
 								${ error }</small>
 						</td>
 						<td>
-							<button v-on:click="deleteApplicantItem('career', index)" class="btn btn-sm btn-danger">삭제</button>
+							<button v-on:click="deleteApplicantItem('career', index)" class="btn btn-sm btn-dark">삭제</button>
 						</td>
 					</tr>
 					<tr>
@@ -242,7 +263,7 @@
 								${ error }</small>
 						</td>
 						<td>
-							<button v-on:click="deleteApplicantItem('license', index)" class="btn btn-sm btn-danger">삭제</button>
+							<button v-on:click="deleteApplicantItem('license', index)" class="btn btn-sm btn-dark">삭제</button>
 						</td>
 					</tr>
 					<tr>
@@ -274,6 +295,11 @@
 <script>
 var mixin = {
   data: {
+    applicantDetail: {},
+	  applicantLinkList: [],
+	  applicantSkillList: [],
+    skillList: [],
+    linkList: [],
     errors: {}
   },
 	methods: {
@@ -298,9 +324,46 @@ var mixin = {
         console.log(response);
       });
     },
+		getApplicantLinkList: function () {
+      const vm = this;
+      $.ajax({
+	      method: 'GET',
+	      url: "{{ url('api:members:applicantlink-list') }}"
+      }).done(function (response) {
+        vm.applicantLinkList = response;
+      }).fail(function (response) {
+        console.log(response);
+      });
+		},
+		addApplicantLink: function () {
+      this.applicantLinkList.push({
+	      link: this.linkList[0],
+	      url: ''
+      });
+		},
+		deleteApplicantLink: function (index) {
+      Vue.delete(this.applicantLinkList, index);
+		},
+		updateApplicantLinkList: function () {
+      const vm = this;
+      var obj = $.extend({}, vm.applicantLinkList);
+      $.ajax({
+	      method: 'PUT',
+	      url: "{{ url('api:members:applicantlink-list') }}",
+	      data: JSON.stringify(vm.applicantLinkList),
+        contentType: 'application/json',
+        processData: false,
+        dataType: 'JSON'
+      }).done(function (response) {
+        vm.applicantLinkList = response;
+      }).fail(function (response) {
+        console.log(response);
+      })
+		},
+
+
     getApplicantProfile: function () {
       const vm = this;
-      console.log('getApplicantProfile');
       $.ajax({
         method: 'GET',
         url: "{{ url('api:members:profile') }}"
@@ -355,6 +418,8 @@ var mixin = {
       }
 		},
     updateApplicantProfile: function (extraData) {
+      this.updateApplicantLinkList();
+
       const vm = this;
       var obj = $.extend({}, vm.applicantDetail);
       var extraObj = $.extend(obj, extraData);
@@ -412,6 +477,7 @@ var mixin = {
 <script>
 	app.getSkillLinkList();
 	app.getApplicantProfile();
+	app.getApplicantLinkList();
 	var editor = CKEDITOR.replace('id-intro', {
 	  toolbar: 'Default',
 		height: 500

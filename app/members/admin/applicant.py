@@ -2,13 +2,23 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from ..models import Education, Career, License
+from ..models import Education, Career, License, ApplicantLink, ApplicantSkill
 
 User = get_user_model()
 
 __all__ = (
     'ApplicantUserAdmin',
 )
+
+
+class ApplicantLinkInline(admin.TabularInline):
+    model = ApplicantLink
+    extra = 1
+
+
+class ApplicantSkillInline(admin.TabularInline):
+    model = ApplicantSkill
+    extra = 1
 
 
 class EducationInline(admin.TabularInline):
@@ -35,6 +45,8 @@ class ApplicantUserAdmin(BaseUserAdmin):
         EducationInline,
         CareerInline,
         LicenseInline,
+        ApplicantLinkInline,
+        ApplicantSkillInline,
     ]
     fieldsets = (
         (None, {'fields': (
@@ -49,7 +61,7 @@ class ApplicantUserAdmin(BaseUserAdmin):
             'birth_date',
             'img_profile',
         )}),
-        ('추가정보', {'fields': (
+        ('지원자 정보', {'fields': (
             'is_looking',
             'short_intro',
             'introduce',

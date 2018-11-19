@@ -5,10 +5,6 @@ var app = new Vue({
     mixin
   ],
   data: {
-    applicantDetail: {},
-    skillList: [],
-    linkList: [],
-
     failCount: 0
   },
   methods: {
