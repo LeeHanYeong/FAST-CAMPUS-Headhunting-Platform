@@ -1,3 +1,5 @@
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils import timezone
@@ -71,7 +73,7 @@ class User(TimeStampedMixin, AbstractUser):
     )
     birth_date = models.DateField('생년월일', blank=True, null=True)
     short_intro = models.CharField('한 줄 소개', max_length=200, blank=True)
-    introduce = models.TextField('소개', blank=True)
+    introduce = RichTextUploadingField('소개', blank=True)
 
     _links = models.ManyToManyField(
         'Link', verbose_name='링크 목록', blank=True,

@@ -14,9 +14,18 @@ class ApplicantListView(ListView):
     template_name = 'members/applicant_list.jinja2'
     context_object_name = 'applicants'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['form'] =
+        return context
+
 
 class ApplicantUpdateView(TemplateView):
     template_name = 'members/applicant_update.jinja2'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class LoginView(DjangoLoginView):

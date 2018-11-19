@@ -19,6 +19,7 @@ django-compressor = "*"
 libsass = "*"
 drf-writable-nested = "*"
 django-default-imagefield = "*"
+django-ckeditor = "*"
 
 [dev-packages]
 ipython = "*"

@@ -88,9 +88,10 @@ var app = new Vue({
         console.log(response);
       });
     },
-    updateApplicantProfile: function () {
+    updateApplicantProfile: function (extraData) {
       const vm = this;
-      var obj = $.extend({}, vm.applicantDetail);
+      var obj = $.extend(vm.applicantDetail, extraData);
+      console.log(obj);
       delete obj.img_profile;
       $.ajax({
         method: 'PATCH',

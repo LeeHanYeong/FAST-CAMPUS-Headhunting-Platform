@@ -76,6 +76,22 @@ ADMIN_REORDER = (
 # compressor
 COMPRESS_JINJA2_GET_ENVIRONMENT = environment
 
+# ckeditor
+CKEDITOR_UPLOAD_PATH = 'ckeditor/'
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Default',
+        'toolbar_Default': [
+            ['Styles', 'Format', 'Bold', 'Italic', 'Underline', 'Strike', 'Undo', 'Redo'],
+            ['Link', 'Unlink', 'Anchor'],
+            ['Image', 'Table', 'HorizontalRule'],
+            ['TextColor', 'BGColor'],
+            ['Smiley', 'SpecialChar'], ['Source'],
+        ],
+    },
+}
+
 INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
     'members.apps.MembersConfig',
@@ -88,6 +104,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'admin_reorder',
+    'ckeditor',
+    'ckeditor_uploader',
     'django_extensions',
     'django_fields',
     'phonenumber_field',

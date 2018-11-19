@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 
+from .models import ApplicantUser, User
+
 
 class LoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):

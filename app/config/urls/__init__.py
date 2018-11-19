@@ -26,6 +26,7 @@ admin.site.index_title = 'Index'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', views.IndexView.as_view(), name='index'),
     path('', include('members.urls.views')),
 

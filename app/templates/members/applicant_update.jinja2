@@ -5,7 +5,7 @@
 	<div class="title">
 		<span>지원자 이력서 수정</span>
 	</div>
-	<button v-on:click="updateApplicantProfile()" class="btn btn-primary float-right pl-5 pr-5">수정 완료</button>
+	<button onclick="update()" class="btn btn-primary float-right pl-5 pr-5">수정 완료</button>
 </header>
 {% endblock %}
 
@@ -79,8 +79,12 @@
 						<input v-model="applicantDetail.short_intro" type="text" id="id-birth" class="form-control" placeholder="" autocomplete="off">
 					</div>
 				</div>
-				<hr>
-
+				<div class="form-group row">
+					<label for="id-intro" class="col-sm-2 col-form-label">소개</label>
+					<div class="col-sm-10">
+						<textarea id="id-intro" v-model="applicantDetail.introduce"></textarea>
+					</div>
+				</div>
 			</form>
 		</div>
 	</section>
@@ -90,5 +94,19 @@
 {% block script %}
 <script>
 	app.getApplicantProfile();
+	var editor = CKEDITOR.replace('id-intro', {
+	  toolbar: 'Default',
+		height: 500
+	});
+
+	function update () {
+	  console.log('update');
+	  var editorData = editor.getData();
+	  var extraData = {
+	    introduce: editorData
+	  };
+	  app.updateApplicantProfile(extraData);
+	}
+
 </script>
 {% endblock %}
