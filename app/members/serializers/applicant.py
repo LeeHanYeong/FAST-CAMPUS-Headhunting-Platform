@@ -14,7 +14,6 @@ __all__ = (
     'ApplicantUserSerializer',
     'ApplicantLinkSerializer',
     'ApplicantSkillSerializer',
-    'ApplicantSkillCreateSerializer',
 )
 
 
@@ -166,6 +165,8 @@ class ApplicantLinkSerializer(serializers.ModelSerializer):
 
 
 class SkillSerializer(serializers.ModelSerializer):
+    pk = serializers.IntegerField()
+
     class Meta:
         model = Skill
         fields = (
@@ -174,8 +175,36 @@ class SkillSerializer(serializers.ModelSerializer):
         )
 
 
+class ApplicantSkillListSerializer(serializers.ListSerializer):
+    def update(self, instance, validated_data):
+        obj_mapping = {obj.pk: obj for obj in instance}
+
+        updated = []
+        created = []
+        # 전달받은 validate_date의 pk에 포함되지 않는 기존 ApplicantLink는 모두 삭제한다
+        #  (항상 기존/수정/추가에 해당하는 전체 데이터가 올 것으로 가정)
+        # created에는 'pk'가 전달되지 않은(추가할 새 데이터) 새 인스턴스를 저장
+        for data in validated_data:
+            data_pk = data.get('pk')
+            if data_pk:
+                obj = obj_mapping.get(data_pk)
+                if obj:
+                    updated.append(self.child.update(obj, data))
+            else:
+                created.append(self.child.create(data))
+
+        # 삭제루틴
+        updated_pk_list = [item.pk for item in updated]
+        for obj_id, obj in obj_mapping.items():
+            if obj_id not in updated_pk_list:
+                obj.delete()
+        return updated + created
+
+
 class ApplicantSkillSerializer(serializers.ModelSerializer):
-    skill = SkillSerializer(read_only=True)
+    pk = serializers.IntegerField(required=False)
+    skill = SkillSerializer()
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = ApplicantSkill
@@ -183,14 +212,23 @@ class ApplicantSkillSerializer(serializers.ModelSerializer):
             'pk',
             'skill',
             'level',
+            'get_level_display',
+            'user',
+        )
+        read_only_fields = (
+            'user',
         )
 
+    def create(self, validated_data):
+        skill_data = validated_data.pop('skill')
+        skill = get_object_or_404(Link, pk=skill_data['pk'])
+        return ApplicantSkill.objects.create(skill=skill, **validated_data)
 
-class ApplicantSkillCreateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ApplicantSkill
-        fields = (
-            'pk',
-            'skill',
-            'level',
-        )
+    def update(self, instance, validated_data):
+        skill_data = validated_data.pop('skill')
+        skill = get_object_or_404(Link, pk=skill_data['pk'])
+        for k, v in validated_data.items():
+            setattr(instance, k, v)
+        instance.skill = skill
+        instance.save()
+        return instance

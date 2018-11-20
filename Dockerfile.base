@@ -1,0 +1,13 @@
+FROM        python:3.6.7-slim
+MAINTAINER  dev@lhy.kr
+ENV         LANG                    C.UTF-8
+
+RUN         apt -y update
+RUN         apt -y dist-upgrade
+RUN         apt -y install gcc nginx supervisor && \
+            pip3 install uwsgi && \
+            apt -y remove gcc && \
+            apt -y autoremove
+
+COPY        requirements.txt /tmp/requirements.txt
+RUN         pip3 install -r /tmp/requirements.txt

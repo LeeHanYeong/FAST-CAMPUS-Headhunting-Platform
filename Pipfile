@@ -15,15 +15,17 @@ pillow = "*"
 django-modeladmin-reorder = "*"
 django-storages = "*"
 django-sass-processor = "*"
-django-compressor = "*"
-libsass = "*"
 drf-writable-nested = "*"
 django-default-imagefield = "*"
 django-ckeditor = "*"
+"boto3" = "*"
 
 [dev-packages]
 ipython = "*"
 django-debug-toolbar = "*"
+awsebcli = "*"
+django-compressor = "*"
+libsass = "*"
 
 [requires]
 python_version = "3.6"

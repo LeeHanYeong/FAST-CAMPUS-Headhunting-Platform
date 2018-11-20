@@ -3,11 +3,10 @@ from rest_framework.response import Response
 
 from ..models import (
     ApplicantUser,
-    Link, Skill, ApplicantLink)
+    Link, Skill, ApplicantLink, ApplicantSkill)
 from ..permissions import ObjIsRequestUser, IsUserOrReadOnly
 from ..serializers import (
     ApplicantLinkSerializer,
-    ApplicantSkillCreateSerializer,
     LinkSerializer, SkillSerializer)
 from ..serializers import (
     ApplicantUserSerializer,
@@ -20,7 +19,7 @@ __all__ = (
     'LinkListAPIView',
     'SkillListAPIView',
     'ApplicantLinkListUpdateAPIView',
-    'ApplicantSkillListCreateAPIView',
+    'ApplicantSkillListUpdateAPIView',
 )
 
 
@@ -85,17 +84,21 @@ class ApplicantLinkListUpdateAPIView(generics.ListAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ApplicantSkillListCreateAPIView(generics.ListCreateAPIView):
+class ApplicantSkillListUpdateAPIView(generics.ListAPIView):
+    serializer_class = ApplicantSkillSerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsUserOrReadOnly,
     )
 
     def get_queryset(self):
-        return ApplicantLink.objects.filter(user=self.request.user)
+        return ApplicantSkill.objects.filter(user=self.request.user)
 
-    def get_serializer_class(self):
-        if self.request.method == 'GET':
-            return ApplicantSkillSerializer
-        elif self.request.method == 'POST':
-            return ApplicantSkillCreateSerializer
+    def put(self, request):
+        skills = ApplicantSkill.objects.filter(user=self.request.user)
+        serializer = self.serializer_class(
+            skills, data=request.data, many=True, context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

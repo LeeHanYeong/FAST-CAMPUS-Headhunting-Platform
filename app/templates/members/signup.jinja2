@@ -1,0 +1,20 @@
+{% extends 'base.jinja2' %}
+
+{% block content_header %}
+<header class="content-header row justify-content-center">
+	<div class="col-md-8 col-lg-5">
+		<div class="title">
+			<span>회원가입</span>
+		</div>
+	</div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+	<div class="login-card card col-md-8 col-lg-5">
+		<a href="{{ url('members:applicant-signup') }}" class="btn btn-primary btn-block">지원자 회원가입</a>
+		<a href="{{ url('members:applicant-signup') }}" class="btn btn-primary btn-block">기업 회원가입</a>
+	</div>
+</div>
+{% endblock %}

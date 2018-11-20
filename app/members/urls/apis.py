@@ -10,5 +10,5 @@ urlpatterns = [
     path('applicant/profile/', apis.ApplicantUserUpdateAPIView.as_view(), name='profile'),
     path('applicant/<int:pk>/', apis.ApplicantUserRetrieveAPIView.as_view()),
     path('applicant/link/', apis.ApplicantLinkListUpdateAPIView.as_view(), name='applicantlink-list'),
-    path('applicant/skill/', apis.ApplicantSkillListCreateAPIView.as_view(), name='applicantskill-list'),
+    path('applicant/skill/', apis.ApplicantSkillListUpdateAPIView.as_view(), name='applicantskill-list'),
 ]

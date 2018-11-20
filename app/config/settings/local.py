@@ -7,6 +7,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '192.168.1.179',
+    'amazonaws.com',
+    'elasticbeanstalk.com',
 ]
 
 # django-debug-toolbar

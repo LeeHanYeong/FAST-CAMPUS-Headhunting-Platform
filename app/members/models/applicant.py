@@ -36,6 +36,10 @@ class ApplicantUser(User):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.type = User.TYPE_APPLICANT
+        super().save(*args, **kwargs)
+
 
 class Link(models.Model):
     title = models.CharField('링크타입명', max_length=50)

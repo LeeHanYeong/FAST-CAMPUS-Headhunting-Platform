@@ -67,6 +67,7 @@ class CompanyUserAdmin(BaseUserAdmin):
         return form
 
 
+admin.site.register(User, UserAdmin)
 admin.site.register(ApplicantUser, ApplicantUserAdmin)
 admin.site.register(CompanyUser, CompanyUserAdmin)
 admin.site.register(Link)

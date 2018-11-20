@@ -82,21 +82,64 @@
 				<hr>
 				<div v-if="applicantLinkList">
 					<div v-for="(applicantLink, index) in applicantLinkList" class="form-group row">
-						<div class="col-sm-2">
-							<select v-model="applicantLink.link">
+						<div class="col-sm-3">
+							<select v-model="applicantLink.link" class="form-control">
 								<option v-bind:value="link" v-for="link in linkList">${ link.title }</option>
 							</select>
+							<small class="form-text text-danger"
+							       v-for="error in errorSkillLinkMessages('link', 'link', index)">
+								${ error }</small>
 						</div>
-						<div class="col-sm-8">
+						<div class="col-sm-7">
 							<input v-model="applicantLink.url" type="text" class="form-control" placeholder="" autocomplete="off">
+							<small class="form-text text-danger"
+							       v-for="error in errorSkillLinkMessages('link', 'url', index)">
+								${ error }</small>
 						</div>
 						<div class="col-sm-2">
-							<button v-on:click="deleteApplicantLink(index)" class="btn btn-dark btn-block">삭제</button>
+							<button v-on:click="deleteApplicantLink(index)" class="btn btn-dark btn-block" type="button">삭제</button>
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col">
-							<button v-on:click="addApplicantLink()" class="btn btn-primary">추가</button>
+							<button v-on:click="addApplicantLink()" class="btn btn-primary" type="button">추가</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+	<section class="card resume-section">
+		<div class="card-header">보유기술</div>
+		<div class="card-body">
+			<form action="">
+				<div v-if="applicantSkillList">
+					<div v-for="(applicantSkill, index) in applicantSkillList" class="form-group row">
+						<div class="col-sm-4">
+							<select v-model="applicantSkill.skill" class="form-control">
+								<option v-bind:value="skill" v-for="skill in skillList">${ skill.title }</option>
+							</select>
+							<small class="form-text text-danger"
+							       v-for="error in errorSkillLinkMessages('skill', 'skill', index)">
+								${ error }</small>
+						</div>
+						<div class="col-sm-6">
+							<select v-model="applicantSkill.level" class="form-control">
+								<option value="high">매우능숙</option>
+								<option value="mid">능숙</option>
+								<option value="low">활용가능</option>
+							</select>
+							<small class="form-text text-danger"
+							       v-for="error in errorSkillLinkMessages('skill', 'level', index)">
+								${ error }</small>
+						</div>
+						<div class="col-sm-2">
+							<button v-on:click="deleteApplicantSkill(index)" class="btn btn-dark btn-block" type="button">삭제</button>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col">
+							<button v-on:click="addApplicantSkill()" class="btn btn-primary" type="button">추가</button>
 						</div>
 					</div>
 				</div>
@@ -143,7 +186,7 @@
 							       v-for="error in errorMessages('education_set', 'end_date', index)">
 								${ error }</small>
 						<td>
-							<select v-model="edu.type">
+							<select v-model="edu.type" class="form-control">
 								<option value="grad">졸업</option>
 								<option value="grad_ex">졸업 예정</option>
 								<option value="attend">재학</option>
@@ -300,7 +343,9 @@ var mixin = {
 	  applicantSkillList: [],
     skillList: [],
     linkList: [],
-    errors: {}
+    errors: {},
+    skillErrors: [],
+	  linkErrors: []
   },
 	methods: {
 	  // ApplicantUpdate
@@ -340,6 +385,9 @@ var mixin = {
 	      link: this.linkList[0],
 	      url: ''
       });
+      this.$nextTick(function () {
+        console.log(this.$el);
+      });
 		},
 		deleteApplicantLink: function (index) {
       Vue.delete(this.applicantLinkList, index);
@@ -357,10 +405,67 @@ var mixin = {
       }).done(function (response) {
         vm.applicantLinkList = response;
       }).fail(function (response) {
-        console.log(response);
+        vm.linkErrors = response.responseJSON;
       })
 		},
 
+		getApplicantSkillList: function () {
+      const vm = this;
+      $.ajax({
+	      method: 'GET',
+	      url: "{{ url('api:members:applicantskill-list') }}"
+      }).done(function (response) {
+        vm.applicantSkillList = response;
+      }).fail(function (response) {
+        console.log(response);
+      });
+		},
+		addApplicantSkill: function () {
+      this.applicantSkillList.push({
+	      skill: this.skillList[0],
+	      url: ''
+      });
+      this.$nextTick(function () {
+        console.log(this.$el);
+      });
+		},
+		deleteApplicantSkill: function (index) {
+      Vue.delete(this.applicantSkillList, index);
+		},
+		updateApplicantSkillList: function () {
+      const vm = this;
+      var obj = $.extend({}, vm.applicantSkillList);
+      $.ajax({
+	      method: 'PUT',
+	      url: "{{ url('api:members:applicantskill-list') }}",
+	      data: JSON.stringify(vm.applicantSkillList),
+        contentType: 'application/json',
+        processData: false,
+        dataType: 'JSON'
+      }).done(function (response) {
+        vm.applicantSkillList = response;
+      }).fail(function (response) {
+        vm.skillErrors = response.responseJSON;
+      })
+		},
+
+		errorSkillLinkMessages: function (type, name, index) {
+      const vm = this;
+      var curErrors = undefined;
+      switch (type){
+	      case 'skill':
+	        curErrors = vm.skillErrors;
+	        break;
+	      case 'link':
+	        curErrors = vm.linkErrors;
+	        break;
+      }
+      if (!(typeof curErrors[index] === 'undefined')) {
+        if (name in curErrors[index]) {
+          return curErrors[index][name];
+        }
+      }
+		},
 
     getApplicantProfile: function () {
       const vm = this;
@@ -419,6 +524,7 @@ var mixin = {
 		},
     updateApplicantProfile: function (extraData) {
       this.updateApplicantLinkList();
+      this.updateApplicantSkillList();
 
       const vm = this;
       var obj = $.extend({}, vm.applicantDetail);
@@ -476,8 +582,9 @@ var mixin = {
 {% block script %}
 <script>
 	app.getSkillLinkList();
-	app.getApplicantProfile();
 	app.getApplicantLinkList();
+	app.getApplicantSkillList();
+	app.getApplicantProfile();
 	var editor = CKEDITOR.replace('id-intro', {
 	  toolbar: 'Default',
 		height: 500

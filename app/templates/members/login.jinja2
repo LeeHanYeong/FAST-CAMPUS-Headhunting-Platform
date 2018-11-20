@@ -19,6 +19,11 @@
 			<div class="form-group">
 				<label for="{{ field.id_for_label }}">{{ field.label }}</label>
 				{{ field }}
+				{% if field.errors %}
+					{% for error in field.errors %}
+						<small class="form-text text-danger">{{ error }}</small>
+					{% endfor %}
+				{% endif %}
 			</div>
 			{% endfor %}
 			<button class="btn btn-primary btn-lg btn-block mt-4">로그인</button>

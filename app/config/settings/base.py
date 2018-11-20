@@ -61,6 +61,7 @@ DATE_FORMAT = 'Y-m-d'
 # django-modeladmin-reorder
 ADMIN_REORDER = (
     {'app': 'members', 'label': '사용자 관리', 'models': (
+        'members.User',
         'members.ApplicantUser',
         'members.CompanyUser')},
     {'app': 'members', 'label': '이력서 항목 관리', 'models': (

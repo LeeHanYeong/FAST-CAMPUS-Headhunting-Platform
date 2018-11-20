@@ -1,10 +1,12 @@
+from django.contrib.auth import login
 from django.contrib.auth.views import (
     LogoutView as DjangoLogoutView,
     LoginView as DjangoLoginView,
 )
-from django.views.generic import TemplateView, ListView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, ListView, FormView
 
-from .forms import LoginForm
+from .forms import LoginForm, ApplicantSignupForm
 from .models import ApplicantUser
 
 
@@ -30,8 +32,23 @@ class ApplicantUpdateView(TemplateView):
 
 class LoginView(DjangoLoginView):
     form_class = LoginForm
-    template_name = 'members/login.html'
+    template_name = 'members/login.jinja2'
 
 
 class LogoutView(DjangoLogoutView):
     pass
+
+
+class SignupView(TemplateView):
+    template_name = 'members/signup.jinja2'
+
+
+class ApplicantSignupView(FormView):
+    form_class = ApplicantSignupForm
+    template_name = 'members/applicant_signup.jinja2'
+    success_url = reverse_lazy('index')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)

@@ -60,9 +60,9 @@ var app = new Vue({
   directives: {
     focus: {
       inserted: function (el) {
-        Vue.nextTick(function () {
-          el.focus();
-        });
+        // Vue.nextTick(function () {
+        //   el.focus();
+        // });
       }
     }
   }
