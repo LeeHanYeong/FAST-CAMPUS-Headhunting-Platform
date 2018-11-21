@@ -19,6 +19,7 @@ drf-writable-nested = "*"
 django-default-imagefield = "*"
 django-ckeditor = "*"
 "boto3" = "*"
+django-colorful = "*"
 
 [dev-packages]
 ipython = "*"

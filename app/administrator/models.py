@@ -1,9 +1,12 @@
 from ckeditor.fields import RichTextField
+from colorful.fields import RGBColorField
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 
 
 class StaticContent(models.Model):
+    index_image = models.ImageField('메인페이지 이미지', upload_to='index', blank=True)
+    index_color = RGBColorField('메인페이지 배경색', blank=True)
     privacy_policy = RichTextField('개인정보 취급방침', blank=True)
     terms_of_service = RichTextField('이용약관', blank=True)
 
@@ -14,7 +17,7 @@ class StaticContent(models.Model):
         verbose_name_plural = f'{verbose_name} 목록'
 
     def __str__(self):
-        return f'정적 콘텐츠 (수정: {self.modified_at})'
+        return f'정적 콘텐츠 (수정: {self.modified})'
 
 
 class Company(TimeStampedModel):

@@ -114,6 +114,8 @@ INSTALLED_APPS = [
     'admin_reorder',
     'ckeditor',
     'ckeditor_uploader',
+    # Admin ColorPicker
+    'colorful',
     'django_extensions',
     'django_fields',
     'phonenumber_field',

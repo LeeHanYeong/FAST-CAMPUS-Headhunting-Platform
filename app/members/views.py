@@ -6,6 +6,7 @@ from django.contrib.auth.views import (
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, FormView
 
+from administrator.mixins import StaticContentMixin
 from administrator.models import StaticContent
 from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm
 from .models import ApplicantUser
@@ -44,7 +45,7 @@ class SignupView(TemplateView):
     template_name = 'members/signup.jinja2'
 
 
-class ApplicantSignupView(FormView):
+class ApplicantSignupView(StaticContentMixin, FormView):
     form_class = ApplicantSignupForm
     template_name = 'members/signup_applicant.jinja2'
     success_url = reverse_lazy('index')
@@ -54,16 +55,8 @@ class ApplicantSignupView(FormView):
         login(self.request, user)
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        static_content = StaticContent.objects.first()
-        if not StaticContent.objects.exists():
-            static_content = StaticContent.objects.create()
-        context['static_content'] = static_content
-        return context
 
-
-class CompanySignupView(FormView):
+class CompanySignupView(StaticContentMixin, FormView):
     form_class = CompanySignupForm
     template_name = 'members/signup_company.jinja2'
     success_url = reverse_lazy('index')
@@ -73,10 +66,4 @@ class CompanySignupView(FormView):
         login(self.request, user)
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        static_content = StaticContent.objects.first()
-        if not StaticContent.objects.exists():
-            static_content = StaticContent.objects.create()
-        context['static_content'] = static_content
-        return context
+
