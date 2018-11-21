@@ -73,7 +73,16 @@ header.content-header {
        height: calc(2.15625rem + 2px);
     }
   }
+}
 
+// Index
+.index-container {
+  margin-top: -15px;
+  .logo {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+  }
 }
 
 // Login

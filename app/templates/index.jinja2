@@ -1,7 +1,16 @@
 {% extends 'base.jinja2' %}
 
+{% block content_class %}{% endblock %}
+
 {% block content %}
-<div>
-	<h1>Index</h1>
+<div class="index-container">
+	<div class="logo"
+	     style="
+		     background-image: url('{{ static_content.index_image.url }}');
+		     background-color: {{ static_content.index_color }};
+		     height: {{ static_content.index_height }}px;
+		     max-height: {{ static_content.index_height }}px;
+		     ">
+	</div>
 </div>
 {% endblock %}
