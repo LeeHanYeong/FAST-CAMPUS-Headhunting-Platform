@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, FormView
 
 from administrator.models import StaticContent
-from .forms import LoginForm, ApplicantSignupForm
+from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm
 from .models import ApplicantUser
 
 
@@ -47,6 +47,25 @@ class SignupView(TemplateView):
 class ApplicantSignupView(FormView):
     form_class = ApplicantSignupForm
     template_name = 'members/signup_applicant.jinja2'
+    success_url = reverse_lazy('index')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        static_content = StaticContent.objects.first()
+        if not StaticContent.objects.exists():
+            static_content = StaticContent.objects.create()
+        context['static_content'] = static_content
+        return context
+
+
+class CompanySignupView(FormView):
+    form_class = CompanySignupForm
+    template_name = 'members/signup_company.jinja2'
     success_url = reverse_lazy('index')
 
     def form_valid(self, form):

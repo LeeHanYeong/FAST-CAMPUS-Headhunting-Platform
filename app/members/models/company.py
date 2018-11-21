@@ -21,6 +21,10 @@ class CompanyUser(User):
     def __str__(self):
         return f'{self._company_name} - {self.name} ({self._position})'
 
+    def save(self, *args, **kwargs):
+        self.type = User.TYPE_COMPANY
+        super().save(*args, **kwargs)
+
     @property
     def company_name(self):
         return self._company_name

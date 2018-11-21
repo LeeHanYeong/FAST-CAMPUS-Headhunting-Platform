@@ -6,6 +6,7 @@ from django.utils import timezone
 from django_fields import DefaultStaticImageField
 from phonenumber_field.modelfields import PhoneNumberField
 
+from administrator.models import Company
 from utils.models import TimeStampedMixin
 
 __all__ = (
@@ -61,6 +62,9 @@ class User(TimeStampedMixin, AbstractUser):
         verbose_name='즐겨찾기 한 유저 목록', related_name='followers', blank=True)
 
     # 기업회원 필드
+    _company = models.ForeignKey(
+        Company, on_delete=models.CASCADE, verbose_name='회사',
+        blank=True, null=True, related_name='users')
     _company_name = models.CharField('회사명', max_length=80, blank=True)
     _position = models.CharField('직책', max_length=50, blank=True)
 

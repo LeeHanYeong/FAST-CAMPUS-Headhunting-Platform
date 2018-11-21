@@ -36,7 +36,11 @@
 				</a>
 				{% if request.user.is_authenticated %}
 					<div class="btn-container child-middle">
-						<a href="{{ url('members:applicant-update') }}" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
+						{% if request.user.get_type_display() == '지원자' %}
+							<a href="{{ url('members:applicant-update') }}" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
+						{% else %}
+							<a href="#" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
+						{% endif %}
 						<a href="{{ url('members:logout') }}" class="btn btn-outline-dark">LOGOUT</a>
 					</div>
 				{% else %}
