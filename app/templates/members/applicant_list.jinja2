@@ -44,10 +44,9 @@
 					</div>
 					<p class="short-intro">{{ applicant.short_intro }}</p>
 					<div class="badge-list">
-						<span class="badge badge-pill badge-light">#sketch</span>
-						<span class="badge badge-pill badge-light">#invision</span>
-						<span class="badge badge-pill badge-light">#photoshop</span>
-						<span class="badge badge-pill badge-light">#illustrator</span>
+						{% for skill in applicant._skills.all() %}
+							<span class="badge badge-pill badge-light">#{{ skill.title }}</span>
+						{% endfor %}
 					</div>
 					<button class="btn-status shadow-xs btn btn-lg pl-5 pr-5
 									{% if applicant.is_looking %}

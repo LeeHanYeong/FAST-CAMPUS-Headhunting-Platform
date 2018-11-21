@@ -12,7 +12,8 @@ from .models import ApplicantUser
 
 class ApplicantListView(ListView):
     model = ApplicantUser
-    queryset = ApplicantUser.objects.published().prefetch_related('followers')
+    queryset = ApplicantUser.objects.published()\
+        .prefetch_related('followers', '_skills')
     template_name = 'members/applicant_list.jinja2'
     context_object_name = 'applicants'
 
