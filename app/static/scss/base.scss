@@ -34,3 +34,6 @@ img {
   top: inherit !important;
   bottom: 30px !important;
 }
+button > span.icon {
+  pointer-events: none;
+}

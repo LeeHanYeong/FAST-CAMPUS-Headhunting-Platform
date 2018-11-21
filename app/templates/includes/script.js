@@ -46,12 +46,10 @@ var app = new Vue({
     toggleUserLike: function (event) {
       const vm = this;
       function addLikeClass(el) {
-        console.log('addLikeClass');
         el.addClass('btn-primary');
         el.removeClass('btn-outline-primary');
       }
       function removeLikeClass(el) {
-        console.log('removeLikeClass');
         el.addClass('btn-outline-primary');
         el.removeClass('btn-primary');
       }
@@ -60,7 +58,6 @@ var app = new Vue({
       var likeClass = 'btn-primary';
       var unlikeClass = 'btn-outline-primary';
       var isLiked = el.hasClass(likeClass);
-      console.log(isLiked);
       if (isLiked) {
         method = 'DELETE';
         removeLikeClass(el);
@@ -76,6 +73,7 @@ var app = new Vue({
       }).done(function (response) {
 
       }).fail(function (response) {
+        console.log(response);
         vm.failCount += 1;
         if (isLiked) {
           addLikeClass(el);
