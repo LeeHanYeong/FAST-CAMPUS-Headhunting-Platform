@@ -18,29 +18,30 @@ var app = new Vue({
   methods: {
     // Common
     modal: function (options) {
-      const vm = this;
+      var elModal = $('#id-modal');
+      var btnFirst = elModal.find('.btn-first');
       if (typeof options.title !== 'undefined') {
-        $('#id-modal .modal-title').text(options.title);
+        elModal.find('.modal-title').text(options.title);
       }
       if (typeof options.content !== 'undefined') {
-        $('#id-modal .modal-body').text(options.content);
+        elModal.find('.modal-body').text(options.content);
       }
       if (typeof options.firstFunction !== 'undefined') {
-        $('#id-modal .btn-first').show();
-        $('#id-modal .btn-first').click(function () {
+        btnFirst.show();
+        btnFirst.click(function () {
           options.firstFunction();
-          $('#id-modal').hide();
+          elModal.hide();
         });
       } else {
-        $('#id-modal .btn-first').hide();
+        btnFirst.hide();
       }
       if (typeof options.secondFunction !== 'undefined') {
-        $('#id-modal .btn-second').click(function () {
+        elModal.find('.btn-second').click(function () {
           options.secondFunction();
-          $('#id-modal').hide();
+          elModal.hide();
         });
       }
-      $('#id-modal').modal();
+      elModal.modal();
     },
     // ApplicantList
     toggleUserLike: function (event) {
