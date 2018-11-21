@@ -12,9 +12,22 @@
 
 {% block content %}
 <div class="row justify-content-center">
-	<div class="login-card card col-md-8 col-lg-5">
-		<a href="{{ url('members:applicant-signup') }}" class="btn btn-primary btn-block">지원자 회원가입</a>
-		<a href="{{ url('members:applicant-signup') }}" class="btn btn-primary btn-block">기업 회원가입</a>
+	<div class="login-card card col-md-8 col-lg-5 text-center">
+		<h4 class="mb-4">원하시는 가입유형을 선택하세요</h4>
+		<div>
+			<a href="{{ url('members:applicant-signup') }}" class="card text-center border-light btn-signup-type">
+				<div class="p-4">
+					<img src="{{ static('images/signup_applicant.png') }}" class="img-signup-type">
+				</div>
+				<div class="card-footer text-dark font-weight-bold">지원자 회원가입</div>
+			</a>
+			<a href="{{ url('members:applicant-signup') }}" class="card text-center border-light btn-signup-type">
+				<div class="p-4">
+					<img src="{{ static('images/signup_company.png') }}" class="img-signup-type">
+				</div>
+				<div class="card-footer text-dark font-weight-bold">참여기업 회원가입</div>
+			</a>
+		</div>
 	</div>
 </div>
 {% endblock %}

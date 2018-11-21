@@ -81,6 +81,24 @@ header.content-header {
   padding: 2.8rem;
 }
 
+// Signup
+.login-card {
+  .btn-signup-type {
+    display: inline-block;
+    box-sizing: border-box;
+    text-decoration: none;
+    border-width: 1px;
+    border-style: solid;
+    &:first-child {
+      margin-right: 1rem;
+    }
+
+    .img-signup-type {
+      height: 160px;
+    }
+  }
+}
+
 // ApplicantList
 .applicant-list {
   //margin-top: -2rem;
