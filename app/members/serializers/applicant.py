@@ -208,6 +208,7 @@ class ApplicantSkillSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApplicantSkill
+        list_serializer_class = ApplicantSkillListSerializer
         fields = (
             'pk',
             'skill',
@@ -221,12 +222,12 @@ class ApplicantSkillSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         skill_data = validated_data.pop('skill')
-        skill = get_object_or_404(Link, pk=skill_data['pk'])
+        skill = get_object_or_404(Skill, pk=skill_data['pk'])
         return ApplicantSkill.objects.create(skill=skill, **validated_data)
 
     def update(self, instance, validated_data):
         skill_data = validated_data.pop('skill')
-        skill = get_object_or_404(Link, pk=skill_data['pk'])
+        skill = get_object_or_404(Skill, pk=skill_data['pk'])
         for k, v in validated_data.items():
             setattr(instance, k, v)
         instance.skill = skill

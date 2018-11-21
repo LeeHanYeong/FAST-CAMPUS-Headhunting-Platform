@@ -80,7 +80,7 @@
 					</div>
 				</div>
 				<hr>
-				<div v-if="applicantLinkList">
+				<div id="section-link-list" v-if="applicantLinkList">
 					<div v-for="(applicantLink, index) in applicantLinkList" class="form-group row">
 						<div class="col-sm-3">
 							<select v-model="applicantLink.link" class="form-control">
@@ -109,7 +109,7 @@
 			</form>
 		</div>
 	</section>
-	<section class="card resume-section">
+	<section id="section-skill-list" class="card resume-section">
 		<div class="card-header">보유기술</div>
 		<div class="card-body">
 			<form action="">
@@ -146,7 +146,7 @@
 			</form>
 		</div>
 	</section>
-	<section class="card resume-section">
+	<section id="section-skill-list" class="card resume-section">
 		<div class="card-header">학력사항</div>
 		<div>
 			<table class="table table-edit">
@@ -210,7 +210,7 @@
 		</div>
 	</section>
 
-	<section class="card resume-section">
+	<section id="section-career-list" class="card resume-section">
 		<div class="card-header">경력사항</div>
 		<div>
 			<table class="table table-edit">
@@ -270,7 +270,7 @@
 		</div>
 	</section>
 
-	<section class="card resume-section">
+	<section id="section-license-list" class="card resume-section">
 		<div class="card-header">자격사항</div>
 		<div>
 			<table class="table table-edit">
@@ -332,6 +332,7 @@
 		</div>
 	</section>
 </div>
+{% include 'includes/modal.jinja2' %}
 {% endblock %}
 
 {% block mixin %}
@@ -395,7 +396,7 @@ var mixin = {
 		updateApplicantLinkList: function () {
       const vm = this;
       var obj = $.extend({}, vm.applicantLinkList);
-      $.ajax({
+      return $.ajax({
 	      method: 'PUT',
 	      url: "{{ url('api:members:applicantlink-list') }}",
 	      data: JSON.stringify(vm.applicantLinkList),
@@ -406,6 +407,13 @@ var mixin = {
         vm.applicantLinkList = response;
       }).fail(function (response) {
         vm.linkErrors = response.responseJSON;
+				app.modal({
+					title: '주소목록 오류',
+					content: '입력한 주소 목록의 형식에 문제가 있습니다',
+					firstFunction: function () {
+						goToSection('#section-link-list');
+					}
+				});
       })
 		},
 
@@ -435,7 +443,7 @@ var mixin = {
 		updateApplicantSkillList: function () {
       const vm = this;
       var obj = $.extend({}, vm.applicantSkillList);
-      $.ajax({
+      return $.ajax({
 	      method: 'PUT',
 	      url: "{{ url('api:members:applicantskill-list') }}",
 	      data: JSON.stringify(vm.applicantSkillList),
@@ -446,6 +454,14 @@ var mixin = {
         vm.applicantSkillList = response;
       }).fail(function (response) {
         vm.skillErrors = response.responseJSON;
+        console.log(response.responseJSON);
+        app.modal({
+					title: '보유기술 오류',
+					content: '입력한 보유기술 목록의 형식에 문제가 있습니다',
+					firstFunction: function () {
+						goToSection('#section-skill-list', 20);
+					}
+				});
       })
 		},
 
@@ -460,7 +476,7 @@ var mixin = {
 	        curErrors = vm.linkErrors;
 	        break;
       }
-      if (!(typeof curErrors[index] === 'undefined')) {
+      if ((typeof curErrors !== 'undefined') && !(typeof curErrors[index] === 'undefined')) {
         if (name in curErrors[index]) {
           return curErrors[index][name];
         }
@@ -523,15 +539,12 @@ var mixin = {
       }
 		},
     updateApplicantProfile: function (extraData) {
-      this.updateApplicantLinkList();
-      this.updateApplicantSkillList();
-
       const vm = this;
       var obj = $.extend({}, vm.applicantDetail);
       var extraObj = $.extend(obj, extraData);
       console.log(extraObj);
       delete extraObj.img_profile;
-      $.ajax({
+      return $.ajax({
         method: 'PATCH',
         url: "{{ url('api:members:profile') }}",
         data: JSON.stringify(extraObj),
@@ -556,12 +569,44 @@ var mixin = {
             $('#id-img-profile').val('');
           });
         } else {
-          vm.errors = {}
+          vm.errors = {};
           vm.applicantDetail = response;
         }
+        app.modal({
+	        title: '지원서 저장 완료',
+	        content: '지원서 변경내역이 저장되었습니다'
+        })
       }).fail(function (response) {
         console.log(response);
         vm.errors = response.responseJSON;
+        var modalTitle = '';
+        var modalContent = '';
+        var modalFirstFunction = undefined;
+        var modalSecondFunction = undefined;
+        if (typeof vm.errors.education_set !== 'undefined') {
+          modalTitle = '학력사항 오류';
+          modalContent = '입력한 학력사항의 형식에 문제가 있습니다';
+          modalFirstFunction = function () {
+            goToSection('#section-education-list', 20);
+          }
+        } else if (typeof vm.errors.career_set !== 'undefined') {
+          modalTitle = '경력사항 오류';
+          modalContent = '입력한 경력사항의 형식에 문제가 있습니다';
+          modalFirstFunction = function () {
+            goToSection('#section-career-list', 20);
+          }
+        } else if (typeof vm.errors.license_set !== 'undefined') {
+          modalTitle = '자격사항 오류';
+          modalContent = '입력한 자격사항의 형식에 문제가 있습니다';
+          modalFirstFunction = function () {
+            goToSection('#section-license-list', 20);
+          }
+        }
+        app.modal({
+					title: modalTitle,
+					content: modalContent,
+					firstFunction: modalFirstFunction
+				});
       });
     },
 		errorMessages: function (type, name, index) {
@@ -596,7 +641,13 @@ var mixin = {
 	  var extraData = {
 	    introduce: editorData
 	  };
-	  app.updateApplicantProfile(extraData);
+	  var update1 = app.updateApplicantLinkList();
+    $.when(update1).done(function () {
+      var update2 = app.updateApplicantSkillList();
+      $.when(update2).done(function () {
+        app.updateApplicantProfile(extraData);
+      })
+    });
 	}
 </script>
 {% endblock %}

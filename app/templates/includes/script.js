@@ -1,3 +1,11 @@
+function goToSection (id, offsetTop) {
+  if (typeof offsetTop === 'undefined') {
+    offsetTop = 30;
+  }
+  $('html, body').animate({
+    scrollTop: $(id).offset().top - offsetTop
+  }, 10);
+}
 var app = new Vue({
   el: '#wrap',
   delimiters: ['${', '}'],
@@ -8,6 +16,32 @@ var app = new Vue({
     failCount: 0
   },
   methods: {
+    // Common
+    modal: function (options) {
+      const vm = this;
+      if (typeof options.title !== 'undefined') {
+        $('#id-modal .modal-title').text(options.title);
+      }
+      if (typeof options.content !== 'undefined') {
+        $('#id-modal .modal-body').text(options.content);
+      }
+      if (typeof options.firstFunction !== 'undefined') {
+        $('#id-modal .btn-first').show();
+        $('#id-modal .btn-first').click(function () {
+          options.firstFunction();
+          $('#id-modal').hide();
+        });
+      } else {
+        $('#id-modal .btn-first').hide();
+      }
+      if (typeof options.secondFunction !== 'undefined') {
+        $('#id-modal .btn-second').click(function () {
+          options.secondFunction();
+          $('#id-modal').hide();
+        });
+      }
+      $('#id-modal').modal();
+    },
     // ApplicantList
     toggleUserLike: function (event) {
       const vm = this;
