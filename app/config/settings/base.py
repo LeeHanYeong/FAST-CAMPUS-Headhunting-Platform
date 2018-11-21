@@ -60,6 +60,9 @@ DATE_FORMAT = 'Y-m-d'
 
 # django-modeladmin-reorder
 ADMIN_REORDER = (
+    {'app': 'administrator', 'label': '정적 콘텐츠 관리', 'models': (
+        'administrator.StaticContent',
+    )},
     {'app': 'members', 'label': '사용자 관리', 'models': (
         'members.User',
         'members.ApplicantUser',
@@ -94,6 +97,7 @@ CKEDITOR_CONFIGS = {
 }
 
 INSTALLED_APPS = [
+    'administrator.apps.AdministratorConfig',
     'courses.apps.CoursesConfig',
     'members.apps.MembersConfig',
 
