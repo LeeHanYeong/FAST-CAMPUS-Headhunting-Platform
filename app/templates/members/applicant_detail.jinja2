@@ -1,0 +1,22 @@
+{% extends 'base.jinja2' %}
+
+{% block content %}
+<div>
+	<h1>{{ applicant.name }}</h1>
+	<p>{{ applicant.short_intro }}</p>
+
+	<h2>Skills</h2>
+	<ul>
+		{% for skill in applicant.skills.all() %}
+		<li>[{{ skill.get_level_display() }}] {{ skill.title }}</li>
+		{% endfor %}
+	</ul>
+
+	<h2>Educations</h2>
+	<ul>
+		{% for edu in applicant.education_set.all() %}
+			<li>{{ edu.school }} | {{ edu.major }} | {{ edu.start_date }} | {{ edu.end_date }} | {{ edu.get_type_display() }}</li>
+		{% endfor %}
+	</ul>
+</div>
+{% endblock %}

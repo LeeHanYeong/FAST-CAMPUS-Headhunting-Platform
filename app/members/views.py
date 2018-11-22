@@ -4,17 +4,16 @@ from django.contrib.auth.views import (
     LoginView as DjangoLoginView,
 )
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, FormView
+from django.views.generic import TemplateView, ListView, FormView, DetailView
 
 from administrator.mixins import StaticContentMixin
-from administrator.models import StaticContent
 from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm
 from .models import ApplicantUser
 
 
 class ApplicantListView(ListView):
     model = ApplicantUser
-    queryset = ApplicantUser.objects.published()\
+    queryset = ApplicantUser.objects.published() \
         .prefetch_related('followers', '_skills')
     template_name = 'members/applicant_list.jinja2'
     context_object_name = 'applicants'
@@ -30,6 +29,12 @@ class ApplicantUpdateView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+
+
+class ApplicantDetailView(DetailView):
+    model = ApplicantUser
+    template_name = 'members/applicant_detail.jinja2'
+    context_object_name = 'applicant'
 
 
 class LoginView(DjangoLoginView):
@@ -65,5 +70,3 @@ class CompanySignupView(StaticContentMixin, FormView):
         user = form.save()
         login(self.request, user)
         return super().form_valid(form)
-
-

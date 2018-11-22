@@ -27,8 +27,9 @@
 <div class="applicant-list row">
 	{% for applicant in applicants %}
 		<div class="col-lg-6 mb-5">
-			<a href="#" class="user">
+			<a href="{{ url('members:applicant-detail', args=[applicant.pk]) }}" class="user">
 				<div class="user-profile shadow-xs" style="background-image: url('{{ applicant.img_profile.url }}');">
+					{% if request.user.is_authenticated %}
 					<button v-on:click.self="toggleUserLike($event)"
 					        class="btn-star btn btn-sm
 					        {% if request.user in applicant.followers.all() %}
@@ -39,6 +40,7 @@
 					        data-user-pk="{{ applicant.pk }}">
 										<span class="icon far fa-star"></span>
 					</button>
+					{% endif %}
 				</div>
 				<div class="content">
 					<div class="name-course">
