@@ -32,11 +32,19 @@ STATICFILES_DIRS = [
 ]
 MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 STATIC_ROOT = os.path.join(ROOT_DIR, '.static')
+
+# django-sass-processor, django-compressor
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'sass_processor.finders.CssFinder',
 ]
+COMPRESS_JINJA2_GET_ENVIRONMENT = environment
+
+# AWS
+AWS_AUTO_CREATE_BUCKET = True
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_S3_REGION_NAME = 'ap-northeast-2'
 
 # DRF
 REST_FRAMEWORK = {
@@ -80,9 +88,6 @@ ADMIN_REORDER = (
     )},
 )
 
-# compressor
-COMPRESS_JINJA2_GET_ENVIRONMENT = environment
-
 # ckeditor
 CKEDITOR_UPLOAD_PATH = 'ckeditor/'
 CKEDITOR_ALLOW_NONIMAGE_FILES = False
@@ -99,6 +104,7 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'administrator.apps.AdministratorConfig',
     'courses.apps.CoursesConfig',
@@ -159,13 +165,10 @@ TEMPLATES = [
         ],
         'APP_DIRS': False,
         'OPTIONS': {
-            'context_processors': [],
             'environment': 'config.jinja2.environment',
         },
     },
 ]
-
-WSGI_APPLICATION = 'config.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {

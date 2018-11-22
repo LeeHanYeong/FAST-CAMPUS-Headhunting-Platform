@@ -20,6 +20,8 @@ django-default-imagefield = "*"
 django-ckeditor = "*"
 "boto3" = "*"
 django-colorful = "*"
+sentry-sdk = "*"
+"psycopg2-binary" = "*"
 
 [dev-packages]
 ipython = "*"

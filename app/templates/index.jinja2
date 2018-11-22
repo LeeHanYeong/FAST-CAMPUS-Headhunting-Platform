@@ -6,7 +6,9 @@
 <div class="index-container">
 	<div class="logo"
 	     style="
+		     {% if static_content.index_image %}
 		     background-image: url('{{ static_content.index_image.url }}');
+		     {% endif %}
 		     background-color: {{ static_content.index_color }};
 		     height: {{ static_content.index_height }}px;
 		     max-height: {{ static_content.index_height }}px;

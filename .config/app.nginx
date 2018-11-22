@@ -1,0 +1,37 @@
+#server {
+#    return 404;
+#}
+server {
+    # 80번 포트로부터 받은 요청을 처리
+    listen 80;
+    listen 443;
+
+    # 도메인이 pby.kr관련과 *.elasticbeanstalk.com일 경우
+    server_name *.localhost, *.elasticbeanstalk.com;
+
+    # 인코딩방식
+    charset utf-8;
+
+    # request/response의 최대 사이즈
+    # (기본값이 매우 작음)
+    client_max_body_size 128M;
+
+    # ('/'부터 시작) -> 모든 URL연결에 대해
+    location / {
+        # uwsgi와의 연결에 unix소켓을 사용
+        # "/tmp/app.sock"파일을 사용
+        uwsgi_pass  unix:///tmp/app.sock;
+        include     uwsgi_params;
+    }
+
+    location /static/ {
+        alias   /srv/project/.static/;
+    }
+    location /media/ {
+        alias   /srv/project/.media/;
+    }
+
+#    if ($http_x_forwarded_proto = 'http') {
+#        return 301 https://$host$request_uri;
+#    }
+}
