@@ -27,7 +27,7 @@
 <div class="applicant-list row">
 	{% for applicant in applicants %}
 		<div class="col-lg-6 mb-5">
-			<a href="{{ url('members:applicant-detail', args=[applicant.pk]) }}" class="user">
+			<div class="user">
 				<div class="user-profile shadow-xs" style="background-image: url('{{ applicant.img_profile.url }}');">
 					{% if request.user.is_authenticated %}
 					<button v-on:click.self="toggleUserLike($event)"
@@ -38,11 +38,11 @@
 					          btn-outline-primary
 									{% endif %}"
 					        data-user-pk="{{ applicant.pk }}">
-										<span class="icon far fa-star"></span>
+						<span class="icon far fa-star"></span>
 					</button>
 					{% endif %}
 				</div>
-				<div class="content">
+				<a href="{{ url('members:applicant-detail', args=[applicant.pk]) }}" class="content">
 					<div class="name-course">
 						<span class="name">{{ applicant.name }}</span>
 					</div>
@@ -64,8 +64,8 @@
 							재직 중
 						{% endif %}
 					</button>
-				</div>
-			</a>
+				</a>
+			</div>
 		</div>
 	{% endfor %}
 </div>

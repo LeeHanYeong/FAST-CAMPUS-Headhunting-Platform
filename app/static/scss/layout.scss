@@ -135,23 +135,20 @@ header.content-header {
       background-size: cover;
       background-position: center center;
 
-      > .btn-star {
-        position: absolute;
-        left: .2rem;
-        top: .2rem;
 
-        &.btn-outline-primary:hover {
-          color: #ed234b;
-          background-color: transparent;
-          border-color: #ed234b;
-        }
-      }
     }
 
     > .content {
+      position: absolute;
+      left: 0;
+      top: 0;
+      display: inline-block;
+      text-decoration: none;
+      width: 100%;
       height: 190px;
       box-sizing: border-box;
       padding: 1.2rem;
+      padding-left: calc(150px + 1.5rem);
 
       .name-course {
         margin-bottom: 0.4rem;
@@ -179,8 +176,8 @@ header.content-header {
       }
       .btn-status {
         position: absolute;
-        right: 0.6rem;
-        bottom: -1rem;
+        right: 0rem;
+        bottom: 0rem;
       }
     }
   }

@@ -9,7 +9,6 @@
 				<small>수강생 이력서</small>
 			</span>
 		</div>
-		<button onclick="update()" class="btn btn-primary float-right pl-5 pr-5">수정 완료</button>
 	</div>
 </header>
 {% endblock %}
@@ -20,6 +19,17 @@
 	<div class="row">
 		<div class="col-md-4">
 			<div class="card info">
+				<button
+					v-on:click.self="toggleUserLike($event)"
+					class="btn-star btn
+		        {% if request.user in applicant.followers.all() %}
+		          btn-primary
+		        {% else %}
+		          btn-outline-primary
+						{% endif %}"
+		        data-user-pk="{{ applicant.pk }}">
+					<span class="icon far fa-star"></span>
+				</button>
 				<img src="{{ applicant.img_profile.url }}" alt="" >
 				<div class="card-body">
 					<h2 class="name pb-3">{{ applicant.name }}</h2>

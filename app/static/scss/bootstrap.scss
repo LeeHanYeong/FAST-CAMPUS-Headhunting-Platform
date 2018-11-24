@@ -16,6 +16,18 @@ header.main-header nav#main-navbar  {
 .btn {
   border-radius: 1px;
 }
+.btn-star {
+  position: absolute;
+  left: .2rem;
+  top: .2rem;
+  z-index: 1000;
+
+  &.btn-outline-primary:hover {
+    color: #ed234b;
+    background-color: transparent;
+    border-color: #ed234b;
+  }
+}
 .card {
   border: none;
   border-radius: 1px;
