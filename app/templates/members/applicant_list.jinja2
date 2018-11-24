@@ -53,16 +53,12 @@
 						{% endfor %}
 					</div>
 					<button class="btn-status shadow-xs btn btn-lg pl-5 pr-5
-									{% if applicant.is_looking %}
+									{% if applicant.is_looking != 'c' %}
 										btn-primary
 									{% else %}
 										btn-secondary
 									{% endif %}">
-						{% if applicant.is_looking %}
-							구직 중
-						{% else %}
-							재직 중
-						{% endif %}
+						{{ applicant.get_is_looking_display() }}
 					</button>
 				</a>
 			</div>

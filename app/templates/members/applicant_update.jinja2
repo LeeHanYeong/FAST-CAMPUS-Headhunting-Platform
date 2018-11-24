@@ -19,8 +19,11 @@
 					<label for="id-is-looking" class="col-sm-2 col-form-label">구직 여부</label>
 					<div class="col-sm-10">
 						<div class="btn-group" role="group">
-						  <button v-on:click="applicantDetail.is_looking = true" type="button" class="btn" v-bind:class="{'btn-primary': applicantDetail.is_looking, 'btn-dark': !applicantDetail.is_looking}">구직 중</button>
-						  <button v-on:click="applicantDetail.is_looking = false" type="button" class="btn" v-bind:class="{'btn-primary': !applicantDetail.is_looking, 'btn-dark': applicantDetail.is_looking}">재직 중</button>
+							<button v-for="lookingDict in applicantDetail.choices_looking"
+							        v-if="lookingDict.length > 1"
+							        v-on:click="applicantDetail.is_looking = lookingDict[0]"
+							        v-bind:class="getLookingClass(lookingDict[0])"
+							        type="button" class="btn">${ lookingDict[1] }</button>
 						</div>
 					</div>
 				</div>
@@ -339,7 +342,11 @@
 <script>
 var mixin = {
   data: {
-    applicantDetail: {},
+    applicantDetail: {
+      choices_looking: [
+        []
+      ]
+    },
 	  applicantLinkList: [],
 	  applicantSkillList: [],
     skillList: [],
@@ -349,6 +356,14 @@ var mixin = {
 	  linkErrors: []
   },
 	methods: {
+    // Looking
+		getLookingClass: function (lookingDict) {
+			if (this.applicantDetail.is_looking === lookingDict[0]) {
+			  return 'btn-primary';
+			} else {
+			  return 'btn-dark';
+			}
+		},
 	  // ApplicantUpdate
     getSkillLinkList: function () {
       const vm = this;

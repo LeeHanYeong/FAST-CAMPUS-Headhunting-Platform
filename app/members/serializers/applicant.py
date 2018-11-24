@@ -4,7 +4,8 @@ from phonenumber_field.serializerfields import PhoneNumberField
 from rest_framework import serializers
 from rest_framework.generics import get_object_or_404
 
-from ..models import Education, Career, License, ApplicantLink, Link, ApplicantSkill, Skill
+from ..models import Education, Career, License, ApplicantLink, Link, ApplicantSkill, Skill, \
+    ApplicantUser
 
 User = get_user_model()
 
@@ -59,6 +60,8 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
     education_set = EducationSerializer(many=True)
     career_set = CareerSerializer(many=True)
     license_set = LicenseSerializer(many=True)
+    choices_looking = serializers.SerializerMethodField()
+    choices_type = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -78,6 +81,9 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
             'education_set',
             'career_set',
             'license_set',
+
+            'choices_looking',
+            'choices_type',
         )
 
     def to_representation(self, instance):
@@ -87,6 +93,12 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
 
     def to_internal_value(self, data):
         return data
+
+    def get_choices_looking(self, obj):
+        return ApplicantUser.CHOICES_LOOKING
+
+    def get_choices_type(self, obj):
+        return ApplicantUser.CHOICES_TYPE
 
 
 class LinkSerializer(serializers.ModelSerializer):

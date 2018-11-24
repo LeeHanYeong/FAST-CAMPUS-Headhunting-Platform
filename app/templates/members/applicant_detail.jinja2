@@ -9,6 +9,14 @@
 				<small>수강생 이력서</small>
 			</span>
 		</div>
+		<button class="btn float-right pl-5 pr-5
+						{% if applicant.is_looking != 'c' %}
+							btn-primary
+						{% else %}
+							btn-dark
+						{% endif %}">
+			{{ applicant.get_is_looking_display() }}
+		</button>
 	</div>
 </header>
 {% endblock %}

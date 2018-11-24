@@ -51,6 +51,17 @@ class User(TimeStampedMixin, AbstractUser):
         (TYPE_APPLICANT, '지원자'),
         (TYPE_COMPANY, '참여기업'),
     )
+
+    LOOKING_NEW = 'n'
+    LOOKING_EXP = 'e'
+    LOOKING_SWITCHING = 's'
+    LOOKING_COMPLETE = 'c'
+    CHOICES_LOOKING = (
+        (LOOKING_NEW, '신입'),
+        (LOOKING_EXP, '경력'),
+        (LOOKING_SWITCHING, '커리어 전환'),
+        (LOOKING_COMPLETE, '구직 완료'),
+    )
     username = None
     last_name = models.CharField('성', max_length=150)
     first_name = models.CharField('이름', max_length=30)
@@ -70,7 +81,8 @@ class User(TimeStampedMixin, AbstractUser):
 
     # 지원자 필드
     is_published = models.BooleanField('이력서 공개여부', default=False)
-    is_looking = models.BooleanField('구직 여부', default=True)
+    is_looking = models.CharField(
+        '지원자 상태', choices=CHOICES_LOOKING, default=LOOKING_SWITCHING, max_length=1)
     img_profile = DefaultStaticImageField(
         '프로필 이미지', upload_to='user', blank=True,
         default_image_path='images/blank_user.png',
