@@ -18,15 +18,6 @@ class LoginForm(AuthenticationForm):
         })
         super().__init__(*args, **kwargs)
 
-    class Meta:
-        widgets = {
-            'username': forms.TextInput({
-                'attrs': {
-                    'class': 'form-control',
-                }
-            })
-        }
-
 
 class ApplicantSignupForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
