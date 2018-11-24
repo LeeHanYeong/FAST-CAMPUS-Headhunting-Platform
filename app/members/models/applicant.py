@@ -2,6 +2,7 @@ import textwrap
 
 from django.conf import settings
 from django.db import models
+from django_fields import DefaultStaticImageField
 
 from .user import User, UserManager
 
@@ -43,7 +44,8 @@ class ApplicantUser(User):
 
 class Link(models.Model):
     title = models.CharField('링크타입명', max_length=50)
-    img_icon = models.ImageField('아이콘', upload_to='link', blank=True)
+    img_icon = DefaultStaticImageField(
+        '아이콘', upload_to='link', blank=True, default_image_path='blank_user.png')
 
     class Meta:
         verbose_name = '프로필 링크 아이템'
@@ -141,6 +143,10 @@ class Education(models.Model):
             end_date=self.end_date,
         )
 
+    @property
+    def period(self):
+        return f'{self.start_date} ~ {self.end_date}'
+
 
 class Career(models.Model):
     user = models.ForeignKey(
@@ -150,7 +156,6 @@ class Career(models.Model):
     position = models.CharField('직위', max_length=30)
     start_date = models.DateField('시작일자')
     end_date = models.DateField('종료일자', blank=True, null=True)
-    content = models.TextField('내역')
 
     class Meta:
         verbose_name = '경력'
@@ -162,6 +167,10 @@ class Career(models.Model):
             start_date=self.start_date,
             end_date=self.end_date,
         )
+
+    @property
+    def period(self):
+        return f'{self.start_date} ~ {self.end_date}'
 
 
 class License(models.Model):

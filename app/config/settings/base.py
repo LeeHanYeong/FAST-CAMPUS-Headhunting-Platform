@@ -65,6 +65,7 @@ PHONENUMBER_DB_FORMAT = 'NATIONAL'
 
 # Date/Time Format
 DATE_FORMAT = 'Y-m-d'
+DATETIME_FORMAT = 'Y-m-d'
 
 # django-modeladmin-reorder
 ADMIN_REORDER = (

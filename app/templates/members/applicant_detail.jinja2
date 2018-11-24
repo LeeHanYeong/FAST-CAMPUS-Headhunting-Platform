@@ -1,22 +1,160 @@
 {% extends 'base.jinja2' %}
 
+{% block content_header %}
+<header class="content-header">
+	<div class="container-fluid">
+		<div class="title">
+			<span>
+				{{ applicant.name }}<br>
+				<small>수강생 이력서</small>
+			</span>
+		</div>
+		<button onclick="update()" class="btn btn-primary float-right pl-5 pr-5">수정 완료</button>
+	</div>
+</header>
+{% endblock %}
+
 {% block content %}
-<div>
-	<h1>{{ applicant.name }}</h1>
-	<p>{{ applicant.short_intro }}</p>
+{% set section_table_class = 'table table-bordered' %}
+<div class="application-detail-container container-fluid">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="card info">
+				<img src="{{ applicant.img_profile.url }}" alt="" >
+				<div class="card-body">
+					<h2 class="name pb-3">{{ applicant.name }}</h2>
+					<dl>
+						<dt>생년월일</dt>
+						<dd>{{ applicant.birth_date }}</dd>
 
-	<h2>Skills</h2>
-	<ul>
-		{% for skill in applicant.skills.all() %}
-		<li>[{{ skill.get_level_display() }}] {{ skill.title }}</li>
-		{% endfor %}
-	</ul>
+						<dt>한줄 소개</dt>
+						<dd>{{ applicant.short_intro }}</dd>
 
-	<h2>Educations</h2>
-	<ul>
-		{% for edu in applicant.education_set.all() %}
-			<li>{{ edu.school }} | {{ edu.major }} | {{ edu.start_date }} | {{ edu.end_date }} | {{ edu.get_type_display() }}</li>
-		{% endfor %}
-	</ul>
+						<dt>Contact</dt>
+						<dd>
+							<button class="btn btn-primary btn-block">메일 보내기</button>
+						</dd>
+
+						<dd>
+							<ul class="link-list">
+								{% for link in applicant.links.all() %}
+								<li class="link-item">
+									<a href="{{ link.url }}">
+										<img src="{{ link.img_icon.url }}" alt="">
+									</a>
+								</li>
+								{% endfor %}
+							</ul>
+						</dd>
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<section class="card">
+				<div class="card-header">보유기술</div>
+				<div class="card-body">
+					{% set skills = applicant.skills.all() %}
+					{% for level, level_display in choices_level %}
+						<div class="skill-section">
+							{% set src_star = 'images/skill_star_' + level + '.png' %}
+							<img src="{{ static(src_star) }}" alt="" class="section-star mr-2">
+							<span class="section-level">{{ level_display }}</span>
+							<ul class="skill-list">
+								{% for skill in skills if skill.level == level %}
+									<li class="skill-item">
+										<span class="badge badge-pill badge-light">#{{ skill.title }}</span>
+									</li>
+								{% endfor %}
+							</ul>
+						</div>
+					{% endfor %}
+				</div>
+			</section>
+
+			<section class="card">
+				<div class="card-header">학력사항</div>
+				<div class="card-body">
+					<table class="{{ section_table_class }}">
+						<thead>
+							<tr class="table-light">
+								<th>학교명</th>
+								<th>전공</th>
+								<th>기간</th>
+								<th>졸업여부</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for edu in applicant.education_set.all() %}
+								<tr>
+									<td>{{ edu.school }}</td>
+									<td>{{ edu.major }}</td>
+									<td>{{ edu.period }}</td>
+									<td>{{ edu.get_type_display() }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="card">
+				<div class="card-header">경력사항</div>
+				<div class="card-body">
+					<table class="{{ section_table_class }}">
+						<thead>
+							<tr class="table-light">
+								<th>근무처</th>
+								<th>담당 업무</th>
+								<th>근무 기간</th>
+								<th>최종직위</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for career in applicant.career_set.all() %}
+								<tr>
+									<td>{{ career.organization }}</td>
+									<td>{{ career.responsibility }}</td>
+									<td>{{ career.period }}</td>
+									<td>{{ career.position }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="card">
+				<div class="card-header">자격사항</div>
+				<div class="card-body">
+					<table class="{{ section_table_class }}">
+						<thead>
+							<tr>
+								<th>자격증명</th>
+								<th>발행처</th>
+								<th>취득일</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for license in applicant.license_set.all() %}
+								<tr>
+									<td>{{ license.title }}</td>
+									<td>{{ license.organization }}</td>
+									<td>{{ license.get_date }}</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="card">
+				<div class="card-header">자기소개서</div>
+				<div class="card-body">
+					{{ applicant.introduce|safe }}
+				</div>
+			</section>
+		</div>
+	</div>
 </div>
 {% endblock %}

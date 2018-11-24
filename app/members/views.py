@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, ListView, FormView, DetailView
 
 from administrator.mixins import StaticContentMixin
 from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm
-from .models import ApplicantUser
+from .models import ApplicantUser, ApplicantSkill
 
 
 class ApplicantListView(ListView):
@@ -33,8 +33,17 @@ class ApplicantUpdateView(TemplateView):
 
 class ApplicantDetailView(DetailView):
     model = ApplicantUser
+    queryset = ApplicantUser.objects.prefetch_related(
+        'skills__skill',
+        'links__link',
+    )
     template_name = 'members/applicant_detail.jinja2'
     context_object_name = 'applicant'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['choices_level'] = ApplicantSkill.CHOICES_LEVEL
+        return context
 
 
 class LoginView(DjangoLoginView):

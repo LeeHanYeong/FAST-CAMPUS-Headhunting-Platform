@@ -40,7 +40,6 @@ class CareerSerializer(serializers.ModelSerializer):
             'position',
             'start_date',
             'end_date',
-            'content',
         )
 
 

@@ -40,7 +40,7 @@ header.main-header {
   }
 }
 header.content-header {
-  padding: 1.5rem 1rem 2rem;
+  padding: 1.3rem 1rem 1.8rem;
   background-color: $color-bg-content-header;
   color: white;
   font-weight: bold;
@@ -188,5 +188,58 @@ header.content-header {
 
 // ApplicantUpdate
 section.card.resume-section {
-  margin-bottom: 1.5rem;
+
+}
+
+// ApplicationDetail
+.application-detail-container {
+  .info {
+    .name {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    ul.link-list {
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+
+      > li.link-item {
+        float: left;
+
+        img {
+          width: 40px;
+        }
+      }
+    }
+  }
+  .skill-section {
+    margin-bottom: 0.3rem;
+    > * {
+      vertical-align: middle;
+    }
+    img.section-star {
+      width: 30px;
+    }
+    .section-level {
+      width: 60px;
+      display: inline-block;
+    }
+    .skill-list {
+      display: inline-block;
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+      font-size: 1.3rem;
+
+      > .skill-item {
+        float: left;
+
+        .badge {
+          font-weight: normal;
+          padding: 0.4rem 1rem;
+          margin-right: 0.4rem;
+        }
+      }
+    }
+  }
 }

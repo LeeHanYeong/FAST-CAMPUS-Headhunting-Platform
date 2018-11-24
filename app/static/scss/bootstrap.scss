@@ -1,5 +1,8 @@
 @import '_variables.scss';
 
+.container-fluid {
+  max-width: 1400px;
+}
 header.main-header nav#main-navbar  {
   padding-top: .35rem;
   padding-bottom: .35rem;
@@ -16,6 +19,7 @@ header.main-header nav#main-navbar  {
 .card {
   border: none;
   border-radius: 1px;
+  margin-bottom: 1.5rem;
 
   .card-header {
     font-weight: bold;
