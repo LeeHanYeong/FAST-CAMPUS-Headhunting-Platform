@@ -14,7 +14,6 @@ DEBUG = False or (
         and sys.argv[1] == 'runserver'
         and platform.system() != 'Linux'
 )
-DATABASES = secrets['DATABASES']
 WSGI_APPLICATION = 'config.wsgi.production.application'
 
 # Static

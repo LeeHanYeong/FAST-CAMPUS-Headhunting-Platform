@@ -84,6 +84,8 @@ ADMIN_REORDER = (
         'members.Skill',
     )},
     {'app': 'courses', 'label': '과정 관리', 'models': (
+        'courses.JobCategory',
+        'courses.JobGroup',
         'courses.Course',
         'courses.CoursePeriod',
     )},
