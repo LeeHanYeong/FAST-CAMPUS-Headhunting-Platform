@@ -99,6 +99,10 @@ class User(TimeStampedMixin, AbstractUser):
         'Skill', verbose_name='보유 기술 목록', blank=True,
         through='ApplicantSkill', related_name='users', related_query_name='user',
     )
+    job_groups = models.ManyToManyField(
+        'courses.JobGroup', verbose_name='취업희망 직군 목록', blank=True,
+        related_name='users', related_query_name='user',
+    )
 
     objects = UserManager()
 

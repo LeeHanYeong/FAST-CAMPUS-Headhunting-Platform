@@ -83,6 +83,23 @@
 					</div>
 				</div>
 				<hr>
+				<div id="section-job-group-list">
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">취업희망 직군</label>
+						<div class="col-sm-10">
+							<div v-for="category in categoryList">
+								<h5>${ category.title }</h5>
+								<div class="row">
+									<div v-for="group in category.group_set" class="col-sm-4 col-md-3 col-lg-2">
+										<input v-bind:id="'group-' + group.pk" type="checkbox" :value="group" v-model="applicantDetail.job_groups">
+										<label v-bind:for="'group-' + group.pk">${ group.title }</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
 				<div id="section-link-list" v-if="applicantLinkList">
 					<div v-for="(applicantLink, index) in applicantLinkList" class="form-group row">
 						<div class="col-sm-3">

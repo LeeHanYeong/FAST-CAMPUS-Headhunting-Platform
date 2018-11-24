@@ -65,6 +65,7 @@ class ApplicantUserAdmin(BaseUserAdmin):
             'is_looking',
             'short_intro',
             'introduce',
+            'job_groups',
         )}),
     )
     add_fieldsets = (
