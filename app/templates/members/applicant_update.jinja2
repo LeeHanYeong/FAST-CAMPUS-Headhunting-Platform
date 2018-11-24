@@ -351,6 +351,7 @@ var mixin = {
 	  applicantSkillList: [],
     skillList: [],
     linkList: [],
+	  categoryList: [],
     errors: {},
     skillErrors: [],
 	  linkErrors: []
@@ -365,6 +366,17 @@ var mixin = {
 			}
 		},
 	  // ApplicantUpdate
+		getCategoryList: function () {
+		  const vm = this;
+		  $.ajax({
+			  method: 'GET',
+			  url: "{{ url('api:courses:job-category-list') }}"
+		  }).done(function (response) {
+		    vm.categoryList = response;
+		  }).fail(function (response) {
+		    console.log(response);
+		  });
+		},
     getSkillLinkList: function () {
       const vm = this;
       $.ajax({
@@ -641,6 +653,7 @@ var mixin = {
 
 {% block script %}
 <script>
+	app.getCategoryList();
 	app.getSkillLinkList();
 	app.getApplicantLinkList();
 	app.getApplicantSkillList();
