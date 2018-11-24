@@ -14,18 +14,18 @@ from .models import ApplicantUser, ApplicantSkill
 
 class ApplicantListView(ListView):
     model = ApplicantUser
-    queryset = ApplicantUser.objects.published() \
-        .prefetch_related('followers', '_skills')
     template_name = 'members/applicant_list.jinja2'
     context_object_name = 'applicants'
 
     def get_queryset(self):
-        queryset = ApplicantUserFilter(self.request.GET, queryset=super().get_queryset()).qs
-        return queryset
+        queryset = ApplicantUser.objects.published().prefetch_related(
+            'followers', '_skills', 'job_groups')
+        return ApplicantUserFilter(self.request.GET, queryset=queryset).qs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['choices_looking'] = ApplicantUser.CHOICES_LOOKING
+        context['choices_type'] = ApplicantUser.CHOICES_TYPE
         return context
 
 

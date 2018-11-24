@@ -57,7 +57,8 @@
 				</div>
 				<a href="{{ url('members:applicant-detail', args=[applicant.pk]) }}" class="content">
 					<div class="name-course">
-						<span class="name">{{ applicant.name }}</span>
+						<span class="name mr-2">{{ applicant.name }}</span>
+						<span>{{ applicant.job_groups.values_list('title', flat=True)|join(', ') }}</span>
 					</div>
 					<p class="short-intro">{{ applicant.short_intro }}</p>
 					<div class="badge-list">
