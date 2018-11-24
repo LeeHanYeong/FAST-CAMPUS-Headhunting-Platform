@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, FormView, DetailView
 
 from administrator.mixins import StaticContentMixin
+from .filters import ApplicantUserFilter
 from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm
 from .models import ApplicantUser, ApplicantSkill
 
@@ -18,8 +19,13 @@ class ApplicantListView(ListView):
     template_name = 'members/applicant_list.jinja2'
     context_object_name = 'applicants'
 
+    def get_queryset(self):
+        queryset = ApplicantUserFilter(self.request.GET, queryset=super().get_queryset()).qs
+        return queryset
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['choices_looking'] = ApplicantUser.CHOICES_LOOKING
         return context
 
 

@@ -22,6 +22,7 @@ django-ckeditor = "*"
 django-colorful = "*"
 sentry-sdk = "*"
 "psycopg2-binary" = "*"
+django-filter = "*"
 
 [dev-packages]
 ipython = "*"

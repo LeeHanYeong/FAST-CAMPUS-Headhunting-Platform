@@ -8,12 +8,24 @@
 	<div class="right-menu child-middle">
 		<div class="dropdown d-inline-block h-input">
 			<button class="btn btn-dark dropdown-toggle pl-4 pr-4 mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		    보기 조건
+		    {% set cur_looking = request.GET.get('is_looking') %}
+				{% if cur_looking %}
+			    {% for looking, looking_display in choices_looking %}
+				    {% if cur_looking == looking %}
+					    {{ looking_display }}
+				    {% endif %}
+			    {% endfor %}
+				{% else %}
+					지원자 타입
+				{% endif %}
 		  </button>
-		  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-		    <a class="dropdown-item" href="#">구직 중</a>
-		    <a class="dropdown-item" href="#">취업완료</a>
-		    <a class="dropdown-item" href="#">전체</a>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item"
+		         href="{{ url('members:applicant-list') }}{{ query(request, is_looking='') }}">전체</a>
+			  {% for looking, looking_display in choices_looking %}
+		      <a class="dropdown-item"
+		         href="{{ url('members:applicant-list') }}{{ query(request, is_looking=looking) }}">{{ looking_display }}</a>
+			  {% endfor %}
 		  </div>
 		</div>
 		<form action="" class="d-inline-block h-input">
