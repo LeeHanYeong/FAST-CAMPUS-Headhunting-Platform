@@ -324,3 +324,66 @@ section.card.resume-section {
     }
   }
 }
+
+// Footer
+footer.main-footer {
+  background-color: $color-bg-footer;
+  color: $color-text-footer;
+  line-height: 20px;
+  font-size: 14px;
+  padding: 48px .8rem;
+
+  p {
+    white-space: pre-line;
+  }
+
+  .footer-left {
+    .logo-address {
+      margin-bottom: 16px;
+      > * {
+        padding: 0;
+        margin: 0;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      > .logo {
+        margin-right: 10px;
+        width: 230px;
+      }
+    }
+  }
+  .footer-right {
+    ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sitemap {
+      position: relative;
+      display: inline-block;
+      font-size: 13px;
+
+      .sitemap-list-title {
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+      li.sitemap-list {
+        padding-top: 15px;
+        padding-right: 60px;
+        border-top: 1px solid #404040;
+
+        ul.sitemap-child-list {
+          li {
+            margin-bottom: 10px;
+            a {
+              color: $color-link-footer;
+            }
+          }
+        }
+      }
+    }
+
+  }
+}
