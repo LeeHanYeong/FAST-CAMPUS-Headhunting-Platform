@@ -1,4 +1,5 @@
 @import '_variables.scss';
+@import '../bootstrap/_variables.scss';
 
 .container-fluid {
   max-width: 1400px;
@@ -37,6 +38,11 @@ header.main-header nav#main-navbar  {
     font-weight: bold;
     border: none;
     background-color: $color-bg-card-header;
+  }
+}
+.dropdown {
+  .dropdown-header.border-top {
+    border-top: 1px solid $gray-400;
   }
 }
 .form-control {

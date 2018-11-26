@@ -4,8 +4,9 @@ from jinja2 import Environment
 
 
 def query(request=None, **kwargs):
-    query_params = {k: v for k, v in request.GET.items() if v and kwargs.get(k)} if request else {}
-    query_params.update({k: v for k, v in kwargs.items() if v})
+    query_params = {k: v for k, v in request.GET.items() if v} if request else {}
+    query_params.update(kwargs)
+    query_params = {k: v for k, v in query_params.items() if v}
     if query_params:
         return '?' + '&'.join([f'{k}={v}' for k, v in query_params.items()])
     return ''

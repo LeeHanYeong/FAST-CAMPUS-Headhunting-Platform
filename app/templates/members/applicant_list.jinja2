@@ -8,6 +8,32 @@
 	<div class="right-menu child-middle">
 		<div class="dropdown d-inline-block h-input">
 			<button class="btn btn-dark dropdown-toggle pl-4 pr-4 mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    {% set cur_group = request.GET.get('groups') %}
+				{% if cur_group %}
+			    {% for group in group_list.values('pk', 'title') %}
+				    {% if cur_group|int == group.pk %}
+					    {{ group.title }}
+				    {% endif %}
+			    {% endfor %}
+				{% else %}
+					직군
+				{% endif %}
+		  </button>
+		  <div class="dropdown-menu">
+		    <a class="dropdown-item"
+		         href="{{ url('members:applicant-list') }}{{ query(request) }}">전체</a>
+		    {% for category in category_list %}
+			    <div class="dropdown-divider"></div>
+			    <h6 class="dropdown-header">{{ category.title }}</h6>
+			    {% for group in category.group_set.all() %}
+			      <a href="{{ url('members:applicant-list') }}{{ query(request, groups=group.pk) }}" class="dropdown-item">{{ group.title }}</a>
+			    {% endfor %}
+		    {% endfor %}
+		  </div>
+		</div>
+
+		<div class="dropdown d-inline-block h-input">
+			<button class="btn btn-dark dropdown-toggle pl-4 pr-4 mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 		    {% set cur_looking = request.GET.get('is_looking') %}
 				{% if cur_looking %}
 			    {% for looking, looking_display in choices_looking %}
