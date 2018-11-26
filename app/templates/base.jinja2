@@ -65,7 +65,7 @@
 											{% for group in category.group_set.all() %}
 												<li class="group-item">
 													<div>
-														<a href="#" class="group-item-link text-light">{{ group.title }}</a>
+														<a href="{{ url('members:applicant-list') }}{{ query(request, only=True, groups=group.pk) }}" class="group-item-link text-light">{{ group.title }}</a>
 													</div>
 												</li>
 											{% endfor %}
