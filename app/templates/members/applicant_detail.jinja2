@@ -27,6 +27,7 @@
 	<div class="row">
 		<div class="col-md-4">
 			<div class="card info">
+			  {% if request.user.is_authenticated %}
 				<button
 					v-on:click.self="toggleUserLike($event)"
 					class="btn-star btn
@@ -38,6 +39,7 @@
 		        data-user-pk="{{ applicant.pk }}">
 					<span class="icon far fa-star"></span>
 				</button>
+				{% endif %}
 				<img src="{{ applicant.img_profile.url }}" alt="" >
 				<div class="card-body">
 					<h2 class="name pb-3">{{ applicant.name }}</h2>
