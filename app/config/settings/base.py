@@ -169,6 +169,9 @@ TEMPLATES = [
         'APP_DIRS': False,
         'OPTIONS': {
             'environment': 'config.jinja2.environment',
+            'context_processors': [
+                'courses.context_processors.job',
+            ]
         },
     },
 ]

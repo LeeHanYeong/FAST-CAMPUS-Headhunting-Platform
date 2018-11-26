@@ -28,16 +28,100 @@ header.main-header {
     position: relative;
     padding: 1rem;
 
+    > .container-fluid {
+      position: relative;
+    }
+
     img.header-icon {
       height: 4rem;
     }
-    > .btn-container {
+    .btn-container {
       position: absolute;
       top: 0;
-      right: 1rem;
+      right: 15px;
       height: 100%;
     }
   }
+  nav.main-nav {
+    .nav-item {
+      position: relative;
+      box-sizing: border-box;
+
+      a.nav-link {
+        padding-left: .4rem;
+        padding-right: 0;
+      }
+
+      &:hover {
+        a.nav-link {
+          font-weight: bold;
+          color: white !important;
+          border-bottom: 3px solid white;
+          padding-bottom: calc(0.5rem - 3px);
+        }
+      }
+
+      ul.category-list {
+        display: none;
+        z-index: 1001;
+        width: 200%;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        background-color: black;
+        position: absolute;
+        top: 100%;
+        left: 15px;
+        text-align: left;
+        transition-duration: 1s;
+
+        a {
+          text-decoration: none;
+        }
+
+        > li.category-item {
+          > .item-title {
+            padding: .6rem;
+            border-bottom: 1px solid $gray-400;
+            font-weight: bold;
+          }
+
+          > ul.group-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+
+            > li.group-item {
+              width: 50%;
+              float: left;
+              border-bottom: 1px solid $gray-800;
+              text-decoration: none;
+
+              &:nth-last-child(1), &:nth-last-child(2) {
+                border: none;
+              }
+
+              a.group-item-link {
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                padding: .6rem;
+
+              }
+
+              &:hover {
+                a.group-item-link {
+                  font-weight: bold;
+                  color: white !important;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
 }
 header.content-header {
   padding: 1.3rem 1rem 1.8rem;

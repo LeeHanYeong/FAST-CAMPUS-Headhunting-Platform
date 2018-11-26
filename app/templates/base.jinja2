@@ -31,29 +31,55 @@
 				</div>
 			</div>
 			<div class="header-content">
-				<a href="{{ url('index') }}">
-					<img class="header-icon" src="{{ static('images/icon_logo.png') }}" alt="">
-				</a>
-				{% if request.user.is_authenticated %}
-					<div class="btn-container child-middle">
-						{% if request.user.get_type_display() == '지원자' %}
-							<a href="{{ url('members:applicant-update') }}" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
-						{% else %}
-							<a href="#" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
-						{% endif %}
-						<a href="{{ url('members:logout') }}" class="btn btn-outline-dark">LOGOUT</a>
-					</div>
-				{% else %}
-					<div class="btn-container child-middle">
-						<a href="{{ url('members:login') }}" class="btn btn-outline-primary mr-1">LOGIN</a>
-						<a href="{{ url('members:signup') }}" class="btn btn-outline-dark">SIGNUP</a>
-					</div>
-				{% endif %}
+				<div class="container-fluid">
+					<a href="{{ url('index') }}">
+						<img class="header-icon" src="{{ static('images/icon_logo.png') }}" alt="">
+					</a>
+					{% if request.user.is_authenticated %}
+						<div class="btn-container child-middle">
+							{% if request.user.get_type_display() == '지원자' %}
+								<a href="{{ url('members:applicant-update') }}" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
+							{% else %}
+								<a href="#" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
+							{% endif %}
+							<a href="{{ url('members:logout') }}" class="btn btn-outline-dark">LOGOUT</a>
+						</div>
+					{% else %}
+						<div class="btn-container child-middle">
+							<a href="{{ url('members:login') }}" class="btn btn-outline-primary mr-1">LOGIN</a>
+							<a href="{{ url('members:signup') }}" class="btn btn-outline-dark">SIGNUP</a>
+						</div>
+					{% endif %}
+				</div>
 			</div>
-			<nav class="nav nav-fill bg-primary">
-				<a href="{{ url('members:applicant-list') }}" class="nav-item nav-link text-light">지원자 현황</a>
-				<a href="#" class="nav-item nav-link text-light">채용연계 기업</a>
-			</nav>
+			<div class="bg-primary">
+				<div class="container-fluid">
+					<nav class="main-nav nav">
+						<div href="{{ url('members:applicant-list') }}" class="nav-item col-lg-2">
+							<a href="#" class="nav-link text-light">지원자 현황</a>
+							<ul class="category-list clearfix">
+								{% for category in category_list %}
+									<li class="category-item">
+										<div class="item-title text-light">{{ category.title }}</div>
+										<ul class="group-list clearfix">
+											{% for group in category.group_set.all() %}
+												<li class="group-item">
+													<div>
+														<a href="#" class="group-item-link text-light">{{ group.title }}</a>
+													</div>
+												</li>
+											{% endfor %}
+										</ul>
+									</li>
+								{% endfor %}
+							</ul>
+						</div>
+						<div href="#" class="nav-item col-lg-2">
+							<a href="#" class="nav-link text-light">채용연계 기업</a>
+						</div>
+					</nav>
+				</div>
+			</div>
 		</header>
 		{% block content_header %}
 		{% endblock %}
@@ -74,6 +100,20 @@
 			}
 		});
 		var mixin = {};
+		console.log('asdf');
+		$(function () {
+			$('.main-nav > .nav-item').hover(
+			  function () {
+			    var list = $(this).find('.category-list');
+				  list.show();
+				},
+				function () {
+			    var list = $(this).find('.category-list');
+			    list.hide();
+				}
+			);
+		});
+
 	</script>
 	{% block mixin %}{% endblock %}
 	<script>
