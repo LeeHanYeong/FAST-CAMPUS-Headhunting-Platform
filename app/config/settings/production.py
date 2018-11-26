@@ -93,8 +93,8 @@ def get_linux_ec2_private_ip():
     try:
         response = urlopen('http://169.254.169.254/latest/meta-data/local-ipv4')
         ec2_ip = response.read().decode('utf-8')
-        if response:
-            response.close()
+        response = urlopen('http://169.254.169.254/latest/meta-data/local-hostname')
+        ec2_hostname = response.read().decode('utf-8')
         return ec2_ip
     except Exception as e:
         print(e)

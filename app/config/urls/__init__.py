@@ -28,6 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', views.IndexView.as_view(), name='index'),
+    path('health/', views.HealthCheck.as_view(), name='health-check'),
     path('', include('members.urls.views')),
 
     path('api/', include('config.urls.apis')),

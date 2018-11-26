@@ -9,6 +9,8 @@ WORKDIR     /srv/project
 # Nginx
 RUN         rm -rf  /etc/nginx/sites-available/* && \
             rm -rf  /etc/nginx/sites-enabled/* && \
+            cp -f   /srv/project/.config/nginx.conf \
+                    /etc/nginx/nginx.conf && \
             cp -f   /srv/project/.config/app.nginx \
                     /etc/nginx/sites-available/ && \
             ln -sf  /etc/nginx/sites-available/app.nginx \

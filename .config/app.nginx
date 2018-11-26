@@ -1,25 +1,43 @@
-#server {
-#    return 404;
-#}
+server {
+    charset utf-8;
+
+    location /health/ {
+        set $my_host $host;
+        if ($host ~ "\d+\.\d+\.\d+\.[\d\:]+") {
+          set $my_host "health-check";
+        }
+        uwsgi_param     HTTP_HOST $my_host;
+        uwsgi_pass      unix:///tmp/app.sock;
+        include         uwsgi_params;
+        access_log      /var/log/nginx/healthcheck.log;
+    }
+
+    location / {
+        return 404;
+    }
+}
 server {
     # 80번 포트로부터 받은 요청을 처리
     listen 80;
     listen 443;
 
-    # 도메인이 pby.kr관련과 *.elasticbeanstalk.com일 경우
-    server_name *.localhost, *.elasticbeanstalk.com;
+    server_name localhost fc-headhunting.ap-northeast-2.elasticbeanstalk.com fc-headhunting.lhy.kr;
 
-    # 인코딩방식
     charset utf-8;
-
-    # request/response의 최대 사이즈
-    # (기본값이 매우 작음)
     client_max_body_size 128M;
 
-    # ('/'부터 시작) -> 모든 URL연결에 대해
+    location /health/ {
+        set $my_host $host;
+        if ($host ~ "\d+\.\d+\.\d+\.[\d\:]+") {
+          set $my_host "health-check";
+        }
+        uwsgi_param     HTTP_HOST $my_host;
+        uwsgi_pass      unix:///tmp/app.sock;
+        include         uwsgi_params;
+        access_log      /var/log/nginx/healthcheck.log;
+    }
+
     location / {
-        # uwsgi와의 연결에 unix소켓을 사용
-        # "/tmp/app.sock"파일을 사용
         uwsgi_pass  unix:///tmp/app.sock;
         include     uwsgi_params;
     }
@@ -30,8 +48,13 @@ server {
     location /media/ {
         alias   /srv/project/.media/;
     }
-
-#    if ($http_x_forwarded_proto = 'http') {
-#        return 301 https://$host$request_uri;
-#    }
+    if ($host = "fc-headhunting.lhy.kr") {
+        set $stat   "lhy";
+    }
+    if ($http_x_forwarded_proto = 'http') {
+        set $stat   "${stat}http";
+    }
+    if ($stat = "lhyhttp") {
+        return 301 https://$host$request_uri;
+    }
 }
