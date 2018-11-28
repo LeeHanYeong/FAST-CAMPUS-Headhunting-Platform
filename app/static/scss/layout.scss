@@ -325,6 +325,19 @@ section.card.resume-section {
   }
 }
 
+// Company-List
+.company-list-container {
+  .card {
+    text-decoration: none;
+    .card-title {
+      font-size: 1.4rem;
+    }
+    .card-subtitle {
+      font-size: 1.1rem;
+    }
+  }
+}
+
 // Footer
 footer.main-footer {
   background-color: $color-bg-footer;

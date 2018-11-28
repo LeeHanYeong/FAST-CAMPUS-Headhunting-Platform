@@ -29,8 +29,9 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('', views.IndexView.as_view(), name='index'),
     path('health/', views.HealthCheck.as_view(), name='health-check'),
-    path('', include('members.urls.views')),
+    path('company/', views.CompanyList.as_view(), name='company-list'),
 
+    path('', include('members.urls.views')),
     path('api/', include('config.urls.apis')),
 ]
 if settings.DEBUG:

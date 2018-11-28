@@ -1,0 +1,10 @@
+{% extends 'base.jinja2' %}
+
+{% block content_header %}
+<header class="content-header">
+	<div class="title">
+		{% block header_title %}{% endblock %}
+	</div>
+	{% block header_content %}{% endblock %}
+</header>
+{% endblock %}

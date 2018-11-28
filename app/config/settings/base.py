@@ -70,6 +70,7 @@ DATETIME_FORMAT = 'Y-m-d'
 # django-modeladmin-reorder
 ADMIN_REORDER = (
     {'app': 'administrator', 'label': '회사(참여기업) 관리', 'models': (
+        'administrator.Service',
         'administrator.Company',
     )},
     {'app': 'administrator', 'label': '정적 콘텐츠 관리', 'models': (
