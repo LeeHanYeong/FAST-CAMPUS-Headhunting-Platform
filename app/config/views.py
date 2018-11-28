@@ -12,7 +12,7 @@ class IndexView(StaticContentMixin, TemplateView):
     template_name = 'index.jinja2'
 
 
-class CompanyList(ListView):
+class CompanyList(StaticContentMixin, ListView):
     model = Company
     template_name = 'company_list.jinja2'
     context_object_name = 'company_list'

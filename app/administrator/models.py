@@ -10,6 +10,8 @@ class StaticContent(models.Model):
     index_color = RGBColorField('메인페이지 배경색', blank=True)
     index_height = models.IntegerField('메인페이지 높이(px)', default=200)
 
+    company_list_image = models.ImageField('참여기업 목록 이미지', upload_to='static', blank=True)
+
     privacy_policy = RichTextField('개인정보 취급방침', blank=True)
     terms_of_service = RichTextField('이용약관', blank=True)
 

@@ -19,6 +19,11 @@
 
 {% block content %}
 <div class="company-list-container container-fluid">
+	<div class="col-12 mb-4">
+		{% if static_content.company_list_image %}
+			<img src="{{ static_content.company_list_image.url }}" width="100%" alt="">
+		{% endif %}
+	</div>
 	{% for company in company_list %}
 		<div class="col-lg-4 col-md-6">
 			<a href="#" class="card">
