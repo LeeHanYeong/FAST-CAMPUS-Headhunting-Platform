@@ -6,11 +6,21 @@ from django_fields import DefaultStaticImageField
 
 
 class StaticContent(models.Model):
-    index_image = models.ImageField('메인페이지 이미지', upload_to='index', blank=True)
-    index_color = RGBColorField('메인페이지 배경색', blank=True)
-    index_height = models.IntegerField('메인페이지 높이(px)', default=200)
+    index_image = models.ImageField(
+        '메인페이지 이미지', upload_to='index', blank=True)
+    index_color = RGBColorField(
+        '메인페이지 배경색', help_text='배너 이미지의 남는 공간을 채울 배경색입니다.', blank=True)
+    index_height = models.IntegerField(
+        '메인페이지 이미지 세로 길이(px)', default=200,
+        help_text='메인 배너 이미지의 세로 길이를 지정합니다. 가로길이는 세로 길이의 비율로 정해집니다.')
 
-    company_list_image = models.ImageField('참여기업 목록 이미지', upload_to='static', blank=True)
+    index_mobile_image = models.ImageField(
+        '메인페이지 모바일 이미지', help_text='모바일 이미지는 가로를 가득 채우도록 설정됩니다',
+        upload_to='index', blank=True)
+    index_mobile_color = RGBColorField('메인페이지 모바일 배경색', blank=True)
+
+    company_list_image = models.ImageField(
+        '참여기업 목록 이미지', help_text='참여기업 목록의 배너 이미지 입니다.', upload_to='static', blank=True)
 
     privacy_policy = RichTextField('개인정보 취급방침', blank=True)
     terms_of_service = RichTextField('이용약관', blank=True)
@@ -52,6 +62,7 @@ class Company(TimeStampedModel):
     name = models.CharField('회사명', max_length=100, db_index=True)
     img_logo = DefaultStaticImageField(
         '로고', upload_to='company', blank=True, default_image_path='blank_user.png')
+    url = models.URLField('URL', blank=True)
     is_show = models.BooleanField('참여기업 목록에 표시', default=False)
 
     class Meta:
