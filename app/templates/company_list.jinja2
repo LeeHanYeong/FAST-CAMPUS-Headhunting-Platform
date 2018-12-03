@@ -8,10 +8,45 @@
 <div class="right-menu child-middle">
 	<div class="dropdown d-inline-block h-input">
 		<button class="btn btn-dark dropdown-toggle pl-4 pr-4 mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	    기업 종류
+			{% set cur_service = request.GET.get('service') %}
+			{% if cur_service %}
+		    {% for service in service_list %}
+			    {% if cur_service|int == service.pk %}
+				    {{ service.title }}
+			    {% endif %}
+		    {% endfor %}
+			{% else %}
+				서비스 종류
+			{% endif %}
 	  </button>
 	  <div class="dropdown-menu">
-	    <a class="dropdown-item" href="#">전체</a>
+	    <a class="dropdown-item" href="{{ url('company-list') }}{{ query(request, service='') }}">전체</a>
+		  {% for service in service_list %}
+	      <a class="dropdown-item"
+	         href="{{ url('company-list') }}{{ query(request, service=service.pk) }}">{{ service.title }}</a>
+		  {% endfor %}
+	  </div>
+	</div>
+
+	<div class="dropdown d-inline-block h-input">
+		<button class="btn btn-dark dropdown-toggle pl-4 pr-4 mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			{% set cur_company_type = request.GET.get('type') %}
+			{% if cur_company_type %}
+		    {% for company_type, company_type_display in choices_company_type %}
+			    {% if cur_company_type == company_type %}
+				    {{ company_type_display }}
+			    {% endif %}
+		    {% endfor %}
+			{% else %}
+				기업 종류
+			{% endif %}
+	  </button>
+	  <div class="dropdown-menu">
+	    <a class="dropdown-item" href="{{ url('company-list') }}{{ query(request, type='') }}">전체</a>
+		  {% for company_type, company_type_display in choices_company_type %}
+	      <a class="dropdown-item"
+	         href="{{ url('company-list') }}{{ query(request, type=company_type) }}">{{ company_type_display }}</a>
+		  {% endfor %}
 	  </div>
 	</div>
 </div>
@@ -24,21 +59,23 @@
 			<img src="{{ static_content.company_list_image.url }}" width="100%" alt="">
 		{% endif %}
 	</div>
-	{% for company in company_list %}
-		<div class="col-lg-4 col-md-6">
-			<a href="#" class="card">
-				<div class="card-body">
-					<img src="{{ company.img_logo.url }}" alt="">
-					<h5 class="card-title">{{ company.name }}</h5>
-					<h6 class="card-subtitle">
-						<span class="badge badge-primary">{{ company.get_type_display() }}</span>
-						{% if company.service %}
-						<span class="badge badge-secondary">{{ company.service.title }}</span>
-						{% endif %}
-					</h6>
-				</div>
-			</a>
-		</div>
-	{% endfor %}
+	<div class="row">
+		{% for company in company_list %}
+			<div class="col-lg-3 col-md-4 col-sm-6">
+				<a href="#" class="card">
+					<div class="card-body">
+						<img src="{{ company.img_logo.url }}" alt="">
+						<h5 class="card-title">{{ company.name }}</h5>
+						<h6 class="card-subtitle">
+							<span class="badge badge-primary">{{ company.get_type_display() }}</span>
+							{% if company.service %}
+							<span class="badge badge-secondary">{{ company.service.title }}</span>
+							{% endif %}
+						</h6>
+					</div>
+				</a>
+			</div>
+		{% endfor %}
+	</div>
 </div>
 {% endblock %}
