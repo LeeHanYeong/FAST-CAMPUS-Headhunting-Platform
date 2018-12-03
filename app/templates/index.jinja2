@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="index-container">
-	<div class="logo"
+	<div class="logo d-none d-xl-block"
 	     style="
 		     {% if static_content.index_image %}
 		     background-image: url('{{ static_content.index_image.url }}');
@@ -12,6 +12,17 @@
 		     background-color: {{ static_content.index_color }};
 		     height: {{ static_content.index_height }}px;
 		     max-height: {{ static_content.index_height }}px;
+		     ">
+	</div>
+	<div class="logo d-xl-none"
+	     style="
+		     {% if static_content.index_image %}
+		     background-image: url('{{ static_content.index_mobile_image.url }}');
+		     {% endif %}
+	       background-size: cover;
+		     background-color: {{ static_content.index_mobile_color }};
+	       height: {{ static_content.index_mobile_height }}px;
+		     max-height: {{ static_content.index_mobile_height }}px;
 		     ">
 	</div>
 </div>

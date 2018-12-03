@@ -15,9 +15,12 @@ class StaticContent(models.Model):
         help_text='메인 배너 이미지의 세로 길이를 지정합니다. 가로길이는 세로 길이의 비율로 정해집니다.')
 
     index_mobile_image = models.ImageField(
-        '메인페이지 모바일 이미지', help_text='모바일 이미지는 가로를 가득 채우도록 설정됩니다',
+        '메인페이지 모바일 이미지', help_text='모바일 이미지는 세로길이와 관계없이 가로를 가득 채우도록 설정됩니다',
         upload_to='index', blank=True)
     index_mobile_color = RGBColorField('메인페이지 모바일 배경색', blank=True)
+    index_mobile_height = models.IntegerField(
+        '메인페이지 모바일 이미지 세로 길이(px)', default=240,
+        help_text='모바일 메인 배너 이미지의 세로 길이를 지정합니다. 가로길이는 세로길이와 관계없이 가로를 가득 채우도록 설정됩니다')
 
     company_list_image = models.ImageField(
         '참여기업 목록 이미지', help_text='참여기업 목록의 배너 이미지 입니다.', upload_to='static', blank=True)
