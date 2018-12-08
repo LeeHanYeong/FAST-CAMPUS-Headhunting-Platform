@@ -1,4 +1,5 @@
 import django_filters
+from django.db.models import Q
 
 from courses.models import JobGroup
 from .models import ApplicantUser
@@ -11,9 +12,8 @@ class ApplicantUserFilter(django_filters.FilterSet):
         lookup_expr='in',
         queryset=JobGroup.objects.all(),
     )
-    full_name = django_filters.CharFilter(
-        field_name='full_name',
-        lookup_expr='contains',
+    keyword = django_filters.CharFilter(
+        method='filter_name_keyword',
     )
 
     class Meta:
@@ -23,3 +23,8 @@ class ApplicantUserFilter(django_filters.FilterSet):
                 'exact',
             ],
         }
+
+    def filter_name_keyword(self, queryset, name, value):
+        return queryset.filter(
+            Q(full_name__icontains=value) | Q(_skills__title__icontains=value)
+        )
