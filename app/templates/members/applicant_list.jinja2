@@ -55,7 +55,8 @@
 	  </div>
 	</div>
 	<form action="" class="d-inline-block h-input">
-		<input type="text" class="form-control" placeholder="학생/키워드 검색하기">
+		<input name="full_name" value="{{ request.GET.get('full_name', '') }}"
+		       type="text" class="form-control" placeholder="학생/키워드 검색하기">
 	</form>
 </div>
 {% endblock %}

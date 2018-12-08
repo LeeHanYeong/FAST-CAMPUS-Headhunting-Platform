@@ -3,6 +3,8 @@ from django.contrib.auth.views import (
     LogoutView as DjangoLogoutView,
     LoginView as DjangoLoginView,
 )
+from django.db.models import F
+from django.db.models.functions import Concat
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, FormView, DetailView
 
@@ -18,8 +20,9 @@ class ApplicantListView(ListView):
     context_object_name = 'applicants'
 
     def get_queryset(self):
-        queryset = ApplicantUser.objects.published().prefetch_related(
-            'followers', '_skills', 'job_groups')
+        queryset = ApplicantUser.objects.published()\
+            .prefetch_related('followers', '_skills', 'job_groups')\
+            .annotate(full_name=Concat(F('last_name'), F('first_name')))
         return ApplicantUserFilter(self.request.GET, queryset=queryset).qs
 
     def get_context_data(self, **kwargs):

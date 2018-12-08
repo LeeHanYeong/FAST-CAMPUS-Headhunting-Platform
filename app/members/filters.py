@@ -11,11 +11,15 @@ class ApplicantUserFilter(django_filters.FilterSet):
         lookup_expr='in',
         queryset=JobGroup.objects.all(),
     )
+    full_name = django_filters.CharFilter(
+        field_name='full_name',
+        lookup_expr='contains',
+    )
 
     class Meta:
         model = ApplicantUser
         fields = {
             'is_looking': [
                 'exact',
-            ]
+            ],
         }
