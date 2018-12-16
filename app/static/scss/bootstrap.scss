@@ -19,8 +19,8 @@ header.main-header nav#main-navbar  {
 }
 .btn-star {
   position: absolute;
-  left: .2rem;
-  top: .2rem;
+  margin-left: .2rem;
+  margin-top: .2rem;
   z-index: 1000;
 
   &.btn-outline-primary:hover {

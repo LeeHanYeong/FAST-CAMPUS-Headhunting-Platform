@@ -274,6 +274,11 @@ section.card.resume-section {
 
 // ApplicationDetail
 .application-detail-container {
+  .detail-top {
+    img.img-profile {
+      margin-bottom: 1.5rem;
+    }
+  }
   .info {
     .name {
       font-size: 1.5rem;
