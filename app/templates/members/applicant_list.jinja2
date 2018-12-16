@@ -1,7 +1,7 @@
 {% extends 'base_header.jinja2' %}
 
 {% block header_title %}
-<span>지원자 현황</span>
+<span>지원자 현황{% if cur_category %} ({{ cur_category.title }}){% endif %}</span>
 {% endblock %}
 
 {% block header_content %}
@@ -22,9 +22,17 @@
 	  <div class="dropdown-menu">
 	    <a class="dropdown-item"
 	         href="{{ url('members:applicant-list') }}{{ query(request) }}">전체</a>
+	    {% if cur_category %}
+	      {% set category_list = category_list.filter(pk=cur_category.pk) %}
+	    {% endif %}
+
 	    {% for category in category_list %}
 		    <div class="dropdown-divider"></div>
-		    <h6 class="dropdown-header">{{ category.title }}</h6>
+
+		    {% if not cur_category %}
+		      <h6 class="dropdown-header">{{ category.title }}</h6>
+		    {% endif %}
+
 		    {% for group in category.group_set.all() %}
 		      <a href="{{ url('members:applicant-list') }}{{ query(request, groups=group.pk) }}" class="dropdown-item">{{ group.title }}</a>
 		    {% endfor %}
@@ -55,6 +63,9 @@
 	  </div>
 	</div>
 	<form action="" class="d-inline-block h-input">
+		{% if cur_category %}
+			<input name="category" type="hidden" value="{{ cur_category.pk }}">
+		{% endif %}
 		<input name="keyword" value="{{ request.GET.get('keyword', '') }}"
 		       type="text" class="form-control" placeholder="학생/키워드 검색하기">
 	</form>

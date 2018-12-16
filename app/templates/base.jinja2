@@ -26,7 +26,6 @@
 		<header class="main-header">
 			<div class="header-top clearfix">
 				<div class="btn-container clearfix">
-					<a href="#" class="header-item">SCHOOL Facebook</a>
 					<a href="#" class="header-item">패스트캠퍼스 홈</a>
 				</div>
 			</div>
@@ -60,16 +59,9 @@
 							<ul class="category-list clearfix">
 								{% for category in category_list %}
 									<li class="category-item">
-										<div class="item-title text-light">{{ category.title }}</div>
-										<ul class="group-list clearfix">
-											{% for group in category.group_set.all() %}
-												<li class="group-item">
-													<div>
-														<a href="{{ url('members:applicant-list') }}{{ query(request, only=True, groups=group.pk) }}" class="group-item-link text-light">{{ group.title }}</a>
-													</div>
-												</li>
-											{% endfor %}
-										</ul>
+										<div class="item-title">
+											<a href="{{ url('members:applicant-list') }}{{ query(request, category=category.pk, only=True) }}" class="text-light">{{ category.title }}</a>
+										</div>
 									</li>
 								{% endfor %}
 							</ul>

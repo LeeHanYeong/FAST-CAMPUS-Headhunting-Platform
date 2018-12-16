@@ -1,7 +1,7 @@
 {% extends 'base_header.jinja2' %}
 
 {% block header_title %}
-<span>참여기업 목록</span>
+<span>채용연계 기업 목록</span>
 {% endblock %}
 
 {% block header_content %}
@@ -63,7 +63,7 @@
 	</div>
 	<div class="row">
 		{% for company in company_list %}
-			<div class="col-lg-3 col-md-4 col-sm-6">
+			<div class="col-lg-2 col-md-3 col-sm-4 col-6">
 				<a href="{{ company.url }}" class="card">
 					<div class="card-body">
 						<img src="{{ company.img_logo.url }}" alt="">
