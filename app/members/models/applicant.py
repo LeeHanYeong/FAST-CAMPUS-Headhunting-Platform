@@ -44,8 +44,7 @@ class ApplicantUser(User):
 
 class Link(models.Model):
     title = models.CharField('링크타입명', max_length=50)
-    img_icon = DefaultStaticImageField(
-        '아이콘', upload_to='link', blank=True, default_image_path='blank_user.png')
+    img_icon = models.FileField('아이콘', upload_to='link', blank=True)
 
     class Meta:
         verbose_name = '프로필 링크 아이템'

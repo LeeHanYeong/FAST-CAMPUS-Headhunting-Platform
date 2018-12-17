@@ -86,6 +86,12 @@ header.main-header {
             font-weight: bold;
           }
 
+          &:last-child {
+            > .item-title {
+              border-bottom: none;
+            }
+          }
+
           > ul.group-list {
             list-style-type: none;
             padding: 0;
@@ -352,7 +358,8 @@ section.card.resume-section {
     }
   }
   .skill-section {
-    margin-bottom: 0.3rem;
+    margin-bottom: .5rem;
+    min-height: 25px;
     > * {
       vertical-align: middle;
     }
@@ -360,6 +367,7 @@ section.card.resume-section {
       width: 30px;
     }
     .section-level {
+      font-weight: bold;
       width: 60px;
       display: inline-block;
     }
@@ -368,7 +376,7 @@ section.card.resume-section {
       padding: 0;
       margin: 0;
       list-style-type: none;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
 
       > .skill-item {
         float: left;

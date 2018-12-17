@@ -96,7 +96,7 @@
 					{% set skills = applicant.skills.all() %}
 					{% for level, level_display in choices_level %}
 						<div class="skill-section">
-							{% set src_star = 'images/skill_star_' + level + '.png' %}
+							{% set src_star = 'images/skill_level_' + level + '.svg' %}
 							<img src="{{ static(src_star) }}" alt="" class="section-star mr-2">
 							<span class="section-level">{{ level_display }}</span>
 							<ul class="skill-list">
