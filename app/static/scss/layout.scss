@@ -212,21 +212,7 @@ header.content-header {
     height: 190px;
     box-sizing: border-box;
     background-color: #fff;
-    
-    > .user-profile {
-      float: left;
-      position: relative;
-      left: .5rem;
-      top: -0.5rem;
-      width: 150px;
-      height: 100%;
-      margin-right: 1.7rem;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
 
-
-    }
 
     > .content {
       position: absolute;
@@ -238,10 +224,19 @@ header.content-header {
       height: 190px;
       box-sizing: border-box;
       padding: 1.2rem;
-      padding-left: calc(150px + 1.5rem);
+
+      > img.bookmark {
+        cursor: pointer;
+        position: absolute;
+        right: 29px;
+        top: 0;
+      }
 
       .name-course {
+        display: inline-block;
+        width: 80%;
         margin-bottom: 0.4rem;
+        text-decoration: none;
         .name {
           font-size: 1.5rem;
           font-weight: bold;
@@ -249,7 +244,7 @@ header.content-header {
         }
       }
       .short-intro {
-        font-size: 1.3rem;
+        font-size: 1rem;
         color: #4c4c4c;
         white-space: nowrap;
         overflow: hidden;
@@ -257,6 +252,16 @@ header.content-header {
       }
       .badge-list {
         font-size: 1.3rem;
+        margin-bottom: 1rem;
+        .badge {
+          padding: 0.6rem 1.0rem;
+          font-weight: normal;
+          margin-right: 0.4rem;
+          margin-bottom: 0.3rem;
+        }
+      }
+      .status {
+        font-size: 1.2rem;
         .badge {
           padding: 0.6rem 1.0rem;
           font-weight: normal;
@@ -266,8 +271,8 @@ header.content-header {
       }
       .btn-status {
         position: absolute;
-        right: 0rem;
-        bottom: 0rem;
+        right: 0;
+        bottom: 0;
       }
     }
   }

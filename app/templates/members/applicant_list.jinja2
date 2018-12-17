@@ -78,40 +78,37 @@
 	{% for applicant in applicants %}
 		<div class="col-lg-6 mb-5">
 			<div class="user">
-				<div class="user-profile shadow-xs" style="background-image: url('{{ applicant.img_profile.url }}');">
-					{% if request.user.is_authenticated %}
-					<button v-on:click.self="toggleUserLike($event)"
-					        class="btn-star btn btn-sm
-					        {% if request.user in applicant.followers.all() %}
-					          btn-primary
-					        {% else %}
-					          btn-outline-primary
-									{% endif %}"
-					        data-user-pk="{{ applicant.pk }}">
-						<span class="icon far fa-star"></span>
-					</button>
-					{% endif %}
-				</div>
-				<a href="{{ url('members:applicant-detail', args=[applicant.pk]) }}" class="content">
-					<div class="name-course">
+				<div class="content">
+                {% if request.user.is_authenticated %}
+                <img id="img-applicant-{{ applicant.pk }}"
+                     v-bind:src="bookmarkImageSrc({{ applicant.pk }})"
+                     v-on:click.self="toggleUserLike($event)"
+                     data-user-pk="{{ applicant.pk }}"
+                     data-is-like="{{ request.user in applicant.followers.all() }}"
+                     class="bookmark">
+                {% endif %}
+					<a href="{{ url('members:applicant-detail', args=[applicant.pk]) }}" class="name-course">
 						<span class="name mr-2">{{ applicant.name }}</span>
 						<span>{{ applicant.job_groups.values_list('title', flat=True)|join(', ') }}</span>
-					</div>
+					</a>
 					<p class="short-intro">{{ applicant.short_intro }}</p>
 					<div class="badge-list">
 						{% for skill in applicant._skills.all() %}
 							<span class="badge badge-pill badge-light">#{{ skill.title }}</span>
 						{% endfor %}
+
 					</div>
-					<button class="btn-status shadow-xs btn btn-lg pl-5 pr-5
-									{% if applicant.is_looking != 'c' %}
-										btn-primary
-									{% else %}
-										btn-secondary
-									{% endif %}">
-						{{ applicant.get_is_looking_display() }}
-					</button>
-				</a>
+                    <div class="status">
+                        <span class="badge badge-pill
+                            {% if applicant.is_looking != 'c' %}
+                                badge-primary
+                            {% else %}
+                                badge-dark
+                            {% endif %}">
+                            {{ applicant.get_is_looking_display() }}
+                        </span>
+                    </div>
+				</div>
 			</div>
 		</div>
 	{% endfor %}

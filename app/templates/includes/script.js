@@ -44,26 +44,18 @@ var app = new Vue({
       elModal.modal();
     },
     // ApplicantList
+    bookmarkImageSrc: function (applicantPk) {
+      var isLike = $('#img-applicant-' + applicantPk).attr('data-is-like');
+      return isLike === 'True' ? "{{ static('images/bookmark_active.svg') }}" : "{{ static('images/bookmark_normal.svg') }}";
+    },
     toggleUserLike: function (event) {
       const vm = this;
-      function addLikeClass(el) {
-        el.addClass('btn-primary');
-        el.removeClass('btn-outline-primary');
-      }
-      function removeLikeClass(el) {
-        el.addClass('btn-outline-primary');
-        el.removeClass('btn-primary');
-      }
       var el = $(event.target);
       var method = 'POST';
-      var likeClass = 'btn-primary';
-      var unlikeClass = 'btn-outline-primary';
-      var isLiked = el.hasClass(likeClass);
-      if (isLiked) {
+      var applicantPk = el.attr('data-user-pk');
+      var isLike = el.attr('data-is-like');
+      if (isLike === 'True') {
         method = 'DELETE';
-        removeLikeClass(el);
-      } else {
-        addLikeClass(el);
       }
       $.ajax({
         method: method,
@@ -72,15 +64,16 @@ var app = new Vue({
           to_user: el.attr('data-user-pk')
         }
       }).done(function (response) {
-
+        if (isLike === 'True') {
+          el.attr('data-is-like', 'False');
+          el.attr('src', "{{ static('images/bookmark_normal.svg') }}");
+        } else {
+          el.attr('data-is-like', 'True');
+          el.attr('src', "{{ static('images/bookmark_active.svg') }}");
+        }
       }).fail(function (response) {
         console.log(response);
         vm.failCount += 1;
-        if (isLiked) {
-          addLikeClass(el);
-        } else {
-          removeLikeClass(el);
-        }
         if (vm.failCount > 2) {
           location.reload();
         }
