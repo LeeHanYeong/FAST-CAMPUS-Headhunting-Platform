@@ -25,7 +25,7 @@
 {% set section_table_class = 'table table-bordered' %}
 <div class="application-detail-container container-fluid">
 	<div class="row detail-top">
-		<div class="col-6 col-sm-3 position-relative">
+		<div class="detail-top-card col-6 col-sm-3 position-relative">
 			{% if request.user.is_authenticated %}
 			<button
 				v-on:click.self="toggleUserLike($event)"
@@ -39,9 +39,11 @@
 				<span class="icon far fa-star"></span>
 			</button>
 			{% endif %}
-			<img src="{{ applicant.img_profile.url }}" class="img-profile" alt="" >
+            <div class="img-container">
+			    <img src="{{ applicant.img_profile.url }}" class="img-profile" alt="" >
+            </div>
 		</div>
-		<div class="col-6 col-sm">
+		<div class="detail-top-card col-6 col-sm">
 			<div class="card info">
 				<div class="card-body">
 					<h2 class="name pb-3">{{ applicant.name }}</h2>
@@ -60,10 +62,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-12 col-sm">
+		<div class="detail-top-card col-12 col-sm">
 			<div class="card info">
 				<div class="card-body">
-					<dt>포트폴리오</dt>
+					<dt class="mb-1">포트폴리오</dt>
 					<dl>
 						<dd>
 							<ul class="link-list">
@@ -74,6 +76,11 @@
 									</a>
 								</li>
 								{% endfor %}
+                                {% for i in range(6 - applicant.links.count()) %}
+                                <li class="link-item blank">
+                                    <a class="blank-item"></a>
+								</li>
+                                {% endfor %}
 							</ul>
 						</dd>
 					</dl>
