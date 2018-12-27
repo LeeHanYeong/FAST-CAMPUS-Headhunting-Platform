@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
+from courses.models import JobGroup
 from .models import ApplicantUser, CompanyUser
 
 ATTRS_FORM_CONTROL = {
@@ -52,6 +53,14 @@ class ApplicantSignupForm(UserCreationForm):
 
 
 class CompanySignupForm(UserCreationForm):
+    hire_job_groups = forms.ModelMultipleChoiceField(
+        label='채용희망직군',
+        queryset=JobGroup.objects.all(),
+        widget=forms.CheckboxSelectMultiple(attrs={
+            'class': 'form-check-input',
+        }),
+    )
+
     def __init__(self, *args, **kwargs):
         self.base_fields['password1'].widget = forms.PasswordInput(attrs={
             'class': 'form-control form-control-lg',
@@ -73,6 +82,8 @@ class CompanySignupForm(UserCreationForm):
             '_position',
             '_company',
             '_company_name',
+
+            'hire_job_groups',
         )
         widgets = {
             'email': forms.EmailInput(attrs=ATTRS_FORM_CONTROL),
@@ -92,4 +103,12 @@ class CompanySignupForm(UserCreationForm):
                 'placeholder': '위의 목록에 회사명이 없을 경우 직접 입력해주세요',
                 **ATTRS_FORM_CONTROL
             }),
+            # 'hire_job_groups': forms.
         }
+
+    def save(self, commit=True):
+        instance = super().save(commit)
+        hire_job_groups = self.cleaned_data['hire_job_groups']
+        for job_group in hire_job_groups:
+            instance.hire_job_group_set.create(job_group=job_group)
+        return instance

@@ -16,6 +16,7 @@
 		<form action="" method="POST">
 			{{ csrf_input }}
 			<h4 class="text-center">개인정보</h4>
+            <div>{{ form.errors }}</div>
 			{% for field in form %}
 			<div v-show="fieldShow('{{ field.label }}')" class="form-group">
 				<label for="{{ field.id_for_label }}">{{ field.label }}</label>

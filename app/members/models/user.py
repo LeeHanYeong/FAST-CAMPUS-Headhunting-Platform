@@ -1,5 +1,5 @@
-from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils import timezone
@@ -13,6 +13,7 @@ __all__ = (
     'UserManager',
     'User',
     'UserLike',
+    'CompanyUserHireJobGroupWithApprovalStatus',
 )
 
 
@@ -78,6 +79,11 @@ class User(TimeStampedMixin, AbstractUser):
         blank=True, null=True, related_name='users')
     _company_name = models.CharField('회사명', max_length=80, blank=True)
     _position = models.CharField('직책', max_length=50, blank=True)
+    _hire_job_groups = models.ManyToManyField(
+        'courses.JobGroup', verbose_name='채용희망직군',
+        through='CompanyUserHireJobGroupWithApprovalStatus', blank=True,
+        related_name='hire_company_user_set', related_query_name='hire_company_user',
+    )
 
     # 지원자 필드
     is_published = models.BooleanField('이력서 공개여부', default=False)
@@ -132,6 +138,35 @@ class UserLike(TimeStampedMixin, models.Model):
     )
 
     class Meta:
+        verbose_name = '사용자 찜'
+        verbose_name_plural = f'{verbose_name} 목록'
         unique_together = (
             ('from_user', 'to_user'),
+        )
+
+
+class CompanyUserHireJobGroupWithApprovalStatus(models.Model):
+    """
+    기업회원이 채용을 원하는 직군과의 M2M연결 중간모델
+    """
+    STATUS_WAIT, STATUS_APPROVAL = ('wait', 'approval')
+    CHOICES_STATUS = (
+        (STATUS_WAIT, '승인대기중'),
+        (STATUS_APPROVAL, '승인완료'),
+    )
+    company_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, verbose_name='기업회원', on_delete=models.CASCADE,
+        related_name='hire_job_group_set', related_query_name='hire_job_group',
+    )
+    job_group = models.ForeignKey(
+        'courses.JobGroup', verbose_name='직군', on_delete=models.CASCADE,
+        related_name='hire_job_group_set', related_query_name='hire_job_group',
+    )
+    status = models.CharField('승인상태', choices=CHOICES_STATUS, max_length=20, default=STATUS_WAIT)
+
+    class Meta:
+        verbose_name = '채용희망직군(상태포함)'
+        verbose_name_plural = f'{verbose_name} 목록'
+        unique_together = (
+            ('company_user', 'job_group'),
         )

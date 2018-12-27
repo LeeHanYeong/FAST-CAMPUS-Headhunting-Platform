@@ -9,7 +9,7 @@ __all__ = (
 
 
 class JobCategory(models.Model):
-    title = models.CharField('분야명', max_length=100)
+    title = models.CharField('분야명', max_length=100, db_index=True)
 
     class Meta:
         verbose_name = '분야'
@@ -22,9 +22,10 @@ class JobCategory(models.Model):
 class JobGroup(models.Model):
     category = models.ForeignKey(
         JobCategory, on_delete=models.CASCADE, related_name='group_set', verbose_name='분야')
-    title = models.CharField('직군명', max_length=100)
+    title = models.CharField('직군명', max_length=100, db_index=True)
 
     class Meta:
+        ordering = ('category__title', 'title')
         verbose_name = '직군'
         verbose_name_plural = f'{verbose_name} 목록'
 

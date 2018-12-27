@@ -79,7 +79,9 @@ ADMIN_REORDER = (
     {'app': 'members', 'label': '사용자 관리', 'models': (
         'members.User',
         'members.ApplicantUser',
-        'members.CompanyUser')},
+        'members.CompanyUser',
+        'members.CompanyUserHireJobGroupWithApprovalStatus',
+    )},
     {'app': 'members', 'label': '이력서 항목 관리', 'models': (
         'members.Link',
         'members.Skill',
