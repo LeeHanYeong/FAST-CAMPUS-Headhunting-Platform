@@ -62,6 +62,7 @@ class ApplicantUserAdmin(BaseUserAdmin):
             'img_profile',
         )}),
         ('지원자 정보', {'fields': (
+            'is_published',
             'is_looking',
             'short_intro',
             'introduce',

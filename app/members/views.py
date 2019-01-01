@@ -9,6 +9,7 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, FormView, DetailView
 
 from administrator.mixins import StaticContentMixin
+from courses.models import JobCategory
 from .filters import ApplicantUserFilter
 from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm
 from .models import ApplicantUser, ApplicantSkill
@@ -21,14 +22,20 @@ class ApplicantListView(ListView):
 
     def get_queryset(self):
         queryset = ApplicantUser.objects.published()\
-            .prefetch_related('followers', '_skills', 'job_groups')\
+            .prefetch_related('followers', '_skills', 'job_groups', 'job_groups__category')\
             .annotate(full_name=Concat(F('last_name'), F('first_name')))
-        return ApplicantUserFilter(self.request.GET, queryset=queryset).qs
+        return ApplicantUserFilter(self.request.GET, queryset=queryset).qs.distinct()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['choices_looking'] = ApplicantUser.CHOICES_LOOKING
         context['choices_type'] = ApplicantUser.CHOICES_TYPE
+        try:
+            category = JobCategory.objects.get(pk=self.request.GET.get('category'))
+            context['cur_category'] = category
+        except JobCategory.DoesNotExist:
+            pass
+
         return context
 
 

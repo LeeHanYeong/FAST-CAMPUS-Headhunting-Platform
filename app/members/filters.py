@@ -1,7 +1,7 @@
 import django_filters
 from django.db.models import Q
 
-from courses.models import JobGroup
+from courses.models import JobGroup, JobCategory
 from .models import ApplicantUser
 
 
@@ -14,6 +14,12 @@ class ApplicantUserFilter(django_filters.FilterSet):
     )
     keyword = django_filters.CharFilter(
         method='filter_name_keyword',
+    )
+    category = django_filters.ModelChoiceFilter(
+        field_name='job_groups__category',
+        to_field_name='id',
+        lookup_expr='exact',
+        queryset=JobCategory.objects.all(),
     )
 
     class Meta:

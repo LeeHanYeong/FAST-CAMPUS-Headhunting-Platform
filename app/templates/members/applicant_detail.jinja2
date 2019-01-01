@@ -24,23 +24,27 @@
 {% block content %}
 {% set section_table_class = 'table table-bordered' %}
 <div class="application-detail-container container-fluid">
-	<div class="row">
-		<div class="col-md-4">
+	<div class="row detail-top">
+		<div class="detail-top-card col-6 col-sm-3 position-relative">
+			{% if request.user.is_authenticated %}
+			<button
+				v-on:click.self="toggleUserLike($event)"
+				class="btn-star btn
+	        {% if request.user in applicant.followers.all() %}
+	          btn-primary
+	        {% else %}
+	          btn-outline-primary
+					{% endif %}"
+	        data-user-pk="{{ applicant.pk }}">
+				<span class="icon far fa-star"></span>
+			</button>
+			{% endif %}
+            <div class="img-container">
+			    <img src="{{ applicant.img_profile.url }}" class="img-profile" alt="" >
+            </div>
+		</div>
+		<div class="detail-top-card col-6 col-sm">
 			<div class="card info">
-			  {% if request.user.is_authenticated %}
-				<button
-					v-on:click.self="toggleUserLike($event)"
-					class="btn-star btn
-		        {% if request.user in applicant.followers.all() %}
-		          btn-primary
-		        {% else %}
-		          btn-outline-primary
-						{% endif %}"
-		        data-user-pk="{{ applicant.pk }}">
-					<span class="icon far fa-star"></span>
-				</button>
-				{% endif %}
-				<img src="{{ applicant.img_profile.url }}" alt="" >
 				<div class="card-body">
 					<h2 class="name pb-3">{{ applicant.name }}</h2>
 					<dl>
@@ -54,7 +58,15 @@
 						<dd>
 							<button class="btn btn-primary btn-block">메일 보내기</button>
 						</dd>
-
+					</dl>
+				</div>
+			</div>
+		</div>
+		<div class="detail-top-card col-12 col-sm">
+			<div class="card info">
+				<div class="card-body">
+					<dt class="mb-1">포트폴리오</dt>
+					<dl>
 						<dd>
 							<ul class="link-list">
 								{% for link in applicant.links.all() %}
@@ -64,20 +76,27 @@
 									</a>
 								</li>
 								{% endfor %}
+                                {% for i in range(6 - applicant.links.count()) %}
+                                <li class="link-item blank">
+                                    <a class="blank-item"></a>
+								</li>
+                                {% endfor %}
 							</ul>
 						</dd>
 					</dl>
 				</div>
 			</div>
 		</div>
-		<div class="col-md-8">
+	</div>
+	<div class="row">
+		<div class="col-md-12">
 			<section class="card">
 				<div class="card-header">보유기술</div>
 				<div class="card-body">
 					{% set skills = applicant.skills.all() %}
 					{% for level, level_display in choices_level %}
 						<div class="skill-section">
-							{% set src_star = 'images/skill_star_' + level + '.png' %}
+							{% set src_star = 'images/skill_level_' + level + '.svg' %}
 							<img src="{{ static(src_star) }}" alt="" class="section-star mr-2">
 							<span class="section-level">{{ level_display }}</span>
 							<ul class="skill-list">

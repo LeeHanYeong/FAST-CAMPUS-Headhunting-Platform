@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="index-container">
-	<div class="logo d-none d-xl-block"
+	<div class="logo d-none d-lg-block"
 	     style="
 		     {% if static_content.index_image %}
 		     background-image: url('{{ static_content.index_image.url }}');
@@ -14,7 +14,7 @@
 		     max-height: {{ static_content.index_height }}px;
 		     ">
 	</div>
-	<div class="logo d-xl-none"
+	<div class="logo d-lg-none"
 	     style="
 		     {% if static_content.index_mobile_image %}
 		     background-image: url('{{ static_content.index_mobile_image.url }}');
