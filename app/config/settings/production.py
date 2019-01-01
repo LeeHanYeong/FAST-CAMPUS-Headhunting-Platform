@@ -25,6 +25,9 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 # 로그폴더 생성
 LOG_DIR = os.path.join(ROOT_DIR, '.log')
 if not os.path.exists(LOG_DIR):

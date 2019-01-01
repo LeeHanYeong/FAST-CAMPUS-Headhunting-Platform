@@ -1,10 +1,14 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
 
 from ..models import UserLike
 
+User = get_user_model()
+
 __all__ = (
     'UserLikeCreateDeleteSerializer',
+    'UserSerializer',
 )
 
 
@@ -28,3 +32,14 @@ class UserLikeCreateDeleteSerializer(serializers.ModelSerializer):
                 fields=('from_user', 'to_user'),
             )
         ]
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'pk',
+            'first_name',
+            'last_name',
+            'email',
+        )

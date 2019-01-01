@@ -1,4 +1,14 @@
+from django.contrib.auth import get_user_model
 from rest_framework import permissions
+
+User = get_user_model()
+
+__all__ = (
+    'ObjIsRequestUser',
+    'IsFromUser',
+    'IsUserOrReadOnly',
+    'IsCompanyUser',
+)
 
 
 class ObjIsRequestUser(permissions.BasePermission):
@@ -16,3 +26,8 @@ class IsUserOrReadOnly(permissions.BasePermission):
         if request.method in permissions.SAFE_METHODS:
             return True
         return obj.user == request.user
+
+
+class IsCompanyUser(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return request.user.type == User.TYPE_COMPANY

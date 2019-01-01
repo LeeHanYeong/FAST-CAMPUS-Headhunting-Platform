@@ -29,6 +29,22 @@ class CompanyUser(User):
     def company_name(self):
         return self._company_name
 
+    @company_name.setter
+    def company_name(self, value):
+        self._company_name = value
+
     @property
     def position(self):
         return self._position
+
+    @position.setter
+    def position(self, value):
+        self._position = value
+
+    @property
+    def hire_job_groups(self):
+        return self._hire_job_groups
+
+    @hire_job_groups.setter
+    def hire_job_groups(self, value):
+        self._hire_job_groups = value

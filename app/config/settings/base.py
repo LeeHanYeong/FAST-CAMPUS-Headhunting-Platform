@@ -45,6 +45,7 @@ COMPRESS_JINJA2_GET_ENVIRONMENT = environment
 AWS_AUTO_CREATE_BUCKET = True
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 AWS_S3_REGION_NAME = 'ap-northeast-2'
+AWS_DEFAULT_ACL = None
 
 # DRF
 REST_FRAMEWORK = {
@@ -58,6 +59,10 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'members.User'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'members.backends.SettingsBackend',
+]
 
 # django-phonenumber-field
 PHONENUMBER_DEFAULT_REGION = 'KR'
@@ -110,6 +115,11 @@ CKEDITOR_CONFIGS = {
     },
 }
 
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
 ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'administrator.apps.AdministratorConfig',
@@ -135,6 +145,37 @@ INSTALLED_APPS = [
     'sass_processor',
     'storages',
 ]
+
+# SettingsBackend
+DEFAULT_USERS = {
+    'default_applicant@lhy.kr': {
+        'email': '',
+        'password': 'pbkdf2_sha256$120000$6bRc6EXjatPi$KjmUANv30sG+5rJBeozHndl2EEw2aLGoCdpkpDSRArk=',
+        'last_name': '아메리카노',
+        'first_name': '그란데',
+        'type': 'a',
+        'phone_number': '010-1234-1234',
+        'birth_date': '1990-01-01',
+    },
+    'default_company@lhy.kr': {
+        'password': 'pbkdf2_sha256$120000$6bRc6EXjatPi$KjmUANv30sG+5rJBeozHndl2EEw2aLGoCdpkpDSRArk=',
+        'last_name': '카라멜마끼아또',
+        'first_name': '벤티',
+        'type': 'c',
+        'phone_number': '010-1235-1235',
+        'birth_date': '1980-01-01',
+    },
+    'dev@lhy.kr': {
+        'password': 'pbkdf2_sha256$120000$6bRc6EXjatPi$KjmUANv30sG+5rJBeozHndl2EEw2aLGoCdpkpDSRArk=',
+        'last_name': '이',
+        'first_name': '한영',
+        'type': 's',
+        'phone_number': '010-4432-1234',
+        'birth_date': '1988-03-24',
+        'is_staff': True,
+        'is_superuser': True,
+    },
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

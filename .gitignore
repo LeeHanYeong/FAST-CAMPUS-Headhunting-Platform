@@ -1,3 +1,7 @@
+# runserver_plus
+app/cert.crt
+app/cert.key
+
 # CSS files
 /app/static/scss/*.css
 

@@ -170,3 +170,10 @@ class CompanyUserHireJobGroupWithApprovalStatus(models.Model):
         unique_together = (
             ('company_user', 'job_group'),
         )
+
+    def __str__(self):
+        return '{user} | {job_group} [{status}]'.format(
+            user=self.company_user.name,
+            job_group=self.job_group.title,
+            status=self.get_status_display(),
+        )
