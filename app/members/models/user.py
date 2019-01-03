@@ -51,6 +51,7 @@ class User(TimeStampedMixin, AbstractUser):
     CHOICES_TYPE = (
         (TYPE_APPLICANT, '지원자'),
         (TYPE_COMPANY, '채용연계기업'),
+        (TYPE_STAFF, '관리자'),
     )
 
     LOOKING_NEW = 'n'
