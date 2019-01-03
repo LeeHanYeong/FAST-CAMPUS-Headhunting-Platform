@@ -1,199 +1,242 @@
 {% extends 'base.jinja2' %}
 
 {% block content_header %}
-<header class="content-header">
-	<div class="container-fluid">
-		<div class="title">
+    <header class="content-header">
+        <div class="container-fluid">
+            <div class="title">
 			<span>
 				{{ applicant.name }}<br>
 				<small>수강생 이력서</small>
 			</span>
-		</div>
-		<button class="btn float-right pl-5 pr-5
+            </div>
+            <button class="btn float-right pl-5 pr-5
 						{% if applicant.is_looking != 'c' %}
 							btn-primary
 						{% else %}
 							btn-dark
 						{% endif %}">
-			{{ applicant.get_is_looking_display() }}
-		</button>
-	</div>
-</header>
+                {{ applicant.get_is_looking_display() }}
+            </button>
+        </div>
+    </header>
 {% endblock %}
 
 {% block content %}
-{% set section_table_class = 'table table-bordered' %}
-<div class="application-detail-container container-fluid">
-	<div class="row detail-top">
-		<div class="detail-top-card col-6 col-sm-3 position-relative">
-			{% if request.user.is_authenticated %}
-			<button
-				v-on:click.self="toggleUserLike($event)"
-				class="btn-star btn
+    {% set section_table_class = 'table table-bordered' %}
+    <div class="application-detail-container container-fluid">
+        <div class="row detail-top">
+            <div class="detail-top-card col-6 col-sm-3 position-relative">
+                {% if request.user.is_authenticated %}
+                    <button
+                        v-on:click.self="toggleUserLike($event)"
+                        class="btn-star btn
 	        {% if request.user in applicant.followers.all() %}
 	          btn-primary
 	        {% else %}
 	          btn-outline-primary
 					{% endif %}"
-	        data-user-pk="{{ applicant.pk }}">
-				<span class="icon far fa-star"></span>
-			</button>
-			{% endif %}
-            <div class="img-container">
-			    <img src="{{ applicant.img_profile.url }}" class="img-profile" alt="" >
+                        data-user-pk="{{ applicant.pk }}">
+                        <span class="icon far fa-star"></span>
+                    </button>
+                {% endif %}
+                <div class="img-container">
+                    <img src="{{ applicant.img_profile.url }}" class="img-profile" alt="">
+                </div>
             </div>
-		</div>
-		<div class="detail-top-card col-6 col-sm">
-			<div class="card info">
-				<div class="card-body">
-					<h2 class="name pb-3">{{ applicant.name }}</h2>
-					<dl>
-						<dt>생년월일</dt>
-						<dd>{{ applicant.birth_date }}</dd>
+            <div class="detail-top-card col-6 col-sm">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2 class="name pb-3">{{ applicant.name }}</h2>
+                        <dl>
+                            <dt>생년월일</dt>
+                            <dd>{{ applicant.birth_date }}</dd>
 
-						<dt>한줄 소개</dt>
-						<dd>{{ applicant.short_intro }}</dd>
+                            <dt>한줄 소개</dt>
+                            <dd>{{ applicant.short_intro }}</dd>
 
-						<dt>Contact</dt>
-						<dd>
-							<button class="btn btn-primary btn-block">메일 보내기</button>
-						</dd>
-					</dl>
-				</div>
-			</div>
-		</div>
-		<div class="detail-top-card col-12 col-sm">
-			<div class="card info">
-				<div class="card-body">
-					<dt class="mb-1">포트폴리오</dt>
-					<dl>
-						<dd>
-							<ul class="link-list">
-								{% for link in applicant.links.all() %}
-								<li class="link-item">
-									<a href="{{ link.url }}">
-										<img src="{{ link.img_icon.url }}" alt="">
-									</a>
-								</li>
-								{% endfor %}
-                                {% for i in range(6 - applicant.links.count()) %}
-                                <li class="link-item blank">
-                                    <a class="blank-item"></a>
-								</li>
-                                {% endfor %}
-							</ul>
-						</dd>
-					</dl>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-12">
-			<section class="card">
-				<div class="card-header">보유기술</div>
-				<div class="card-body">
-					{% set skills = applicant.skills.all() %}
-					{% for level, level_display in choices_level %}
-						<div class="skill-section">
-							{% set src_star = 'images/skill_level_' + level + '.svg' %}
-							<img src="{{ static(src_star) }}" alt="" class="section-star mr-2">
-							<span class="section-level">{{ level_display }}</span>
-							<ul class="skill-list">
-								{% for skill in skills if skill.level == level %}
-									<li class="skill-item">
-										<span class="badge badge-pill badge-light">#{{ skill.title }}</span>
-									</li>
-								{% endfor %}
-							</ul>
-						</div>
-					{% endfor %}
-				</div>
-			</section>
+                            <dt>Contact</dt>
+                            <dd>
+                                <button v-on:click="modalHireEmail({{ applicant.pk }})" class="btn btn-primary btn-block">메일 보내기</button>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-top-card col-12 col-sm">
+                <div class="card info">
+                    <div class="card-body">
+                        <dt class="mb-1">포트폴리오</dt>
+                        <dl>
+                            <dd>
+                                <ul class="link-list">
+                                    {% for link in applicant.links.all() %}
+                                        <li class="link-item">
+                                            <a href="{{ link.url }}">
+                                                <img src="{{ link.img_icon.url }}" alt="">
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                    {% for i in range(6 - applicant.links.count()) %}
+                                        <li class="link-item blank">
+                                            <a class="blank-item"></a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <section class="card">
+                    <div class="card-header">보유기술</div>
+                    <div class="card-body">
+                        {% set skills = applicant.skills.all() %}
+                        {% for level, level_display in choices_level %}
+                            <div class="skill-section">
+                                {% set src_star = 'images/skill_level_' + level + '.svg' %}
+                                <img src="{{ static(src_star) }}" alt="" class="section-star mr-2">
+                                <span class="section-level">{{ level_display }}</span>
+                                <ul class="skill-list">
+                                    {% for skill in skills if skill.level == level %}
+                                        <li class="skill-item">
+                                            <span class="badge badge-pill badge-light">#{{ skill.title }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
 
-			<section class="card">
-				<div class="card-header">학력사항</div>
-				<div class="card-body">
-					<table class="{{ section_table_class }}">
-						<thead>
-							<tr class="table-light">
-								<th>학교명</th>
-								<th>전공</th>
-								<th>기간</th>
-								<th>졸업여부</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for edu in applicant.education_set.all() %}
-								<tr>
-									<td>{{ edu.school }}</td>
-									<td>{{ edu.major }}</td>
-									<td>{{ edu.period }}</td>
-									<td>{{ edu.get_type_display() }}</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			</section>
+                <section class="card">
+                    <div class="card-header">학력사항</div>
+                    <div class="card-body">
+                        <table class="{{ section_table_class }}">
+                            <thead>
+                            <tr class="table-light">
+                                <th>학교명</th>
+                                <th>전공</th>
+                                <th>기간</th>
+                                <th>졸업여부</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for edu in applicant.education_set.all() %}
+                                <tr>
+                                    <td>{{ edu.school }}</td>
+                                    <td>{{ edu.major }}</td>
+                                    <td>{{ edu.period }}</td>
+                                    <td>{{ edu.get_type_display() }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
-			<section class="card">
-				<div class="card-header">경력사항</div>
-				<div class="card-body">
-					<table class="{{ section_table_class }}">
-						<thead>
-							<tr class="table-light">
-								<th>근무처</th>
-								<th>담당 업무</th>
-								<th>근무 기간</th>
-								<th>최종직위</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for career in applicant.career_set.all() %}
-								<tr>
-									<td>{{ career.organization }}</td>
-									<td>{{ career.responsibility }}</td>
-									<td>{{ career.period }}</td>
-									<td>{{ career.position }}</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			</section>
+                <section class="card">
+                    <div class="card-header">경력사항</div>
+                    <div class="card-body">
+                        <table class="{{ section_table_class }}">
+                            <thead>
+                            <tr class="table-light">
+                                <th>근무처</th>
+                                <th>담당 업무</th>
+                                <th>근무 기간</th>
+                                <th>최종직위</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for career in applicant.career_set.all() %}
+                                <tr>
+                                    <td>{{ career.organization }}</td>
+                                    <td>{{ career.responsibility }}</td>
+                                    <td>{{ career.period }}</td>
+                                    <td>{{ career.position }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
-			<section class="card">
-				<div class="card-header">자격사항</div>
-				<div class="card-body">
-					<table class="{{ section_table_class }}">
-						<thead>
-							<tr>
-								<th>자격증명</th>
-								<th>발행처</th>
-								<th>취득일</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for license in applicant.license_set.all() %}
-								<tr>
-									<td>{{ license.title }}</td>
-									<td>{{ license.organization }}</td>
-									<td>{{ license.get_date }}</td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			</section>
+                <section class="card">
+                    <div class="card-header">자격사항</div>
+                    <div class="card-body">
+                        <table class="{{ section_table_class }}">
+                            <thead>
+                            <tr>
+                                <th>자격증명</th>
+                                <th>발행처</th>
+                                <th>취득일</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for license in applicant.license_set.all() %}
+                                <tr>
+                                    <td>{{ license.title }}</td>
+                                    <td>{{ license.organization }}</td>
+                                    <td>{{ license.get_date }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
 
-			<section class="card">
-				<div class="card-header">자기소개서</div>
-				<div class="card-body">
-					{{ applicant.introduce|safe }}
-				</div>
-			</section>
-		</div>
-	</div>
-</div>
+                <section class="card">
+                    <div class="card-header">자기소개서</div>
+                    <div class="card-body">
+                        {{ applicant.introduce|safe }}
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    {% include 'includes/modal-email.jinja2' %}
+{% endblock %}
+
+{% block mixin %}
+    <script>
+        var mixin = {
+            data: {},
+            methods: {
+                modalHireEmail: function (applicantPk) {
+                    const vm = this;
+                    var elModal = $('#id-hire-email-modal');
+                    var btnFirst = elModal.find('.btn-first');
+                    elModal.find('#id-email-subject').val('');
+                    elModal.find('#id-email-message').val('');
+
+                    btnFirst.click(function () {
+                        vm.hireEmailSend(applicantPk);
+                        elModal.hide();
+                    });
+                    elModal.modal();
+                },
+                hireEmailSend: function (applicantPk) {
+                    const vm = this;
+                    vm.showModalSpinner('메일 발송 중...');
+                    $.ajax({
+                        method: 'POST',
+                        url: "{{ url('api:email:hire') }}",
+                        data: {
+                            subject: $('#id-email-subject').val(),
+                            message: $('#id-email-message').val(),
+                            applicant: applicantPk
+                        }
+                    }).done(function (response) {
+                        vm.changeModalSpinnerTitle('발송 완료!');
+                        vm.hideModalSpinner(1000);
+                    }).fail(function (response) {
+                        vm.changeModalSpinnerTitle('발송 실패');
+                        vm.hideModalSpinner(1000);
+                    });
+                }
+            }
+        }
+    </script>
 {% endblock %}

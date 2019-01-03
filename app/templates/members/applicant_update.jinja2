@@ -1,698 +1,715 @@
 {% extends 'base.jinja2' %}
 
 {% block content_header %}
-<header class="content-header">
-	<div class="title">
-		<span>지원자 이력서 수정</span>
-	</div>
-	<button onclick="update()" class="btn btn-primary float-right pl-5 pr-5">수정 완료</button>
-</header>
+    <header class="content-header">
+        <div class="title">
+            <span>지원자 이력서 수정</span>
+        </div>
+        <button onclick="update()" class="btn btn-primary float-right pl-5 pr-5">수정 완료</button>
+    </header>
 {% endblock %}
 
 {% block content %}
-<div v-if="applicantDetail" class="resume">
-	<section class="card resume-section">
-		<div class="card-header">기본정보</div>
-		<div class="card-body">
-			<form action="">
-				<div class="form-group row">
-					<label for="id-is-looking" class="col-sm-2 col-form-label">구직 여부</label>
-					<div class="col-sm-10">
-						<div class="btn-group" role="group">
-							<button v-for="lookingDict in applicantDetail.choices_looking"
-							        v-if="lookingDict.length > 1"
-							        v-on:click="applicantDetail.is_looking = lookingDict[0]"
-							        v-bind:class="getLookingClass(lookingDict[0])"
-							        type="button" class="btn">${ lookingDict[1] }</button>
-						</div>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="id-is-looking" class="col-sm-2 col-form-label">이력서 공개 여부</label>
-					<div class="col-sm-10">
-						<div class="btn-group" role="group">
-						  <button v-on:click="applicantDetail.is_published = true" type="button" class="btn" v-bind:class="{'btn-primary': applicantDetail.is_published, 'btn-dark': !applicantDetail.is_published}">공개</button>
-						  <button v-on:click="applicantDetail.is_published = false" type="button" class="btn" v-bind:class="{'btn-primary': !applicantDetail.is_published, 'btn-dark': applicantDetail.is_published}">비공개</button>
-						</div>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="id-img-profile" class="col-sm-2 col-form-label">프로필 이미지</label>
-					<div class="col-sm-10 col-md-4">
-						<div class="row mb-2">
-							<div class="col-sm-5 col-md-8 col-lg-6">
-								<img v-bind:src="applicantDetail.img_profile || '{{ static('images/blank_user.png') }}'">
-							</div>
-						</div>
-						<form id="id-form-img-profile" enctype="multipart/form-data">
-							<input type="file" id="id-img-profile" class="form-control-file">
-						</form>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="id-lastname" class="col-sm-2 col-form-label">이름</label>
-					<div class="col-4 col-sm-3 col-md-2 col-lg-1 mr-0">
-						<input v-model="applicantDetail.last_name" id="id-lastname" type="text" class="form-control" placeholder="성" autocomplete="off">
-					</div>
-					<div class="col-8 col-sm-7 col-md-2 col-lg-1 pl-0">
-						<input v-model="applicantDetail.first_name" id="id-firstname" type="text" class="form-control" placeholder="이름" autocomplete="off">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="id-email" class="col-sm-2 col-form-label">이메일</label>
-					<div class="col-sm-10 col-md-4">
-						<input v-model="applicantDetail.email" type="email" id="id-email" class="form-control" placeholder="" autocomplete="off">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="id-birth" class="col-sm-2 col-form-label">생년월일</label>
-					<div class="col-sm-10 col-md-4">
-						<input v-model="applicantDetail.birth_date" type="text" id="id-birth" class="form-control" placeholder="YYYY-MM-DD (ex: 1990-01-01)" autocomplete="off">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="id-phone-number" class="col-sm-2 col-form-label">전화번호</label>
-					<div class="col-sm-10 col-md-4">
-						<input v-model="applicantDetail.phone_number" type="text" id="id-phone-number" class="form-control" placeholder="YYYY-MM-DD (ex: 1990-01-01)" autocomplete="off">
-					</div>
-				</div>
-				<div class="form-group row">
-					<label for="id-birth" class="col-sm-2 col-form-label">한줄소개</label>
-					<div class="col-sm-10">
-						<input v-model="applicantDetail.short_intro" type="text" id="id-birth" class="form-control" placeholder="" autocomplete="off">
-					</div>
-				</div>
-				<hr>
-				<div id="section-job-group-list">
-					<div class="form-group row">
-						<label class="col-sm-2 col-form-label">취업희망 직군</label>
-						<div class="col-sm-10">
-							<div v-for="category in categoryList">
-								<h5>${ category.title }</h5>
-								<div class="row">
-									<div v-for="group in category.group_set" class="col-sm-4 col-md-3 col-lg-2">
-										<input v-bind:id="'group-' + group.pk" type="checkbox" :value="group" v-model="applicantDetail.job_groups">
-										<label v-bind:for="'group-' + group.pk">${ group.title }</label>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<hr>
-				<div id="section-link-list" v-if="applicantLinkList">
-					<div v-for="(applicantLink, index) in applicantLinkList" class="form-group row">
-						<div class="col-sm-3">
-							<select v-model="applicantLink.link" class="form-control">
-								<option v-bind:value="link" v-for="link in linkList">${ link.title }</option>
-							</select>
-							<small class="form-text text-danger"
-							       v-for="error in errorSkillLinkMessages('link', 'link', index)">
-								${ error }</small>
-						</div>
-						<div class="col-sm-7">
-							<input v-model="applicantLink.url" type="text" class="form-control" placeholder="" autocomplete="off">
-							<small class="form-text text-danger"
-							       v-for="error in errorSkillLinkMessages('link', 'url', index)">
-								${ error }</small>
-						</div>
-						<div class="col-sm-2">
-							<button v-on:click="deleteApplicantLink(index)" class="btn btn-dark btn-block" type="button">삭제</button>
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col">
-							<button v-on:click="addApplicantLink()" class="btn btn-primary" type="button">추가</button>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-	</section>
-	<section id="section-skill-list" class="card resume-section">
-		<div class="card-header">보유기술</div>
-		<div class="card-body">
-			<form action="">
-				<div v-if="applicantSkillList">
-					<div v-for="(applicantSkill, index) in applicantSkillList" class="form-group row">
-						<div class="col-sm-4">
-							<select v-model="applicantSkill.skill" class="form-control">
-								<option v-bind:value="skill" v-for="skill in skillList">${ skill.title }</option>
-							</select>
-							<small class="form-text text-danger"
-							       v-for="error in errorSkillLinkMessages('skill', 'skill', index)">
-								${ error }</small>
-						</div>
-						<div class="col-sm-6">
-							<select v-model="applicantSkill.level" class="form-control">
-								<option value="high">매우능숙</option>
-								<option value="mid">능숙</option>
-								<option value="low">활용가능</option>
-							</select>
-							<small class="form-text text-danger"
-							       v-for="error in errorSkillLinkMessages('skill', 'level', index)">
-								${ error }</small>
-						</div>
-						<div class="col-sm-2">
-							<button v-on:click="deleteApplicantSkill(index)" class="btn btn-dark btn-block" type="button">삭제</button>
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col">
-							<button v-on:click="addApplicantSkill()" class="btn btn-primary" type="button">추가</button>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-	</section>
-	<section id="section-skill-list" class="card resume-section">
-		<div class="card-header">학력사항</div>
-		<div>
-			<table class="table table-edit">
-				<thead>
-					<tr>
-						<th>학교명</th>
-						<th>전공</th>
-						<th>기간</th>
-						<th>졸업여부</th>
-						<th>관리</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="(edu, index) in applicantDetail.education_set" :key="edu.pk" class="editable">
-						<td>
-							<input v-bind:id="'edu-' + index"
-							       v-model="edu.school"
-							       class="form-control"
-							       type="text" v-focus>
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('education_set', 'school', index)">
-								${ error }</small>
-						</td>
-						<td>
-							<input v-model="edu.major" type="text">
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('education_set', 'major', index)">
-								${ error }</small>
-						</td>
-						<td>
-							<input v-model="edu.start_date" type="text"> ~
-							<input v-model="edu.end_date" type="text">
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('education_set', 'start_date', index)">
-								${ error }</small>
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('education_set', 'end_date', index)">
-								${ error }</small>
-						<td>
-							<select v-model="edu.type" class="form-control">
-								<option value="grad">졸업</option>
-								<option value="grad_ex">졸업 예정</option>
-								<option value="attend">재학</option>
-								<option value="dropout">중퇴</option>
-							</select>
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('education_set', 'type', index)">
-								${ error }</small>
-						</td>
-						<td>
-							<button v-on:click="deleteApplicantItem('edu', index)" class="btn btn-sm btn-dark">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="5">
-							<button v-on:click="addApplicantItem('edu')" class="btn btn-primary">추가</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</section>
+    <div v-if="applicantDetail" class="resume">
+        <section class="card resume-section">
+            <div class="card-header">기본정보</div>
+            <div class="card-body">
+                <form action="">
+                    <div class="form-group row">
+                        <label for="id-is-looking" class="col-sm-2 col-form-label">구직 여부</label>
+                        <div class="col-sm-10">
+                            <div class="btn-group" role="group">
+                                <button v-for="lookingDict in applicantDetail.choices_looking"
+                                        v-if="lookingDict.length > 1"
+                                        v-on:click="applicantDetail.is_looking = lookingDict[0]"
+                                        v-bind:class="getLookingClass(lookingDict[0])"
+                                        type="button" class="btn">${ lookingDict[1] }
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="id-is-looking" class="col-sm-2 col-form-label">이력서 공개 여부</label>
+                        <div class="col-sm-10">
+                            <div class="btn-group" role="group">
+                                <button v-on:click="applicantDetail.is_published = true" type="button" class="btn" v-bind:class="{'btn-primary': applicantDetail.is_published, 'btn-dark': !applicantDetail.is_published}">공개</button>
+                                <button v-on:click="applicantDetail.is_published = false" type="button" class="btn" v-bind:class="{'btn-primary': !applicantDetail.is_published, 'btn-dark': applicantDetail.is_published}">비공개</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="id-img-profile" class="col-sm-2 col-form-label">프로필 이미지</label>
+                        <div class="col-sm-10 col-md-4">
+                            <div class="row mb-2">
+                                <div class="col-sm-5 col-md-8 col-lg-6">
+                                    <img v-bind:src="applicantDetail.img_profile || '{{ static('images/blank_user.png') }}'">
+                                </div>
+                            </div>
+                            <form id="id-form-img-profile" enctype="multipart/form-data">
+                                <input type="file" id="id-img-profile" class="form-control-file">
+                            </form>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="id-lastname" class="col-sm-2 col-form-label">이름</label>
+                        <div class="col-4 col-sm-3 col-md-2 col-lg-1 mr-0">
+                            <input v-model="applicantDetail.last_name" id="id-lastname" type="text" class="form-control" placeholder="성" autocomplete="off">
+                        </div>
+                        <div class="col-8 col-sm-7 col-md-2 col-lg-1 pl-0">
+                            <input v-model="applicantDetail.first_name" id="id-firstname" type="text" class="form-control" placeholder="이름" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="id-email" class="col-sm-2 col-form-label">이메일</label>
+                        <div class="col-sm-10 col-md-4">
+                            <input v-model="applicantDetail.email" type="email" id="id-email" class="form-control" placeholder="" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="id-birth" class="col-sm-2 col-form-label">생년월일</label>
+                        <div class="col-sm-10 col-md-4">
+                            <input v-model="applicantDetail.birth_date" type="text" id="id-birth" class="form-control" placeholder="YYYY-MM-DD (ex: 1990-01-01)" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="id-phone-number" class="col-sm-2 col-form-label">전화번호</label>
+                        <div class="col-sm-10 col-md-4">
+                            <input v-model="applicantDetail.phone_number" type="text" id="id-phone-number" class="form-control" placeholder="YYYY-MM-DD (ex: 1990-01-01)" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="id-birth" class="col-sm-2 col-form-label">한줄소개</label>
+                        <div class="col-sm-10">
+                            <input v-model="applicantDetail.short_intro" type="text" id="id-birth" class="form-control" placeholder="" autocomplete="off">
+                        </div>
+                    </div>
+                    <hr>
+                    <div id="section-job-group-list">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">취업희망 직군</label>
+                            <div class="col-sm-10">
+                                <div v-for="category in categoryList">
+                                    <h5>${ category.title }</h5>
+                                    <div class="row">
+                                        <div v-for="group in category.group_set" class="col-sm-4 col-md-3 col-lg-2">
+                                            <input v-bind:id="'group-' + group.pk" type="checkbox" :value="group" v-model="applicantDetail.job_groups">
+                                            <label v-bind:for="'group-' + group.pk">${ group.title }</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div id="section-link-list" v-if="applicantLinkList">
+                        <div v-for="(applicantLink, index) in applicantLinkList" class="form-group row">
+                            <div class="col-sm-3">
+                                <select v-model="applicantLink.link" class="form-control">
+                                    <option v-bind:value="link" v-for="link in linkList">${ link.title }</option>
+                                </select>
+                                <small class="form-text text-danger"
+                                       v-for="error in errorSkillLinkMessages('link', 'link', index)">
+                                    ${ error }
+                                </small>
+                            </div>
+                            <div class="col-sm-7">
+                                <input v-model="applicantLink.url" type="text" class="form-control" placeholder="" autocomplete="off">
+                                <small class="form-text text-danger"
+                                       v-for="error in errorSkillLinkMessages('link', 'url', index)">
+                                    ${ error }
+                                </small>
+                            </div>
+                            <div class="col-sm-2">
+                                <button v-on:click="deleteApplicantLink(index)" class="btn btn-dark btn-block" type="button">삭제</button>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                <button v-on:click="addApplicantLink()" class="btn btn-primary" type="button">추가</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section id="section-skill-list" class="card resume-section">
+            <div class="card-header">보유기술</div>
+            <div class="card-body">
+                <form action="">
+                    <div v-if="applicantSkillList">
+                        <div v-for="(applicantSkill, index) in applicantSkillList" class="form-group row">
+                            <div class="col-sm-4">
+                                <select v-model="applicantSkill.skill" class="form-control">
+                                    <option v-bind:value="skill" v-for="skill in skillList">${ skill.title }</option>
+                                </select>
+                                <small class="form-text text-danger"
+                                       v-for="error in errorSkillLinkMessages('skill', 'skill', index)">
+                                    ${ error }
+                                </small>
+                            </div>
+                            <div class="col-sm-6">
+                                <select v-model="applicantSkill.level" class="form-control">
+                                    <option value="high">매우능숙</option>
+                                    <option value="mid">능숙</option>
+                                    <option value="low">활용가능</option>
+                                </select>
+                                <small class="form-text text-danger"
+                                       v-for="error in errorSkillLinkMessages('skill', 'level', index)">
+                                    ${ error }
+                                </small>
+                            </div>
+                            <div class="col-sm-2">
+                                <button v-on:click="deleteApplicantSkill(index)" class="btn btn-dark btn-block" type="button">삭제</button>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col">
+                                <button v-on:click="addApplicantSkill()" class="btn btn-primary" type="button">추가</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section id="section-skill-list" class="card resume-section">
+            <div class="card-header">학력사항</div>
+            <div>
+                <table class="table table-edit">
+                    <thead>
+                    <tr>
+                        <th>학교명</th>
+                        <th>전공</th>
+                        <th>기간</th>
+                        <th>졸업여부</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(edu, index) in applicantDetail.education_set" :key="edu.pk" class="editable">
+                        <td>
+                            <input v-bind:id="'edu-' + index"
+                                   v-model="edu.school"
+                                   class="form-control"
+                                   type="text" v-focus>
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('education_set', 'school', index)">
+                                ${ error }
+                            </small>
+                        </td>
+                        <td>
+                            <input v-model="edu.major" type="text">
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('education_set', 'major', index)">
+                                ${ error }
+                            </small>
+                        </td>
+                        <td>
+                            <input v-model="edu.start_date" type="text"> ~
+                            <input v-model="edu.end_date" type="text">
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('education_set', 'start_date', index)">
+                                ${ error }
+                            </small>
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('education_set', 'end_date', index)">
+                                ${ error }
+                            </small>
+                        <td>
+                            <select v-model="edu.type" class="form-control">
+                                <option value="grad">졸업</option>
+                                <option value="grad_ex">졸업 예정</option>
+                                <option value="attend">재학</option>
+                                <option value="dropout">중퇴</option>
+                            </select>
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('education_set', 'type', index)">
+                                ${ error }
+                            </small>
+                        </td>
+                        <td>
+                            <button v-on:click="deleteApplicantItem('edu', index)" class="btn btn-sm btn-dark">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <button v-on:click="addApplicantItem('edu')" class="btn btn-primary">추가</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-	<section id="section-career-list" class="card resume-section">
-		<div class="card-header">경력사항</div>
-		<div>
-			<table class="table table-edit">
-				<thead>
-					<tr>
-						<th>근무처</th>
-						<th>담당업무</th>
-						<th>기간</th>
-						<th>최종직위</th>
-						<th>관리</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="(career, index) in applicantDetail.career_set" :key="career.pk" class="editable">
-						<td>
-							<input v-bind:id="'career-' + index"
-							       v-model="career.organization"
-							       class="form-control"
-							       type="text" v-focus>
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('career_set', 'organization', index)">
-								${ error }</small>
-						</td>
-						<td>
-							<input v-model="career.responsibility" type="text">
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('career_set', 'responsibility', index)">
-								${ error }</small>
-						</td>
-						<td>
-							<input v-model="career.start_date" type="text"> ~
-							<input v-model="career.end_date" type="text">
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('career_set', 'start_date', index)">
-								${ error }</small>
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('career_set', 'end_date', index)">
-								${ error }</small>
-						</td>
-						<td>
-							<input v-model="career.position" type="text">
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('career_set', 'position', index)">
-								${ error }</small>
-						</td>
-						<td>
-							<button v-on:click="deleteApplicantItem('career', index)" class="btn btn-sm btn-dark">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="5">
-							<button v-on:click="addApplicantItem('career')" class="btn btn-primary">추가</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</section>
+        <section id="section-career-list" class="card resume-section">
+            <div class="card-header">경력사항</div>
+            <div>
+                <table class="table table-edit">
+                    <thead>
+                    <tr>
+                        <th>근무처</th>
+                        <th>담당업무</th>
+                        <th>기간</th>
+                        <th>최종직위</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(career, index) in applicantDetail.career_set" :key="career.pk" class="editable">
+                        <td>
+                            <input v-bind:id="'career-' + index"
+                                   v-model="career.organization"
+                                   class="form-control"
+                                   type="text" v-focus>
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('career_set', 'organization', index)">
+                                ${ error }
+                            </small>
+                        </td>
+                        <td>
+                            <input v-model="career.responsibility" type="text">
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('career_set', 'responsibility', index)">
+                                ${ error }
+                            </small>
+                        </td>
+                        <td>
+                            <input v-model="career.start_date" type="text"> ~
+                            <input v-model="career.end_date" type="text">
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('career_set', 'start_date', index)">
+                                ${ error }
+                            </small>
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('career_set', 'end_date', index)">
+                                ${ error }
+                            </small>
+                        </td>
+                        <td>
+                            <input v-model="career.position" type="text">
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('career_set', 'position', index)">
+                                ${ error }
+                            </small>
+                        </td>
+                        <td>
+                            <button v-on:click="deleteApplicantItem('career', index)" class="btn btn-sm btn-dark">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <button v-on:click="addApplicantItem('career')" class="btn btn-primary">추가</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-	<section id="section-license-list" class="card resume-section">
-		<div class="card-header">자격사항</div>
-		<div>
-			<table class="table table-edit">
-				<thead>
-					<tr>
-						<th>자격증명</th>
-						<th>발행처</th>
-						<th>취득일</th>
-						<th>관리</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="(license, index) in applicantDetail.license_set" :key="license.pk" class="editable">
-						<td>
-							<input v-bind:id="'license-' + index"
-							       v-model="license.title"
-							       class="form-control"
-							       type="text" v-focus>
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('license_set', 'title', index)">
-								${ error }</small>
-						</td>
-						<td>
-							<input v-model="license.organization" type="text">
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('license_set', 'organization', index)">
-								${ error }</small>
-						</td>
-						<td>
-							<input v-model="license.get_date" type="text">
-							<small class="form-text text-danger"
-							       v-for="error in errorMessages('license_set', 'get_date', index)">
-								${ error }</small>
-						</td>
-						<td>
-							<button v-on:click="deleteApplicantItem('license', index)" class="btn btn-sm btn-dark">삭제</button>
-						</td>
-					</tr>
-					<tr>
-						<td colspan="5">
-							<button v-on:click="addApplicantItem('license')" class="btn btn-primary">추가</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</section>
+        <section id="section-license-list" class="card resume-section">
+            <div class="card-header">자격사항</div>
+            <div>
+                <table class="table table-edit">
+                    <thead>
+                    <tr>
+                        <th>자격증명</th>
+                        <th>발행처</th>
+                        <th>취득일</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(license, index) in applicantDetail.license_set" :key="license.pk" class="editable">
+                        <td>
+                            <input v-bind:id="'license-' + index"
+                                   v-model="license.title"
+                                   class="form-control"
+                                   type="text" v-focus>
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('license_set', 'title', index)">
+                                ${ error }
+                            </small>
+                        </td>
+                        <td>
+                            <input v-model="license.organization" type="text">
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('license_set', 'organization', index)">
+                                ${ error }
+                            </small>
+                        </td>
+                        <td>
+                            <input v-model="license.get_date" type="text">
+                            <small class="form-text text-danger"
+                                   v-for="error in errorMessages('license_set', 'get_date', index)">
+                                ${ error }
+                            </small>
+                        </td>
+                        <td>
+                            <button v-on:click="deleteApplicantItem('license', index)" class="btn btn-sm btn-dark">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">
+                            <button v-on:click="addApplicantItem('license')" class="btn btn-primary">추가</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-	<section class="card resume-section">
-		<div class="card-header">자기소개서</div>
-		<div class="card-body">
-			<form action="">
-				<div class="form-group row">
-					<div class="col">
-						<textarea id="id-intro" v-model="applicantDetail.introduce"></textarea>
-					</div>
-				</div>
-			</form>
-		</div>
-	</section>
-</div>
-{% include 'includes/modal.jinja2' %}
+        <section class="card resume-section">
+            <div class="card-header">자기소개서</div>
+            <div class="card-body">
+                <form action="">
+                    <div class="form-group row">
+                        <div class="col">
+                            <textarea id="id-intro" v-model="applicantDetail.introduce"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
 {% endblock %}
 
 {% block mixin %}
-<script>
-var mixin = {
-  data: {
-    applicantDetail: {
-      choices_looking: [
-        []
-      ]
-    },
-	  applicantLinkList: [],
-	  applicantSkillList: [],
-    skillList: [],
-    linkList: [],
-	  categoryList: [],
-    errors: {},
-    skillErrors: [],
-	  linkErrors: []
-  },
-	methods: {
-    // Looking
-		getLookingClass: function (lookingDict) {
-			if (this.applicantDetail.is_looking === lookingDict[0]) {
-			  return 'btn-primary';
-			} else {
-			  return 'btn-dark';
-			}
-		},
-	  // ApplicantUpdate
-		getCategoryList: function () {
-		  const vm = this;
-		  $.ajax({
-			  method: 'GET',
-			  url: "{{ url('api:courses:job-category-list') }}"
-		  }).done(function (response) {
-		    vm.categoryList = response;
-		  }).fail(function (response) {
-		    console.log(response);
-		  });
-		},
-    getSkillLinkList: function () {
-      const vm = this;
-      $.ajax({
-        method: 'GET',
-        url: "{{ url('api:members:skill-list') }}"
-      }).done(function (response) {
-        vm.skillList = response;
-      }).fail(function (response) {
-        console.log(response);
-      });
+    <script>
+        var mixin = {
+            data: {
+                applicantDetail: {
+                    choices_looking: [
+                        []
+                    ]
+                },
+                applicantLinkList: [],
+                applicantSkillList: [],
+                skillList: [],
+                linkList: [],
+                categoryList: [],
+                errors: {},
+                skillErrors: [],
+                linkErrors: []
+            },
+            methods: {
+                // Looking
+                getLookingClass: function (lookingDict) {
+                    if (this.applicantDetail.is_looking === lookingDict[0]) {
+                        return 'btn-primary';
+                    } else {
+                        return 'btn-dark';
+                    }
+                },
+                // ApplicantUpdate
+                getCategoryList: function () {
+                    const vm = this;
+                    $.ajax({
+                        method: 'GET',
+                        url: "{{ url('api:courses:job-category-list') }}"
+                    }).done(function (response) {
+                        vm.categoryList = response;
+                    }).fail(function (response) {
+                        console.log(response);
+                    });
+                },
+                getSkillLinkList: function () {
+                    const vm = this;
+                    $.ajax({
+                        method: 'GET',
+                        url: "{{ url('api:members:skill-list') }}"
+                    }).done(function (response) {
+                        vm.skillList = response;
+                    }).fail(function (response) {
+                        console.log(response);
+                    });
 
-      $.ajax({
-        method: 'GET',
-        url: "{{ url('api:members:link-list') }}"
-      }).done(function (response) {
-        vm.linkList = response;
-      }).fail(function (response) {
-        console.log(response);
-      });
-    },
-		getApplicantLinkList: function () {
-      const vm = this;
-      $.ajax({
-	      method: 'GET',
-	      url: "{{ url('api:members:applicantlink-list') }}"
-      }).done(function (response) {
-        vm.applicantLinkList = response;
-      }).fail(function (response) {
-        console.log(response);
-      });
-		},
-		addApplicantLink: function () {
-      this.applicantLinkList.push({
-	      link: this.linkList[0],
-	      url: ''
-      });
-      this.$nextTick(function () {
-        console.log(this.$el);
-      });
-		},
-		deleteApplicantLink: function (index) {
-      Vue.delete(this.applicantLinkList, index);
-		},
-		updateApplicantLinkList: function () {
-      const vm = this;
-      var obj = $.extend({}, vm.applicantLinkList);
-      return $.ajax({
-	      method: 'PUT',
-	      url: "{{ url('api:members:applicantlink-list') }}",
-	      data: JSON.stringify(vm.applicantLinkList),
-        contentType: 'application/json',
-        processData: false,
-        dataType: 'JSON'
-      }).done(function (response) {
-        vm.applicantLinkList = response;
-      }).fail(function (response) {
-        vm.linkErrors = response.responseJSON;
-				app.modal({
-					title: '주소목록 오류',
-					content: '입력한 주소 목록의 형식에 문제가 있습니다',
-					firstFunction: function () {
-						goToSection('#section-link-list');
-					}
-				});
-      })
-		},
+                    $.ajax({
+                        method: 'GET',
+                        url: "{{ url('api:members:link-list') }}"
+                    }).done(function (response) {
+                        vm.linkList = response;
+                    }).fail(function (response) {
+                        console.log(response);
+                    });
+                },
+                getApplicantLinkList: function () {
+                    const vm = this;
+                    $.ajax({
+                        method: 'GET',
+                        url: "{{ url('api:members:applicantlink-list') }}"
+                    }).done(function (response) {
+                        vm.applicantLinkList = response;
+                    }).fail(function (response) {
+                        console.log(response);
+                    });
+                },
+                addApplicantLink: function () {
+                    this.applicantLinkList.push({
+                        link: this.linkList[0],
+                        url: ''
+                    });
+                    this.$nextTick(function () {
+                        console.log(this.$el);
+                    });
+                },
+                deleteApplicantLink: function (index) {
+                    Vue.delete(this.applicantLinkList, index);
+                },
+                updateApplicantLinkList: function () {
+                    const vm = this;
+                    var obj = $.extend({}, vm.applicantLinkList);
+                    return $.ajax({
+                        method: 'PUT',
+                        url: "{{ url('api:members:applicantlink-list') }}",
+                        data: JSON.stringify(vm.applicantLinkList),
+                        contentType: 'application/json',
+                        processData: false,
+                        dataType: 'JSON'
+                    }).done(function (response) {
+                        vm.applicantLinkList = response;
+                    }).fail(function (response) {
+                        vm.linkErrors = response.responseJSON;
+                        app.modal({
+                            title: '주소목록 오류',
+                            content: '입력한 주소 목록의 형식에 문제가 있습니다',
+                            firstFunction: function () {
+                                goToSection('#section-link-list');
+                            }
+                        });
+                    })
+                },
 
-		getApplicantSkillList: function () {
-      const vm = this;
-      $.ajax({
-	      method: 'GET',
-	      url: "{{ url('api:members:applicantskill-list') }}"
-      }).done(function (response) {
-        vm.applicantSkillList = response;
-      }).fail(function (response) {
-        console.log(response);
-      });
-		},
-		addApplicantSkill: function () {
-      this.applicantSkillList.push({
-	      skill: this.skillList[0],
-	      url: ''
-      });
-      this.$nextTick(function () {
-        console.log(this.$el);
-      });
-		},
-		deleteApplicantSkill: function (index) {
-      Vue.delete(this.applicantSkillList, index);
-		},
-		updateApplicantSkillList: function () {
-      const vm = this;
-      var obj = $.extend({}, vm.applicantSkillList);
-      return $.ajax({
-	      method: 'PUT',
-	      url: "{{ url('api:members:applicantskill-list') }}",
-	      data: JSON.stringify(vm.applicantSkillList),
-        contentType: 'application/json',
-        processData: false,
-        dataType: 'JSON'
-      }).done(function (response) {
-        vm.applicantSkillList = response;
-      }).fail(function (response) {
-        vm.skillErrors = response.responseJSON;
-        console.log(response.responseJSON);
-        app.modal({
-					title: '보유기술 오류',
-					content: '입력한 보유기술 목록의 형식에 문제가 있습니다',
-					firstFunction: function () {
-						goToSection('#section-skill-list', 20);
-					}
-				});
-      })
-		},
+                getApplicantSkillList: function () {
+                    const vm = this;
+                    $.ajax({
+                        method: 'GET',
+                        url: "{{ url('api:members:applicantskill-list') }}"
+                    }).done(function (response) {
+                        vm.applicantSkillList = response;
+                    }).fail(function (response) {
+                        console.log(response);
+                    });
+                },
+                addApplicantSkill: function () {
+                    this.applicantSkillList.push({
+                        skill: this.skillList[0],
+                        url: ''
+                    });
+                    this.$nextTick(function () {
+                        console.log(this.$el);
+                    });
+                },
+                deleteApplicantSkill: function (index) {
+                    Vue.delete(this.applicantSkillList, index);
+                },
+                updateApplicantSkillList: function () {
+                    const vm = this;
+                    var obj = $.extend({}, vm.applicantSkillList);
+                    return $.ajax({
+                        method: 'PUT',
+                        url: "{{ url('api:members:applicantskill-list') }}",
+                        data: JSON.stringify(vm.applicantSkillList),
+                        contentType: 'application/json',
+                        processData: false,
+                        dataType: 'JSON'
+                    }).done(function (response) {
+                        vm.applicantSkillList = response;
+                    }).fail(function (response) {
+                        vm.skillErrors = response.responseJSON;
+                        console.log(response.responseJSON);
+                        app.modal({
+                            title: '보유기술 오류',
+                            content: '입력한 보유기술 목록의 형식에 문제가 있습니다',
+                            firstFunction: function () {
+                                goToSection('#section-skill-list', 20);
+                            }
+                        });
+                    })
+                },
 
-		errorSkillLinkMessages: function (type, name, index) {
-      const vm = this;
-      var curErrors = undefined;
-      switch (type){
-	      case 'skill':
-	        curErrors = vm.skillErrors;
-	        break;
-	      case 'link':
-	        curErrors = vm.linkErrors;
-	        break;
-      }
-      if ((typeof curErrors !== 'undefined') && !(typeof curErrors[index] === 'undefined')) {
-        if (name in curErrors[index]) {
-          return curErrors[index][name];
-        }
-      }
-		},
+                errorSkillLinkMessages: function (type, name, index) {
+                    const vm = this;
+                    var curErrors = undefined;
+                    switch (type) {
+                        case 'skill':
+                            curErrors = vm.skillErrors;
+                            break;
+                        case 'link':
+                            curErrors = vm.linkErrors;
+                            break;
+                    }
+                    if ((typeof curErrors !== 'undefined') && !(typeof curErrors[index] === 'undefined')) {
+                        if (name in curErrors[index]) {
+                            return curErrors[index][name];
+                        }
+                    }
+                },
 
-    getApplicantProfile: function () {
-      const vm = this;
-      $.ajax({
-        method: 'GET',
-        url: "{{ url('api:members:profile') }}"
-      }).done(function (response) {
-        vm.applicantDetail = response;
-      }).fail(function (response) {
-        console.log('fail');
-        console.log(response);
-      });
-    },
-    deleteApplicantItem: function (type, index) {
-      const vm = this;
-      switch (type) {
-	      case 'edu':
-		      Vue.delete(this.applicantDetail.education_set, index);
-		      break;
-	      case 'career':
-	        Vue.delete(this.applicantDetail.career_set, index);
-		      break;
-	      case 'license':
-	        Vue.delete(this.applicantDetail.license_set, index);
-		      break;
-      }
-    },
-		addApplicantItem: function (type) {
-      switch (type) {
-	      case 'edu':
-	        this.applicantDetail.education_set.push({
-		        school: '',
-		        major: '',
-		        start_date: '',
-		        end_date: '',
-		        type: 'grad'
-	        });
-	        break;
-	      case 'career':
-	        this.applicantDetail.career_set.push({
-		        organization: '',
-		        responsibility: '',
-		        start_date: '',
-		        end_date: '',
-		        position: ''
-	        });
-	        break;
-	      case 'license':
-	        this.applicantDetail.license_set.push({
-		        title: '',
-		        organization: '',
-		        get_date: '',
-	        });
-	        break;
-      }
-		},
-    updateApplicantProfile: function (extraData) {
-      const vm = this;
-      var obj = $.extend({}, vm.applicantDetail);
-      var extraObj = $.extend(obj, extraData);
-      console.log(extraObj);
-      delete extraObj.img_profile;
-      return $.ajax({
-        method: 'PATCH',
-        url: "{{ url('api:members:profile') }}",
-        data: JSON.stringify(extraObj),
-        contentType: 'application/json',
-        processData: false,
-        dataType: 'JSON'
-      }).done(function (response) {
-        var formData = new FormData();
-        var file = $('#id-img-profile')[0].files[0];
-        if (file) {
-          formData.append('img_profile', file);
-          console.log(formData);
-          $.ajax({
-            method: 'PATCH',
-            url: "{{ url('api:members:profile') }}",
-            data: formData,
-            processData: false,
-            contentType: false,
-          }).done(function (response) {
-            vm.errors = {}
-            vm.applicantDetail = response;
-            $('#id-img-profile').val('');
-          });
-        } else {
-          vm.errors = {};
-          vm.applicantDetail = response;
-        }
-        app.modal({
-	        title: '지원서 저장 완료',
-	        content: '지원서 변경내역이 저장되었습니다'
-        })
-      }).fail(function (response) {
-        console.log(response);
-        vm.errors = response.responseJSON;
-        var modalTitle = '';
-        var modalContent = '';
-        var modalFirstFunction = undefined;
-        var modalSecondFunction = undefined;
-        if (typeof vm.errors.education_set !== 'undefined') {
-          modalTitle = '학력사항 오류';
-          modalContent = '입력한 학력사항의 형식에 문제가 있습니다';
-          modalFirstFunction = function () {
-            goToSection('#section-education-list', 20);
-          }
-        } else if (typeof vm.errors.career_set !== 'undefined') {
-          modalTitle = '경력사항 오류';
-          modalContent = '입력한 경력사항의 형식에 문제가 있습니다';
-          modalFirstFunction = function () {
-            goToSection('#section-career-list', 20);
-          }
-        } else if (typeof vm.errors.license_set !== 'undefined') {
-          modalTitle = '자격사항 오류';
-          modalContent = '입력한 자격사항의 형식에 문제가 있습니다';
-          modalFirstFunction = function () {
-            goToSection('#section-license-list', 20);
-          }
-        }
-        app.modal({
-					title: modalTitle,
-					content: modalContent,
-					firstFunction: modalFirstFunction
-				});
-      });
-    },
-		errorMessages: function (type, name, index) {
-      const vm = this;
-      if (type in vm.errors) {
-				if (!(typeof vm.errors[type][index] === 'undefined')) {
-					if (name in vm.errors[type][index]) {
-	          return vm.errors[type][index][name];
-	        }
-				}
-      }
-		}
-	}
-};
-</script>
+                getApplicantProfile: function () {
+                    const vm = this;
+                    $.ajax({
+                        method: 'GET',
+                        url: "{{ url('api:members:profile') }}"
+                    }).done(function (response) {
+                        vm.applicantDetail = response;
+                    }).fail(function (response) {
+                        console.log('fail');
+                        console.log(response);
+                    });
+                },
+                deleteApplicantItem: function (type, index) {
+                    const vm = this;
+                    switch (type) {
+                        case 'edu':
+                            Vue.delete(this.applicantDetail.education_set, index);
+                            break;
+                        case 'career':
+                            Vue.delete(this.applicantDetail.career_set, index);
+                            break;
+                        case 'license':
+                            Vue.delete(this.applicantDetail.license_set, index);
+                            break;
+                    }
+                },
+                addApplicantItem: function (type) {
+                    switch (type) {
+                        case 'edu':
+                            this.applicantDetail.education_set.push({
+                                school: '',
+                                major: '',
+                                start_date: '',
+                                end_date: '',
+                                type: 'grad'
+                            });
+                            break;
+                        case 'career':
+                            this.applicantDetail.career_set.push({
+                                organization: '',
+                                responsibility: '',
+                                start_date: '',
+                                end_date: '',
+                                position: ''
+                            });
+                            break;
+                        case 'license':
+                            this.applicantDetail.license_set.push({
+                                title: '',
+                                organization: '',
+                                get_date: '',
+                            });
+                            break;
+                    }
+                },
+                updateApplicantProfile: function (extraData) {
+                    const vm = this;
+                    var obj = $.extend({}, vm.applicantDetail);
+                    var extraObj = $.extend(obj, extraData);
+                    console.log(extraObj);
+                    delete extraObj.img_profile;
+                    return $.ajax({
+                        method: 'PATCH',
+                        url: "{{ url('api:members:profile') }}",
+                        data: JSON.stringify(extraObj),
+                        contentType: 'application/json',
+                        processData: false,
+                        dataType: 'JSON'
+                    }).done(function (response) {
+                        var formData = new FormData();
+                        var file = $('#id-img-profile')[0].files[0];
+                        if (file) {
+                            formData.append('img_profile', file);
+                            console.log(formData);
+                            $.ajax({
+                                method: 'PATCH',
+                                url: "{{ url('api:members:profile') }}",
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                            }).done(function (response) {
+                                vm.errors = {}
+                                vm.applicantDetail = response;
+                                $('#id-img-profile').val('');
+                            });
+                        } else {
+                            vm.errors = {};
+                            vm.applicantDetail = response;
+                        }
+                        app.modal({
+                            title: '지원서 저장 완료',
+                            content: '지원서 변경내역이 저장되었습니다'
+                        })
+                    }).fail(function (response) {
+                        console.log(response);
+                        vm.errors = response.responseJSON;
+                        var modalTitle = '';
+                        var modalContent = '';
+                        var modalFirstFunction = undefined;
+                        var modalSecondFunction = undefined;
+                        if (typeof vm.errors.education_set !== 'undefined') {
+                            modalTitle = '학력사항 오류';
+                            modalContent = '입력한 학력사항의 형식에 문제가 있습니다';
+                            modalFirstFunction = function () {
+                                goToSection('#section-education-list', 20);
+                            }
+                        } else if (typeof vm.errors.career_set !== 'undefined') {
+                            modalTitle = '경력사항 오류';
+                            modalContent = '입력한 경력사항의 형식에 문제가 있습니다';
+                            modalFirstFunction = function () {
+                                goToSection('#section-career-list', 20);
+                            }
+                        } else if (typeof vm.errors.license_set !== 'undefined') {
+                            modalTitle = '자격사항 오류';
+                            modalContent = '입력한 자격사항의 형식에 문제가 있습니다';
+                            modalFirstFunction = function () {
+                                goToSection('#section-license-list', 20);
+                            }
+                        }
+                        app.modal({
+                            title: modalTitle,
+                            content: modalContent,
+                            firstFunction: modalFirstFunction
+                        });
+                    });
+                },
+                errorMessages: function (type, name, index) {
+                    const vm = this;
+                    if (type in vm.errors) {
+                        if (!(typeof vm.errors[type][index] === 'undefined')) {
+                            if (name in vm.errors[type][index]) {
+                                return vm.errors[type][index][name];
+                            }
+                        }
+                    }
+                }
+            }
+        };
+    </script>
 {% endblock %}
 
 {% block script %}
-<script>
-	app.getCategoryList();
-	app.getSkillLinkList();
-	app.getApplicantLinkList();
-	app.getApplicantSkillList();
-	app.getApplicantProfile();
-	var editor = CKEDITOR.replace('id-intro', {
-	  toolbar: 'Default',
-		height: 500
-	});
+    <script>
+        app.getCategoryList();
+        app.getSkillLinkList();
+        app.getApplicantLinkList();
+        app.getApplicantSkillList();
+        app.getApplicantProfile();
+        var editor = CKEDITOR.replace('id-intro', {
+            toolbar: 'Default',
+            height: 500
+        });
 
-	function update () {
-	  console.log('update');
-	  var editorData = editor.getData();
-	  var extraData = {
-	    introduce: editorData
-	  };
-	  var update1 = app.updateApplicantLinkList();
-    $.when(update1).done(function () {
-      var update2 = app.updateApplicantSkillList();
-      $.when(update2).done(function () {
-        app.updateApplicantProfile(extraData);
-      })
-    });
-	}
-</script>
+        function update() {
+            console.log('update');
+            var editorData = editor.getData();
+            var extraData = {
+                introduce: editorData
+            };
+            var update1 = app.updateApplicantLinkList();
+            $.when(update1).done(function () {
+                var update2 = app.updateApplicantSkillList();
+                $.when(update2).done(function () {
+                    app.updateApplicantProfile(extraData);
+                })
+            });
+        }
+    </script>
 {% endblock %}

@@ -2,9 +2,11 @@
 
 {% block content_header %}
 <header class="content-header">
-	<div class="title">
-		{% block header_title %}{% endblock %}
-	</div>
-	{% block header_content %}{% endblock %}
+    <div class="container-fluid">
+        <div class="title">
+            {% block header_title %}{% endblock %}
+        </div>
+	    {% block header_content %}{% endblock %}
+    </div>
 </header>
 {% endblock %}

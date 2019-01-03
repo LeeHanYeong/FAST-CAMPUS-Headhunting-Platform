@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from members.permissions import IsCompanyUser
 from utils.email.serializers import HireEmailSendSerializer
 
+
 __all__ = (
     'HireEmailSendAPIView',
 )

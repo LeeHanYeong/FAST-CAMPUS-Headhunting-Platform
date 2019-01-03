@@ -99,7 +99,7 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        ret['phone_number'] = instance.phone_number.as_national
+        ret['phone_number'] = instance.phone_number.as_national if instance.phone_number else ''
         return ret
 
     def to_internal_value(self, data):

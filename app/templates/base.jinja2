@@ -1,117 +1,121 @@
 <!doctype html>
 <html lang="ko">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport"
-	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link rel="shortcut icon" href="{{ static('images/favicon.ico') }}">
-	<link rel="stylesheet" href="{{ static('fontawesome/css/all.css') }}">
-	<link rel="stylesheet" href="{{ static('open-iconic/css/open-iconic-bootstrap.css') }}">
-	<link rel="stylesheet" href="{% sass_src 'scss/base.scss' %}">
-	<link rel="stylesheet" href="{{ static('bootstrap/bootstrap.css') }}">
-	<link rel="stylesheet" href="{% sass_src 'scss/bootstrap.scss' %}">
-	<link rel="stylesheet" href="{% sass_src 'scss/layout.scss' %}">
-	<script type="text/javascript" src="{{ static('js/ajax.js') }}"></script>
-	<script type="text/javascript" src="{{ static('js/jquery.js') }}"></script>
-	<script type="text/javascript" src="{{ static('js/popper.js') }}"></script>
-	<script type="text/javascript" src="{{ static('bootstrap/js/bootstrap.js') }}"></script>
-	<script type="text/javascript" src="{{ static('js/vue.js') }}"></script>
-	<script type="text/javascript" src="{{ static('ckeditor/ckeditor-init.js') }}"></script>
-	<script type="text/javascript" src="{{ static('ckeditor/ckeditor/ckeditor.js') }}"></script>
-	<title>FAST CAMPUS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="{{ static('images/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ static('fontawesome/css/all.css') }}">
+    <link rel="stylesheet" href="{{ static('open-iconic/css/open-iconic-bootstrap.css') }}">
+    <link rel="stylesheet" href="{% sass_src 'scss/base.scss' %}">
+    <link rel="stylesheet" href="{{ static('bootstrap/bootstrap-ori.min.css') }}">
+    <link rel="stylesheet" href="{{ static('bootstrap/bootstrap.css') }}">
+    <link rel="stylesheet" href="{% sass_src 'scss/bootstrap.scss' %}">
+    <link rel="stylesheet" href="{% sass_src 'scss/layout.scss' %}">
+    <script type="text/javascript" src="{{ static('js/ajax.js') }}"></script>
+    <script type="text/javascript" src="{{ static('js/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ static('js/popper.js') }}"></script>
+    <script type="text/javascript" src="{{ static('bootstrap/js/bootstrap.js') }}"></script>
+    <script type="text/javascript" src="{{ static('js/vue.js') }}"></script>
+    <script type="text/javascript" src="{{ static('ckeditor/ckeditor-init.js') }}"></script>
+    <script type="text/javascript" src="{{ static('ckeditor/ckeditor/ckeditor.js') }}"></script>
+    <title>FAST CAMPUS</title>
 </head>
 <body>
-	<div id="wrap">
-		<header class="main-header">
-			<div class="header-top clearfix">
-				<div class="btn-container clearfix">
-					<a href="https://www.fastcampus.co.kr/" class="header-item">패스트캠퍼스 홈</a>
-				</div>
-			</div>
-			<div class="header-content">
-				<div class="container-fluid">
-					<a href="{{ url('index') }}">
-						<img class="header-icon" src="{{ static('images/icon_logo2.png') }}" alt="">
-					</a>
-					{% if request.user.is_authenticated %}
-						<div class="btn-container child-middle">
-							{% if request.user.get_type_display() == '지원자' %}
-								<a href="{{ url('members:applicant-update') }}" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
-							{% else %}
-								<a href="#" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
-							{% endif %}
-							<a href="{{ url('members:logout') }}" class="btn btn-outline-dark">LOGOUT</a>
-						</div>
-					{% else %}
-						<div class="btn-container child-middle">
-							<a href="{{ url('members:login') }}" class="btn btn-outline-primary mr-1">LOGIN</a>
-							<a href="{{ url('members:signup') }}" class="btn btn-outline-dark">SIGNUP</a>
-						</div>
-					{% endif %}
-				</div>
-			</div>
-			<div class="bg-primary">
-				<div class="container-fluid">
-					<nav class="main-nav row">
-						<div class="nav-item col-6 col-sm-3 col-lg-2">
-							<a href="{{ url('members:applicant-list') }}" class="nav-link text-light">지원자 현황</a>
-							<ul class="category-list clearfix">
-								{% for category in category_list %}
-									<li class="category-item">
-										<div class="item-title">
-											<a href="{{ url('members:applicant-list') }}{{ query(request, category=category.pk, only=True) }}" class="text-light">{{ category.title }}</a>
-										</div>
-									</li>
-								{% endfor %}
-							</ul>
-						</div>
-						<div class="nav-item col-6 col-sm-3 col-lg-2">
-							<a href="{{ url('company-list') }}" class="nav-link text-light">채용연계 기업</a>
-						</div>
-					</nav>
-				</div>
-			</div>
-		</header>
-		{% block content_header %}
-		{% endblock %}
-		<div id="content" class="{% block content_class %}{% endblock %}">
-			{% block content %}
-			{% endblock %}
-		</div>
-		{% include 'includes/footer.jinja2' %}
-	</div>
-	<script>
-		var csrftoken = getCookie('csrftoken');
-		var baseURL = '{{ request.scheme }}://{{ request.META.HTTP_HOST }}';
-		$.ajaxSetup({
-			beforeSend: function(xhr, settings) {
-			  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+<div id="wrap">
+    <header class="main-header">
+        <div class="header-top clearfix">
+            <div class="btn-container clearfix">
+                <button v-on:click="showModalSpinner('테스트')" class="header-item">테스트</button>
+                <a href="https://www.fastcampus.co.kr/" class="header-item">패스트캠퍼스 홈</a>
+            </div>
+        </div>
+        <div class="header-content">
+            <div class="container-fluid">
+                <a href="{{ url('index') }}">
+                    <img class="header-icon" src="{{ static('images/icon_logo2.png') }}" alt="">
+                </a>
+                {% if request.user.is_authenticated %}
+                    <div class="btn-container child-middle">
+                        {% if request.user.get_type_display() == '지원자' %}
+                            <a href="{{ url('members:applicant-update') }}" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
+                        {% else %}
+                            <a href="#" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
+                        {% endif %}
+                        <a href="{{ url('members:logout') }}" class="btn btn-outline-dark">LOGOUT</a>
+                    </div>
+                {% else %}
+                    <div class="btn-container child-middle">
+                        <a href="{{ url('members:login') }}" class="btn btn-outline-primary mr-1">LOGIN</a>
+                        <a href="{{ url('members:signup') }}" class="btn btn-outline-dark">SIGNUP</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="bg-primary">
+            <div class="container-fluid">
+                <nav class="main-nav row">
+                    <div class="nav-item col-6 col-sm-3 col-lg-2">
+                        <a href="{{ url('members:applicant-list') }}" class="nav-link text-light">지원자 현황</a>
+                        <ul class="category-list clearfix">
+                            {% for category in category_list %}
+                                <li class="category-item">
+                                    <div class="item-title">
+                                        <a href="
+                                            {{ url('members:applicant-list') }}{{ query(request, category=category.pk, only=True) }}" class="text-light">{{ category.title }}</a>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="nav-item col-6 col-sm-3 col-lg-2">
+                        <a href="{{ url('company-list') }}" class="nav-link text-light">채용연계 기업</a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    {% block content_header %}
+    {% endblock %}
+    <div id="content" class="{% block content_class %}{% endblock %}">
+        {% block content %}
+        {% endblock %}
+    </div>
+    {% include 'includes/footer.jinja2' %}
+    {% include 'includes/modal.jinja2' %}
+</div>
+<script>
+    var csrftoken = getCookie('csrftoken');
+    var baseURL = '{{ request.scheme }}://{{ request.META.HTTP_HOST }}';
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+            settings.url = baseURL + settings.url;
         }
-			  settings.url = baseURL + settings.url;
-			}
-		});
-		var mixin = {};
-		console.log('asdf');
-		$(function () {
-			$('.main-nav > .nav-item').hover(
-			  function () {
-			    var list = $(this).find('.category-list');
-				  list.show();
-				},
-				function () {
-			    var list = $(this).find('.category-list');
-			    list.hide();
-				}
-			);
-		});
+    });
+    var mixin = {};
+    $(function () {
+        $('.main-nav > .nav-item').hover(
+            function () {
+                var list = $(this).find('.category-list');
+                list.show();
+            },
+            function () {
+                var list = $(this).find('.category-list');
+                list.hide();
+            }
+        );
+    });
+</script>
+{% block mixin %}{% endblock %}
 
-	</script>
-	{% block mixin %}{% endblock %}
-	<script>
-		{% include 'includes/script.js' %}
-	</script>
-	{% block script %}{% endblock %}
+<script>
+    {% include 'includes/script.js' %}
+</script>
+{% block script %}{% endblock %}
+
 </body>
 </html>
