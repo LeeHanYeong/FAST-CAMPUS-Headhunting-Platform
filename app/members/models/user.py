@@ -97,6 +97,8 @@ class User(TimeStampedMixin, AbstractUser):
     short_intro = models.CharField('한 줄 소개', max_length=200, blank=True)
     introduce = RichTextUploadingField('소개', blank=True)
 
+    pdf1 = models.FileField('PDF1', upload_to='users/pdf', blank=True)
+    pdf2 = models.FileField('PDF2', upload_to='users/pdf', blank=True)
     _links = models.ManyToManyField(
         'Link', verbose_name='링크 목록', blank=True,
         through='ApplicantLink', related_name='users', related_query_name='user',

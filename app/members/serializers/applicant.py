@@ -87,6 +87,8 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
             'birth_date',
             'short_intro',
             'introduce',
+            'pdf1',
+            'pdf2',
 
             'education_set',
             'career_set',

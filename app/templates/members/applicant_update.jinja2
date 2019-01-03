@@ -102,6 +102,24 @@
                     </div>
                     <hr>
                     <div id="section-link-list" v-if="applicantLinkList">
+                        <div class="form-group row">
+                            <div class="col-sm-3">
+                                <label for="id-pdf1">PDF1</label>
+                            </div>
+                            <div class="col-sm-7">
+                                <div>파일: <a v-if="applicantDetail.pdf1" v-bind:href="applicantDetail.pdf1">${ applicantDetail.pdf1.substring(applicantDetail.pdf1.lastIndexOf('/pdf/') + 5, applicantDetail.pdf1.lastIndexOf('?')) }</a></div>
+                                <input type="file" id="id-pdf1" class="form-control-file">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-3">
+                                <label for="id-pdf2">PDF2</label>
+                            </div>
+                            <div class="col-sm-7">
+                                <div>파일: <a v-if="applicantDetail.pdf2" v-bind:href="applicantDetail.pdf2">${ applicantDetail.pdf2.substring(applicantDetail.pdf2.lastIndexOf('/pdf/') + 5, applicantDetail.pdf2.lastIndexOf('?')) }</a></div>
+                                <input type="file" id="id-pdf2" class="form-control-file">
+                            </div>
+                        </div>
                         <div v-for="(applicantLink, index) in applicantLinkList" class="form-group row">
                             <div class="col-sm-3">
                                 <select v-model="applicantLink.link" class="form-control">
@@ -603,8 +621,9 @@
                     const vm = this;
                     var obj = $.extend({}, vm.applicantDetail);
                     var extraObj = $.extend(obj, extraData);
-                    console.log(extraObj);
                     delete extraObj.img_profile;
+                    delete extraObj.pdf1;
+                    delete extraObj.pdf2;
                     return $.ajax({
                         method: 'PATCH',
                         url: "{{ url('api:members:profile') }}",
@@ -617,7 +636,6 @@
                         var file = $('#id-img-profile')[0].files[0];
                         if (file) {
                             formData.append('img_profile', file);
-                            console.log(formData);
                             $.ajax({
                                 method: 'PATCH',
                                 url: "{{ url('api:members:profile') }}",
@@ -633,10 +651,38 @@
                             vm.errors = {};
                             vm.applicantDetail = response;
                         }
+
+                        var formDataPdf = new FormData();
+                        var filePdf1 = $('#id-pdf1')[0].files[0];
+                        var filePdf2 = $('#id-pdf2')[0].files[0];
+                        if (filePdf1) {
+                            formDataPdf.append('pdf1', filePdf1);
+                        }
+                        if (filePdf2) {
+                            formDataPdf.append('pdf2', filePdf2);
+                        }
+                        if (filePdf1 || filePdf2) {
+                            $.ajax({
+                                method: 'PATCH',
+                                url: "{{ url('api:members:profile') }}",
+                                data: formDataPdf,
+                                processData: false,
+                                contentType: false,
+                            }).done(function (response) {
+                                vm.errors = {}
+                                vm.applicantDetail = response;
+                                $('#id-pdf1').val('');
+                                $('#id-pdf2').val('');
+                            });
+                        } else {
+                            vm.errors = {};
+                            vm.applicantDetail = response;
+                        }
+
                         app.modal({
                             title: '지원서 저장 완료',
                             content: '지원서 변경내역이 저장되었습니다'
-                        })
+                        });
                     }).fail(function (response) {
                         console.log(response);
                         vm.errors = response.responseJSON;
@@ -698,7 +744,6 @@
         });
 
         function update() {
-            console.log('update');
             var editorData = editor.getData();
             var extraData = {
                 introduce: editorData

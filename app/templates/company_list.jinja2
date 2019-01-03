@@ -64,7 +64,7 @@
 	<div class="row">
 		{% for company in company_list %}
 			<div class="col-lg-2 col-md-3 col-sm-4 col-6">
-				<a href="{{ company.url }}" class="card">
+				<a href="{{ company.url }}" target="_blank" class="card">
 					<div class="card-body">
 						<img src="{{ company.img_logo.url }}" alt="">
 						<h5 class="card-title">{{ company.name }}</h5>

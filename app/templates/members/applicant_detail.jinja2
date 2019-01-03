@@ -76,7 +76,21 @@
                                             </a>
                                         </li>
                                     {% endfor %}
-                                    {% for i in range(6 - applicant.links.count()) %}
+                                    {% if applicant.pdf1 %}
+                                        <li class="link-item">
+                                            <a href="{{ applicant.pdf1.url }}">
+                                                <img src="{{ static('images/btn-pdf.svg') }}" alt="">
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% if applicant.pdf2 %}
+                                        <li class="link-item">
+                                            <a href="{{ applicant.pdf2.url }}">
+                                                <img src="{{ static('images/btn-pdf.svg') }}" alt="">
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                    {% for i in range(6 - link_item_count) %}
                                         <li class="link-item blank">
                                             <a class="blank-item"></a>
                                         </li>
