@@ -61,7 +61,6 @@ class User(TimeStampedMixin, AbstractUser):
         (LOOKING_NEW, '신입'),
         (LOOKING_EXP, '경력'),
         (LOOKING_SWITCHING, '커리어 전환'),
-        (LOOKING_COMPLETE, '구직 완료'),
     )
     username = None
     last_name = models.CharField('성', max_length=150)
