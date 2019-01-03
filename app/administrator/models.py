@@ -23,7 +23,7 @@ class StaticContent(models.Model):
         help_text='모바일 메인 배너 이미지의 세로 길이를 지정합니다. 가로길이는 세로길이와 관계없이 가로를 가득 채우도록 설정됩니다')
 
     company_list_image = models.ImageField(
-        '참여기업 목록 이미지', help_text='참여기업 목록의 배너 이미지 입니다.', upload_to='static', blank=True)
+        '채용연계기업 목록 이미지', help_text='채용연계기업 목록의 배너 이미지 입니다.', upload_to='static', blank=True)
 
     privacy_policy = RichTextField('개인정보 취급방침', blank=True)
     terms_of_service = RichTextField('이용약관', blank=True)
@@ -66,7 +66,7 @@ class Company(TimeStampedModel):
     img_logo = DefaultStaticImageField(
         '로고', upload_to='company', blank=True, default_image_path='blank_user.png')
     url = models.URLField('URL', blank=True)
-    is_show = models.BooleanField('참여기업 목록에 표시', default=False)
+    is_show = models.BooleanField('채용연계기업 목록에 표시', default=False)
 
     class Meta:
         ordering = ['name']

@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='staticcontent',
             name='company_list_image',
-            field=models.ImageField(blank=True, help_text='참여기업 목록의 배너 이미지 입니다.', upload_to='static', verbose_name='참여기업 목록 이미지'),
+            field=models.ImageField(blank=True, help_text='채용연계기업 목록의 배너 이미지 입니다.', upload_to='static', verbose_name='참여기업 목록 이미지'),
         ),
         migrations.AlterField(
             model_name='staticcontent',
