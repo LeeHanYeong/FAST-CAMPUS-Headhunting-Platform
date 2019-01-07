@@ -26,14 +26,6 @@ class CompanyUser(User):
         super().save(*args, **kwargs)
 
     @property
-    def company_name(self):
-        return self._company_name
-
-    @company_name.setter
-    def company_name(self, value):
-        self._company_name = value
-
-    @property
     def position(self):
         return self._position
 

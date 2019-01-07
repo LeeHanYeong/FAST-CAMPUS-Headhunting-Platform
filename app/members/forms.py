@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 from courses.models import JobGroup
+from utils.email import send_company_user_signup_notification
 from .models import ApplicantUser, CompanyUser
 
 ATTRS_FORM_CONTROL = {
@@ -105,8 +106,9 @@ class CompanySignupForm(UserCreationForm):
         }
 
     def save(self, commit=True):
-        instance = super().save(commit)
+        user = super().save(commit)
         hire_job_groups = self.cleaned_data['hire_job_groups']
         for job_group in hire_job_groups:
-            instance.hire_job_group_set.create(job_group=job_group)
-        return instance
+            user.hire_job_group_set.create(job_group=job_group)
+        send_company_user_signup_notification(user)
+        return user

@@ -25,6 +25,9 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 PRINT_JSON_SETTINGS = False
 import_secrets()
 
+# Essential
+SITE_ID = 1
+
 # Static
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
@@ -75,6 +78,8 @@ DATETIME_FORMAT = 'Y-m-d'
 
 # django-modeladmin-reorder
 ADMIN_REORDER = (
+    'sites',
+    'contenttypes',
     {'app': 'auth', 'label': '인증, 권한', 'models': (
         {
             'model': 'auth.Permission',
@@ -145,6 +150,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'admin_reorder',
     'ckeditor',

@@ -14,6 +14,13 @@ DEBUG = False or (
         and sys.argv[1] == 'runserver'
         and platform.system() != 'Linux'
 )
+
+# SSL
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+CSRF_COOKIE_SECURE = True
+
+# WSGI
 WSGI_APPLICATION = 'config.wsgi.production.application'
 
 # Static
