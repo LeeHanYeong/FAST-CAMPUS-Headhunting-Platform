@@ -124,6 +124,8 @@ class User(TimeStampedMixin, AbstractUser):
         verbose_name_plural = f'{verbose_name} 목록'
 
     def __str__(self):
+        if self._company:
+            return self.company_info
         return self.name
 
     @property
@@ -135,6 +137,10 @@ class User(TimeStampedMixin, AbstractUser):
         if self._company:
             return self._company.name
         return self._company_name
+
+    @property
+    def company_info(self):
+        return f'{self.company_name} - {self.name} ({self._position})'
 
     name.fget.short_description = '이름'
     name.fget.admin_order_field = Concat('last_name', 'first_name')
@@ -158,6 +164,15 @@ class UserLike(TimeStampedMixin, models.Model):
         )
 
 
+class CompanyUserHireJobGroupWithApprovalStatusManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).prefetch_related(
+            'job_group__category',
+        ).select_related(
+            'company_user___company',
+        )
+
+
 class CompanyUserHireJobGroupWithApprovalStatus(models.Model):
     """
     기업회원이 채용을 원하는 직군과의 M2M연결 중간모델
@@ -177,6 +192,8 @@ class CompanyUserHireJobGroupWithApprovalStatus(models.Model):
     )
     status = models.CharField('승인상태', choices=CHOICES_STATUS, max_length=20, default=STATUS_WAIT)
 
+    objects = CompanyUserHireJobGroupWithApprovalStatusManager()
+
     class Meta:
         verbose_name = '채용희망직군(상태포함)'
         verbose_name_plural = f'{verbose_name} 목록'
@@ -190,10 +207,3 @@ class CompanyUserHireJobGroupWithApprovalStatus(models.Model):
             job_group=self.job_group.title,
             status=self.get_status_display(),
         )
-
-    @property
-    def company_info(self):
-        return f'{self.company_user.company_name} - {self.company_user.name} ({self.company_user._position})'
-
-    company_info.fget.short_description = '기업회원'
-    company_info.fget.admin_order_field = Concat('last_name', 'first_name')
