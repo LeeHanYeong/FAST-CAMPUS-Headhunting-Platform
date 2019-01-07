@@ -2,6 +2,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.db.models.functions import Concat
 from django.utils import timezone
 from django_fields import DefaultStaticImageField
 from phonenumber_field.modelfields import PhoneNumberField
@@ -122,11 +123,15 @@ class User(TimeStampedMixin, AbstractUser):
         verbose_name = '사용자'
         verbose_name_plural = f'{verbose_name} 목록'
 
+    def __str__(self):
+        return self.name
+
     @property
     def name(self):
         return f'{self.last_name}{self.first_name}'
 
     name.fget.short_description = '이름'
+    name.fget.admin_order_field = Concat('last_name', 'first_name')
 
 
 class UserLike(TimeStampedMixin, models.Model):

@@ -1,3 +1,6 @@
+# DB Dump
+dump.json
+
 # runserver_plus
 app/cert.crt
 app/cert.key

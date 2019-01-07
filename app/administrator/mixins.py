@@ -2,6 +2,10 @@ from django.views.generic.base import ContextMixin
 
 from .models import StaticContent
 
+__all__ = (
+    'StaticContentMixin',
+)
+
 
 class StaticContentMixin(ContextMixin):
     def get_context_data(self, **kwargs):

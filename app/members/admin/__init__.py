@@ -2,8 +2,9 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from .applicant import ApplicantUserAdmin
-from ..models import User, ApplicantUser, CompanyUser, Link, Skill, CompanyUserHireJobGroupWithApprovalStatus
+from .applicant import *
+from .company import *
+from ..models import *
 
 
 class UserAdmin(BaseUserAdmin):
@@ -70,6 +71,6 @@ class CompanyUserAdmin(BaseUserAdmin):
 admin.site.register(User, UserAdmin)
 admin.site.register(ApplicantUser, ApplicantUserAdmin)
 admin.site.register(CompanyUser, CompanyUserAdmin)
-admin.site.register(CompanyUserHireJobGroupWithApprovalStatus)
+admin.site.register(CompanyUserHireJobGroupWithApprovalStatus, CompanyUserHireJobGroupWithApprovalStatusAdmin)
 admin.site.register(Link)
 admin.site.register(Skill)

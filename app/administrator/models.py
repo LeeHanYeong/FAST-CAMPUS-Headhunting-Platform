@@ -4,6 +4,12 @@ from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from django_fields import DefaultStaticImageField
 
+__all__ = (
+    'StaticContent',
+    'Service',
+    'Company',
+)
+
 
 class StaticContent(models.Model):
     index_image = models.ImageField(

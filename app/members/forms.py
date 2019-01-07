@@ -89,7 +89,6 @@ class CompanySignupForm(UserCreationForm):
             'email': forms.EmailInput(attrs=ATTRS_FORM_CONTROL),
             'last_name': forms.TextInput(attrs=ATTRS_FORM_CONTROL),
             'first_name': forms.TextInput(attrs=ATTRS_FORM_CONTROL),
-            # 'phone_number': PhoneNumberPrefixWidget(attrs=ATTRS_FORM_CONTROL),
             'phone_number': forms.TextInput(attrs={
                 'placeholder': '000-0000-0000',
                 **ATTRS_FORM_CONTROL
@@ -103,7 +102,6 @@ class CompanySignupForm(UserCreationForm):
                 'placeholder': '위의 목록에 회사명이 없을 경우 직접 입력해주세요',
                 **ATTRS_FORM_CONTROL
             }),
-            # 'hire_job_groups': forms.
         }
 
     def save(self, commit=True):

@@ -22,6 +22,7 @@ SECRETS_DIR = os.path.join(ROOT_DIR, '.secrets')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
+PRINT_JSON_SETTINGS = False
 import_secrets()
 
 # Static
@@ -78,14 +79,16 @@ ADMIN_REORDER = (
         'administrator.Service',
         'administrator.Company',
     )},
-    {'app': 'administrator', 'label': '정적 콘텐츠 관리', 'models': (
+    {'app': 'administrator', 'label': '기타 관리자 콘텐츠 관리', 'models': (
+        'members.User',
         'administrator.StaticContent',
     )},
-    {'app': 'members', 'label': '사용자 관리', 'models': (
-        'members.User',
-        'members.ApplicantUser',
+    {'app': 'members', 'label': '기업회원 관리', 'models': (
         'members.CompanyUser',
         'members.CompanyUserHireJobGroupWithApprovalStatus',
+    )},
+    {'app': 'members', 'label': '지원자 관리', 'models': (
+        'members.ApplicantUser',
     )},
     {'app': 'members', 'label': '이력서 항목 관리', 'models': (
         'members.Link',
