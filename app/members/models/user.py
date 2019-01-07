@@ -124,8 +124,12 @@ class User(TimeStampedMixin, AbstractUser):
         verbose_name_plural = f'{verbose_name} 목록'
 
     def __str__(self):
-        if self._company:
+        if self.type == self.TYPE_STAFF:
+            return f'{self.name} (관리자)'
+        elif self.type == self.TYPE_COMPANY:
             return self.company_info
+        elif self.type == self.TYPE_APPLICANT:
+            return self.name
         return self.name
 
     @property

@@ -75,6 +75,16 @@ DATETIME_FORMAT = 'Y-m-d'
 
 # django-modeladmin-reorder
 ADMIN_REORDER = (
+    {'app': 'auth', 'label': '인증, 권한', 'models': (
+        {
+            'model': 'auth.Permission',
+            'label': '권한',
+        },
+        {
+            'model': 'auth.Group',
+            'label': '권한 그룹',
+        },
+    )},
     {'app': 'administrator', 'label': '회사(채용연계기업) 관리', 'models': (
         'administrator.Service',
         'administrator.Company',

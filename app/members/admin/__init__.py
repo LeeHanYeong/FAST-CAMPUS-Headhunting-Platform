@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.contrib.auth.models import Permission, Group
 from django.utils.translation import gettext_lazy as _
 
 from .applicant import *
@@ -81,7 +82,27 @@ class CompanyUserAdmin(BaseUserAdmin):
         return form
 
 
+class StaffGroupInline(admin.TabularInline):
+    model = User.groups.through
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        field = super().formfield_for_foreignkey(db_field, request, **kwargs)
+        if db_field.name == 'user':
+            field.queryset = field.queryset.filter(type=User.TYPE_STAFF)
+        return field
+
+
+class GroupAdmin(admin.ModelAdmin):
+    inlines = [
+        StaffGroupInline,
+    ]
+    exclude = ('user_set',)
+
+
 admin.site.register(User, UserAdmin)
+admin.site.register(Permission)
+admin.site.unregister(Group)
+admin.site.register(Group, GroupAdmin)
 admin.site.register(ApplicantUser, ApplicantUserAdmin)
 admin.site.register(CompanyUser, CompanyUserAdmin)
 admin.site.register(CompanyUserHireJobGroupWithApprovalStatus, CompanyUserHireJobGroupWithApprovalStatusAdmin)
