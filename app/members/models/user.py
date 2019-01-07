@@ -130,6 +130,12 @@ class User(TimeStampedMixin, AbstractUser):
     def name(self):
         return f'{self.last_name}{self.first_name}'
 
+    @property
+    def company_name(self):
+        if self._company:
+            return self._company.name
+        return self._company_name
+
     name.fget.short_description = '이름'
     name.fget.admin_order_field = Concat('last_name', 'first_name')
 
@@ -184,3 +190,10 @@ class CompanyUserHireJobGroupWithApprovalStatus(models.Model):
             job_group=self.job_group.title,
             status=self.get_status_display(),
         )
+
+    @property
+    def company_info(self):
+        return f'{self.company_user.company_name} - {self.company_user.name} ({self.company_user._position})'
+
+    company_info.fget.short_description = '기업회원'
+    company_info.fget.admin_order_field = Concat('last_name', 'first_name')

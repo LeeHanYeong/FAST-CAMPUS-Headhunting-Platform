@@ -9,6 +9,6 @@ __all__ = (
 
 
 class CompanyUserHireJobGroupWithApprovalStatusAdmin(admin.ModelAdmin):
-    list_display = ('company_user', 'job_group', 'status')
+    list_display = ('company_info', 'job_group', 'status')
     list_editable = ('status',)
-    search_fields = ('company_user__name',)
+    # search_fields = ('company_user__company_info',)

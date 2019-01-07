@@ -21,8 +21,8 @@ class ApplicantListView(ListView):
     context_object_name = 'applicants'
 
     def get_queryset(self):
-        queryset = ApplicantUser.objects.published()\
-            .prefetch_related('followers', '_skills', 'job_groups', 'job_groups__category')\
+        queryset = ApplicantUser.objects.published() \
+            .prefetch_related('followers', '_skills', 'job_groups', 'job_groups__category') \
             .annotate(full_name=Concat(F('last_name'), F('first_name')))
         return ApplicantUserFilter(self.request.GET, queryset=queryset).qs.distinct()
 
@@ -98,5 +98,5 @@ class CompanySignupView(StaticContentMixin, FormView):
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user)
+        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         return super().form_valid(form)
