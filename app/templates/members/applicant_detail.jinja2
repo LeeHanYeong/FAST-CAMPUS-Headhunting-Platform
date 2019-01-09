@@ -244,9 +244,11 @@
                             applicant: applicantPk
                         }
                     }).done(function (response) {
+                        console.log(response);
                         vm.changeModalSpinnerTitle('발송 완료!');
                         vm.hideModalSpinner(1000);
                     }).fail(function (response) {
+                        console.log(response);
                         vm.changeModalSpinnerTitle('발송 실패');
                         vm.hideModalSpinner(1000);
                     });

@@ -68,7 +68,7 @@
                     <div class="form-group row">
                         <label for="id-birth" class="col-sm-2 col-form-label">생년월일</label>
                         <div class="col-sm-10 col-md-4">
-                            <input v-model="applicantDetail.birth_date" type="text" id="id-birth" class="form-control" placeholder="YYYY-MM-DD (ex: 1990-01-01)" autocomplete="off">
+                            <input v-model="applicantDetail.birth_date" type="text" placeholder="YYYY-MM-DD" id="id-birth" class="form-control" placeholder="YYYY-MM-DD (ex: 1990-01-01)" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -131,7 +131,7 @@
                                 </small>
                             </div>
                             <div class="col-sm-7">
-                                <input v-model="applicantLink.url" type="text" class="form-control" placeholder="" autocomplete="off">
+                                <input v-model="applicantLink.url" type="text" class="form-control" placeholder="http:// 또는 https://로 시작" autocomplete="off">
                                 <small class="form-text text-danger"
                                        v-for="error in errorSkillLinkMessages('link', 'url', index)">
                                     ${ error }
@@ -222,8 +222,8 @@
                             </small>
                         </td>
                         <td>
-                            <input v-model="edu.start_date" type="text"> ~
-                            <input v-model="edu.end_date" type="text">
+                            <input v-model="edu.start_date" type="text" placeholder="YYYY-MM-DD"> ~
+                            <input v-model="edu.end_date" type="text" placeholder="YYYY-MM-DD">
                             <small class="form-text text-danger"
                                    v-for="error in errorMessages('education_set', 'start_date', index)">
                                 ${ error }
@@ -291,8 +291,8 @@
                             </small>
                         </td>
                         <td>
-                            <input v-model="career.start_date" type="text"> ~
-                            <input v-model="career.end_date" type="text">
+                            <input v-model="career.start_date" type="text" placeholder="YYYY-MM-DD"> ~
+                            <input v-model="career.end_date" type="text" placeholder="YYYY-MM-DD">
                             <small class="form-text text-danger"
                                    v-for="error in errorMessages('career_set', 'start_date', index)">
                                 ${ error }
@@ -355,7 +355,7 @@
                             </small>
                         </td>
                         <td>
-                            <input v-model="license.get_date" type="text">
+                            <input v-model="license.get_date" type="text" placeholder="YYYY-MM-DD">
                             <small class="form-text text-danger"
                                    v-for="error in errorMessages('license_set', 'get_date', index)">
                                 ${ error }
@@ -530,10 +530,11 @@
                         processData: false,
                         dataType: 'JSON'
                     }).done(function (response) {
+                        console.log(response);
                         vm.applicantSkillList = response;
                     }).fail(function (response) {
                         vm.skillErrors = response.responseJSON;
-                        console.log(response.responseJSON);
+                        console.log(response);
                         app.modal({
                             title: '보유기술 오류',
                             content: '입력한 보유기술 목록의 형식에 문제가 있습니다',
