@@ -14,7 +14,12 @@ var app = new Vue({
         mixin
     ],
     data: {
-        failCount: 0
+        failCount: 0,
+        modalSpinner: undefined
+    },
+    mounted: function () {
+        console.log(this.data);
+        this.modalSpinner = $('#id-spinner-modal');
     },
     methods: {
         // Common
@@ -45,24 +50,30 @@ var app = new Vue({
             elModal.modal();
         },
         showModalSpinner: function (title) {
-            var elModal = $('#id-spinner-modal');
-            elModal.find('#id-spinner-modal-title').text(title);
-            elModal.modal();
+            this.modalSpinner.find('#id-spinner-modal-title').text(title);
+            this.modalSpinner.modal('show');
+            // this.modalSpinner.modal({
+            //     backdrop: 'static',
+            //     keyboard: false
+            // });
         },
         changeModalSpinnerTitle: function (title) {
-            var elModal = $('#id-spinner-modal');
-            elModal.find('#id-spinner-modal-title').text(title);
+            this.modalSpinner.find('#id-spinner-modal-title').text(title);
         },
         hideModalSpinner: function (time) {
-            var elModal = $('#id-spinner-modal');
+            const vm = this;
+            function hideProcess() {
+                vm.modalSpinner.modal('hide');
+                // elModal.removeClass('show');
+                // $('.modal-backdrop').remove();
+                // $('body').removeClass('modal-open');
+            }
             if (time !== undefined) {
                 setTimeout(function () {
-                    elModal.hide();
-                    $('.modal-backdrop').remove();
+                    hideProcess();
                 }, time);
             } else {
-                elModal.hide();
-                $('.modal-backdrop').remove();
+                hideProcess();
             }
         },
 

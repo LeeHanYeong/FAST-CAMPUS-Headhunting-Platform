@@ -5,7 +5,7 @@
         <div class="title">
             <span>지원자 이력서 수정</span>
         </div>
-        <button onclick="update()" class="btn btn-primary float-right pl-5 pr-5">수정 완료</button>
+        <button id="applicant-update-btn-edit" onclick="update()" class="btn btn-primary float-right pl-5 pr-5">수정 완료</button>
     </header>
 {% endblock %}
 
@@ -679,11 +679,12 @@
                             vm.errors = {};
                             vm.applicantDetail = response;
                         }
-
+                        /*
                         app.modal({
                             title: '지원서 저장 완료',
                             content: '지원서 변경내역이 저장되었습니다'
                         });
+                        */
                     }).fail(function (response) {
                         console.log(response);
                         vm.errors = response.responseJSON;
@@ -749,13 +750,28 @@
             var extraData = {
                 introduce: editorData
             };
+            app.showModalSpinner('업데이트 중...');
             var update1 = app.updateApplicantLinkList();
             $.when(update1).done(function () {
                 var update2 = app.updateApplicantSkillList();
                 $.when(update2).done(function () {
-                    app.updateApplicantProfile(extraData);
+                    var update3 = app.updateApplicantProfile(extraData);
+                    $.when(update3).done(function () {
+                        app.changeModalSpinnerTitle('프로필 업데이트 완료');
+                        app.hideModalSpinner(500);
+                    });
                 })
             });
         }
+        var btnEdit = $('#applicant-update-btn-edit');
+        var btnTopOffset = btnEdit.offset().top;
+        window.addEventListener('scroll', function (event) {
+            var scroll = this.scrollY;
+            if (scroll > btnTopOffset) {
+                btnEdit.addClass('fixed btn-lg');
+            } else {
+                btnEdit.removeClass('fixed');
+            }
+        });
     </script>
 {% endblock %}

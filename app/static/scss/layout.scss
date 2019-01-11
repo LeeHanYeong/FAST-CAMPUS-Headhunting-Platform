@@ -282,6 +282,15 @@ header.content-header {
 section.card.resume-section {
 
 }
+#applicant-update-btn-edit {
+  z-index: 1000;
+}
+#applicant-update-btn-edit.fixed {
+  position: fixed;
+  bottom: 5%;
+  right: 1%;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5) !important
+}
 
 // ApplicationDetail
 .application-detail-container {
