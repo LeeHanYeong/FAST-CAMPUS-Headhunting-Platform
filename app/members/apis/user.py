@@ -2,7 +2,7 @@ from rest_framework import generics, permissions, mixins
 from rest_framework.generics import get_object_or_404
 
 from ..models import UserLike
-from ..permissions import IsFromUser
+from ..permissions.apis import IsFromUser
 from ..serializers import UserLikeCreateDeleteSerializer
 
 __all__ = (

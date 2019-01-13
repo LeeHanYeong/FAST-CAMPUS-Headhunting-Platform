@@ -1,0 +1,14 @@
+{% extends 'base.jinja2' %}
+
+{% block content_class %}{% endblock %}
+
+{% block content %}
+<div class="error-page text-center">
+    <div class="mt-4 mb-4">
+        <h4 class="mb-3">이 페이지의 접근 권한이 없습니다</h4>
+        <div>
+            <a href="{{ url('index') }}" class="btn btn-primary">홈으로 돌아가기</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

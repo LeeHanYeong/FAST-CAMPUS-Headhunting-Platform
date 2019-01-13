@@ -2,7 +2,7 @@ from rest_framework import permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from members.permissions import IsCompanyUser
+from members.permissions.apis import IsCompanyUser
 from utils.email.serializers import HireEmailSendSerializer
 
 

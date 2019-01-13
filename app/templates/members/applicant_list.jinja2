@@ -1,104 +1,107 @@
 {% extends 'base_header.jinja2' %}
 
 {% block header_title %}
-<span>지원자 현황{% if cur_category %} ({{ cur_category.title }}){% endif %}</span>
+    <span>지원자 현황{% if cur_category %} ({{ cur_category.title }}){% endif %}</span>
 {% endblock %}
 
 {% block header_content %}
-<div class="right-menu child-middle">
-	<div class="dropdown d-inline-block h-input">
-		<button class="btn btn-dark dropdown-toggle pl-4 pr-4 mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	    {% set cur_group = request.GET.get('groups') %}
-			{% if cur_group %}
-		    {% for group in group_list.values('pk', 'title') %}
-			    {% if cur_group|int == group.pk %}
-				    {{ group.title }}
-			    {% endif %}
-		    {% endfor %}
-			{% else %}
-				직군
-			{% endif %}
-	  </button>
-	  <div class="dropdown-menu">
-	    <a class="dropdown-item"
-	         href="{{ url('members:applicant-list') }}{{ query(request) }}">전체</a>
-	    {% if cur_category %}
-	      {% set category_list = category_list.filter(pk=cur_category.pk) %}
-	    {% endif %}
+    <div class="right-menu child-middle">
+        <div class="dropdown d-inline-block h-input">
+            <button class="btn btn-dark dropdown-toggle pl-4 pr-4 mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% set cur_group = request.GET.get('groups') %}
+                {% if cur_group %}
+                    {% for group in group_list.values('pk', 'title') %}
+                        {% if cur_group|int == group.pk %}
+                            {{ group.title }}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    직군
+                {% endif %}
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item"
+                   href="{{ url('members:applicant-list') }}{{ query(request) }}">전체</a>
+                {% if cur_category %}
+                    {% set category_list = category_list.filter(pk=cur_category.pk) %}
+                {% endif %}
 
-	    {% for category in category_list %}
-		    <div class="dropdown-divider"></div>
+                {% for category in category_list %}
+                    <div class="dropdown-divider"></div>
 
-		    {% if not cur_category %}
-		      <h6 class="dropdown-header">{{ category.title }}</h6>
-		    {% endif %}
+                    {% if not cur_category %}
+                        <h6 class="dropdown-header">{{ category.title }}</h6>
+                    {% endif %}
 
-		    {% for group in category.group_set.all() %}
-		      <a href="{{ url('members:applicant-list') }}{{ query(request, groups=group.pk) }}" class="dropdown-item">{{ group.title }}</a>
-		    {% endfor %}
-	    {% endfor %}
-	  </div>
-	</div>
+                    {% for group in category.group_set.all() %}
+                        <a href="
+                            {{ url('members:applicant-list') }}{{ query(request, groups=group.pk) }}" class="dropdown-item">{{ group.title }}</a>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
 
-	<div class="dropdown d-inline-block h-input">
-		<button class="btn btn-dark dropdown-toggle pl-4 pr-4 mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	    {% set cur_looking = request.GET.get('is_looking') %}
-			{% if cur_looking %}
-		    {% for looking, looking_display in choices_looking %}
-			    {% if cur_looking == looking %}
-				    {{ looking_display }}
-			    {% endif %}
-		    {% endfor %}
-			{% else %}
-				지원자 타입
-			{% endif %}
-	  </button>
-	  <div class="dropdown-menu">
-	    <a class="dropdown-item"
-	         href="{{ url('members:applicant-list') }}{{ query(request, is_looking='') }}">전체</a>
-		  {% for looking, looking_display in choices_looking %}
-	      <a class="dropdown-item"
-	         href="{{ url('members:applicant-list') }}{{ query(request, is_looking=looking) }}">{{ looking_display }}</a>
-		  {% endfor %}
-	  </div>
-	</div>
-	<form action="" class="d-inline-block h-input">
-		{% if cur_category %}
-			<input name="category" type="hidden" value="{{ cur_category.pk }}">
-		{% endif %}
-		<input name="keyword" value="{{ request.GET.get('keyword', '') }}"
-		       type="text" class="form-control" placeholder="학생/키워드 검색하기">
-	</form>
-</div>
+        <div class="dropdown d-inline-block h-input">
+            <button class="btn btn-dark dropdown-toggle pl-4 pr-4 mr-2" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% set cur_looking = request.GET.get('is_looking') %}
+                {% if cur_looking %}
+                    {% for looking, looking_display in choices_looking %}
+                        {% if cur_looking == looking %}
+                            {{ looking_display }}
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    지원자 타입
+                {% endif %}
+            </button>
+            <div class="dropdown-menu">
+                <a class="dropdown-item"
+                   href="
+                       {{ url('members:applicant-list') }}{{ query(request, is_looking='') }}">전체</a>
+                {% for looking, looking_display in choices_looking %}
+                    <a class="dropdown-item"
+                       href="{{ url('members:applicant-list') }}{{ query(request, is_looking=looking) }}">{{ looking_display }}</a>
+                {% endfor %}
+            </div>
+        </div>
+        <form action="" class="d-inline-block h-input">
+            {% if cur_category %}
+                <input name="category" type="hidden" value="{{ cur_category.pk }}">
+            {% endif %}
+            <input name="keyword" value="{{ request.GET.get('keyword', '') }}"
+                   type="text" class="form-control" placeholder="학생/키워드 검색하기">
+        </form>
+    </div>
 {% endblock %}
 
 {% block content %}
-<div class="applicant-list container-fluid">
-	<div class="row">
-	{% for applicant in applicants %}
-		<div class="col-lg-6 mb-5">
-			<div class="user">
-				<div class="content">
-                {% if request.user.is_authenticated %}
-                <img id="img-applicant-{{ applicant.pk }}"
-                     v-bind:src="bookmarkImageSrc({{ applicant.pk }})"
-                     v-on:click.self="toggleUserLike($event)"
-                     data-user-pk="{{ applicant.pk }}"
-                     data-is-like="{{ request.user in applicant.followers.all() }}"
-                     class="bookmark">
-                {% endif %}
-					<a href="{{ url('members:applicant-detail', args=[applicant.pk]) }}" class="name-course">
-						<span class="name mr-2">{{ applicant.name }}</span>
-						<span>{{ applicant.job_groups.values_list('title', flat=True)|join(', ') }}</span>
-					</a>
-					<p class="short-intro">{{ applicant.short_intro }}</p>
-					<div class="badge-list">
-						{% for skill in applicant._skills.all() %}
-							<span class="badge badge-pill badge-light">#{{ skill.title }}</span>
-						{% endfor %}
+    <div class="applicant-list container-fluid">
+        <div class="row">
+            {% for applicant in applicants %}
+                <div class="col-lg-6 mb-5">
+                    <div class="user">
+                        <div class="content">
+                            {% if request.user.is_authenticated and request.user.type == 'c' %}
+                                <img id="img-applicant-{{ applicant.pk }}"
+                                     v-bind:src="bookmarkImageSrc({{ applicant.pk }})"
+                                     v-on:click.self="toggleUserLike($event)"
+                                     data-user-pk="{{ applicant.pk }}"
+                                     data-is-like="{{ request.user in applicant.followers.all() }}"
+                                     class="bookmark">
+                            {% endif %}
+                            <a v-on:click.capture="clickDetail({{ applicant.pk }}, '{{ url('members:applicant-detail', args=[applicant.pk]) }}')"
+                               class="name-course" style="cursor: pointer;">
+                                <span class="name mr-2">{{ applicant.name }}</span>
+                                <span>{{ applicant.job_groups.values_list('title', flat=True)|join(', ') }}</span>
+                            </a>
+                            <p class="short-intro">{{ applicant.short_intro }}</p>
+                            <div class="badge-list">
+                                {% for skill in applicant._skills.all() %}
+                                    <span class="badge badge-pill badge-light">#{{ skill.title }}</span>
+                                {% endfor %}
 
-					</div>
-                    <div class="status">
+                            </div>
+                            <div class="status">
                         <span class="badge badge-pill
                             {% if applicant.is_looking != 'c' %}
                                 badge-primary
@@ -107,17 +110,42 @@
                             {% endif %}">
                             {{ applicant.get_is_looking_display() }}
                         </span>
+                            </div>
+                        </div>
                     </div>
-				</div>
-			</div>
-		</div>
-	{% endfor %}
-	</div>
-</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block mixin %}
+    <script>
+        var mixin = {
+            data: {
+                userType: "{{ request.user.type }}"
+            },
+            methods: {
+                clickDetail: function (applicantPk, url) {
+                    const vm = this;
+                    var requestUserPk = {{ request.user.pk }};
+                    console.log('clickDetail');
+                    console.log(this.userType);
+                    if (this.userType === 'c' || applicantPk.toString() === requestUserPk.toString()) {
+                        window.location.href = url;
+                    } else if (this.userType === 'a') {
+                        vm.modalInfo({
+                            title: '다른 지원자의 이력서는 열람할 수 없습니다'
+                        });
+                    }
+                }
+            }
+        }
+    </script>
 {% endblock %}
 
 {% block script %}
-<script>
+    <script>
 
-</script>
+    </script>
 {% endblock %}

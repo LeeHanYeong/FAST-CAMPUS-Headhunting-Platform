@@ -18,7 +18,6 @@ var app = new Vue({
         modalSpinner: undefined
     },
     mounted: function () {
-        console.log(this.data);
         this.modalSpinner = $('#id-spinner-modal');
     },
     methods: {
@@ -49,13 +48,16 @@ var app = new Vue({
             }
             elModal.modal();
         },
+        modalInfo: function (options) {
+            var elModal = $('#id-modal-info');
+            if (typeof options.title !== 'undefined') {
+                elModal.find('.modal-title').text(options.title);
+            }
+            elModal.modal();
+        },
         showModalSpinner: function (title) {
             this.modalSpinner.find('#id-spinner-modal-title').text(title);
             this.modalSpinner.modal('show');
-            // this.modalSpinner.modal({
-            //     backdrop: 'static',
-            //     keyboard: false
-            // });
         },
         changeModalSpinnerTitle: function (title) {
             this.modalSpinner.find('#id-spinner-modal-title').text(title);
@@ -64,9 +66,6 @@ var app = new Vue({
             const vm = this;
             function hideProcess() {
                 vm.modalSpinner.modal('hide');
-                // elModal.removeClass('show');
-                // $('.modal-backdrop').remove();
-                // $('body').removeClass('modal-open');
             }
             if (time !== undefined) {
                 setTimeout(function () {

@@ -1,4 +1,5 @@
-from django.contrib.auth import login
+from django.contrib.auth import login, get_user_model
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.views import (
     LogoutView as DjangoLogoutView,
     LoginView as DjangoLoginView,
@@ -13,6 +14,8 @@ from courses.models import JobCategory
 from .filters import ApplicantUserFilter
 from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm
 from .models import ApplicantUser, ApplicantSkill
+
+User = get_user_model()
 
 
 class ApplicantListView(ListView):
@@ -42,12 +45,8 @@ class ApplicantListView(ListView):
 class ApplicantUpdateView(TemplateView):
     template_name = 'members/applicant_update.jinja2'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
 
-
-class ApplicantDetailView(DetailView):
+class ApplicantDetailView(UserPassesTestMixin, DetailView):
     model = ApplicantUser
     queryset = ApplicantUser.objects.prefetch_related(
         'skills__skill',
@@ -65,6 +64,9 @@ class ApplicantDetailView(DetailView):
         if self.object.pdf2:
             context['link_item_count'] += 1
         return context
+
+    def test_func(self):
+        return self.request.user.type == User.TYPE_COMPANY or self.get_object() == self.request.user
 
 
 class LoginView(DjangoLoginView):

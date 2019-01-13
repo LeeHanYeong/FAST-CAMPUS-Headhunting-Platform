@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from ..models import (
     ApplicantUser,
     Link, Skill, ApplicantLink, ApplicantSkill)
-from ..permissions import ObjIsRequestUser, IsUserOrReadOnly
+from ..permissions.apis import ObjIsRequestUser, IsUserOrReadOnly
 from ..serializers import (
     ApplicantLinkSerializer,
     LinkSerializer, SkillSerializer)
