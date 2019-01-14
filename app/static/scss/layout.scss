@@ -298,11 +298,20 @@ section.card.resume-section {
     display: flex;
     flex-direction: row;
 
-    img.img-profile {
-      width: 100%;
-      height: auto;
-      margin-bottom: 1.5rem;
+    .img-container {
+      img.img-profile {
+        width: 100%;
+        height: auto;
+        margin-bottom: 1.5rem;
+      }
+      img.bookmark {
+        position: absolute;
+        left: 25px;
+        top: 0;
+        cursor: pointer;
+      }
     }
+
 
     > .detail-top-card {
       display: flex;
