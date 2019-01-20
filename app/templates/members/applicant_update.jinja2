@@ -486,6 +486,7 @@
                         vm.applicantLinkList = response;
                     }).fail(function (response) {
                         vm.linkErrors = response.responseJSON;
+                        vm.hideModalSpinner();
                         app.modal({
                             title: '주소목록 오류',
                             content: '입력한 주소 목록의 형식에 문제가 있습니다',
@@ -535,6 +536,7 @@
                     }).fail(function (response) {
                         vm.skillErrors = response.responseJSON;
                         console.log(response);
+                        vm.hideModalSpinner();
                         app.modal({
                             title: '보유기술 오류',
                             content: '입력한 보유기술 목록의 형식에 문제가 있습니다',
@@ -687,6 +689,7 @@
                         */
                     }).fail(function (response) {
                         console.log(response);
+                        vm.hideModalSpinner();
                         vm.errors = response.responseJSON;
                         var modalTitle = '';
                         var modalContent = '';

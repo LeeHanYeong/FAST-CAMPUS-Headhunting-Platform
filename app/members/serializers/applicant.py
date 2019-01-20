@@ -39,6 +39,11 @@ class EducationSerializer(serializers.ModelSerializer):
             'end_date',
         )
 
+    def to_internal_value(self, data):
+        if data['end_date'] == '':
+            data.pop('end_date')
+        return data
+
 
 class CareerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -51,6 +56,11 @@ class CareerSerializer(serializers.ModelSerializer):
             'start_date',
             'end_date',
         )
+
+    def to_internal_value(self, data):
+        if data['end_date'] == '':
+            data.pop('end_date')
+        return data
 
 
 class LicenseSerializer(serializers.ModelSerializer):
