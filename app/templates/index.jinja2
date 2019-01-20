@@ -13,8 +13,10 @@
 		     background-size: cover;
              background-position: center top;
              height: 400px;">
-        <div class="index-html">
-            {{ static_content.index_html|safe }}
+        <div class="container-fluid">
+            <div class="index-html">
+                {{ static_content.index_html|safe }}
+            </div>
         </div>
 	</div>
 	<div class="logo d-sm-none"
@@ -27,9 +29,30 @@
 	       height: {{ static_content.index_mobile_height }}px;
 		     max-height: {{ static_content.index_mobile_height }}px;
 		     ">
-        <div class="index-html">
-            {{ static_content.index_mobile_html|safe }}
+        <div class="container-fluid">
+            <div class="index-html">
+                {{ static_content.index_mobile_html|safe }}
+            </div>
         </div>
 	</div>
+
+    <div class="container-fluid mt-0 mt-sm-1">
+        <div class="row card-container">
+            <div class="col-12 col-sm-6 mt-2">
+                <a href="{{ url('members:applicant-signup') }}" class="main-card pr-5 p-3 p-sm-4 shadow">
+                    <h4>지원자 등록</h4>
+                    <p class="mb-0">패스트캠퍼스에서 강화한 역량을<br>이력서와 포트폴리오를 등록하고 기업들의 스카웃제의를 받아보세요.</p>
+                    <div class="arrow"><span class="oi oi-caret-right"></span></div>
+                </a>
+            </div>
+            <div class="col-12 col-sm-6 mt-2">
+                <a href="{{ url('members:company-signup') }}" class="main-card pr-5 p-3 p-sm-4 shadow">
+                    <h4>채용연계 기업 등록</h4>
+                    <p class="mb-0">각 분야 인재들의 이력서와 포트폴리오를 확인하고<br>입사를 권유하고 싶으시다면 기업 등록 후 이용해보세요.</p>
+                    <div class="arrow"><span class="oi oi-caret-right"></span></div>
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

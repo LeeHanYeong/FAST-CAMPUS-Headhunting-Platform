@@ -180,6 +180,30 @@ header.content-header {
     background-repeat: no-repeat;
     background-position: center center;
   }
+  .card-container {
+    .main-card {
+      cursor: pointer;
+      position: relative;
+      width: 100%;
+      display: inline-block;
+      text-decoration: none;
+      border: $border-light-gray;
+
+      .arrow {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 30px;
+        height: 100%;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        background-color: $color-theme;
+      }
+    }
+  }
 }
 
 // Login

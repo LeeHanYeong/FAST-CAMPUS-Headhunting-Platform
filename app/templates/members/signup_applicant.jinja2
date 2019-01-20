@@ -11,42 +11,45 @@
 {% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-	<div class="login-card card col-md-8 col-lg-5">
-		<form action="" method="POST">
-			{{ csrf_input }}
-			<h4 class="text-center">개인정보</h4>
-			{% for field in form %}
-			<div class="form-group">
-				<label for="{{ field.id_for_label }}">{{ field.label }}</label>
-				{{ field }}
-			</div>
-			{% endfor %}
+    <div class="container-fluid">
+        <div class="justify-content-center">
+            <div class="login-card card col-md-8 col-lg-5">
+                <form action="" method="POST">
+                    {{ csrf_input }}
+                    <h4 class="text-center">개인정보</h4>
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                        </div>
+                    {% endfor %}
 
-			<div class="form-group mt-4">
-				<h4 class="text-center">개인정보 취급방침</h4>
-				<div class="scroll-text">{{ static_content.privacy_policy|safe }}</div>
-				<div class="custom-control custom-checkbox mt-2">
-				  <input v-model="check1" type="checkbox" class="custom-control-input" id="check-signup1">
-				  <label class="custom-control-label" for="check-signup1">동의합니다</label>
-				</div>
-			</div>
+                    <div class="form-group mt-4">
+                        <h4 class="text-center">개인정보 취급방침</h4>
+                        <div class="scroll-text">{{ static_content.privacy_policy|safe }}</div>
+                        <div class="custom-control custom-checkbox mt-2">
+                            <input v-model="check1" type="checkbox" class="custom-control-input" id="check-signup1">
+                            <label class="custom-control-label" for="check-signup1">동의합니다</label>
+                        </div>
+                    </div>
 
-			<div class="form-group mt-4">
-				<h4 class="text-center">서비스 이용약관</h4>
-				<div class="scroll-text">{{ static_content.terms_of_service|safe }}</div>
-				<div class="custom-control custom-checkbox mt-2">
-				  <input v-model="check2" type="checkbox" class="custom-control-input" id="check-signup2">
-				  <label class="custom-control-label" for="check-signup2">동의합니다</label>
-				</div>
-			</div>
-			<button :disabled="!checked" class="btn btn-primary btn-lg btn-block mt-4">회원가입</button>
-			<div class="text-center mt-3">
-				이미 회원이신가요? <a href="{{ url('members:login') }}" class="text-primary ml-1 font-weight-bold">로그인 하기</a>
-			</div>
-		</form>
-	</div>
-</div>
+                    <div class="form-group mt-4">
+                        <h4 class="text-center">서비스 이용약관</h4>
+                        <div class="scroll-text">{{ static_content.terms_of_service|safe }}</div>
+                        <div class="custom-control custom-checkbox mt-2">
+                            <input v-model="check2" type="checkbox" class="custom-control-input" id="check-signup2">
+                            <label class="custom-control-label" for="check-signup2">동의합니다</label>
+                        </div>
+                    </div>
+                    <button :disabled="!checked" class="btn btn-primary btn-lg btn-block mt-4">회원가입</button>
+                    <div class="text-center mt-3">
+                        이미 회원이신가요?
+                        <a href="{{ url('members:login') }}" class="text-primary ml-1 font-weight-bold">로그인 하기</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block mixin %}
