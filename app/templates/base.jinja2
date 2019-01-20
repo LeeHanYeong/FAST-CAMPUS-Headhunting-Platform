@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ static('bootstrap/bootstrap.css') }}">
     <link rel="stylesheet" href="{% sass_src 'scss/bootstrap.scss' %}">
     <link rel="stylesheet" href="{% sass_src 'scss/layout.scss' %}">
+    <link rel="stylesheet" href="{% sass_src 'scss/layout-media.scss' %}">
     <script type="text/javascript" src="{{ static('js/ajax.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/jquery.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/popper.js') }}"></script>
@@ -56,8 +57,8 @@
         </div>
         <div class="bg-primary">
             <div class="container-fluid">
-                <nav class="main-nav row">
-                    <div class="nav-item col-6 col-sm-3 col-lg-2">
+                <nav class="main-nav row d-none d-sm-flex">
+                    <div class="nav-item nav-item-desktop col-6 col-sm-3 col-lg-2">
                         <a href="{{ url('members:applicant-list') }}" class="nav-link text-light">지원자 현황</a>
                         <ul class="category-list clearfix">
                             {% for category in category_list %}
@@ -69,6 +70,27 @@
                                 </li>
                             {% endfor %}
                         </ul>
+                    </div>
+                    <div class="nav-item nav-item-desktop col-6 col-sm-3 col-lg-2">
+                        <a href="{{ url('company-list') }}" class="nav-link text-light">채용연계 기업</a>
+                    </div>
+                </nav>
+
+                <nav class="main-nav row d-sm-none">
+                    <div class="nav-item col-6 col-sm-3 col-lg-2">
+                        <a v-on:click="showNavMenu1 = !showNavMenu1" class="nav-link text-light">지원자 현황</a>
+                        <transition name="fade">
+                            <ul v-if="showNavMenu1" class="category-list mobile clearfix">
+                                {% for category in category_list %}
+                                    <li class="category-item">
+                                        <div class="item-title">
+                                            <a href="
+                                                {{ url('members:applicant-list') }}{{ query(request, category=category.pk, only=True) }}" class="text-light">{{ category.title }}</a>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </transition>
                     </div>
                     <div class="nav-item col-6 col-sm-3 col-lg-2">
                         <a href="{{ url('company-list') }}" class="nav-link text-light">채용연계 기업</a>
@@ -99,7 +121,7 @@
     });
     var mixin = {};
     $(function () {
-        $('.main-nav > .nav-item').hover(
+        $('.main-nav > .nav-item.nav-item-desktop').hover(
             function () {
                 var list = $(this).find('.category-list');
                 list.show();
@@ -109,9 +131,17 @@
                 list.hide();
             }
         );
+        $(window).click(function(e) {
+            console.log(e);
+            if (!$(e.target).is('.nav-link')) {
+                console.log('out');
+                app.showNavMenu1 = false;
+            }
+        });
     });
 </script>
-{% block mixin %}{% endblock %}
+{% block mixin %}
+{% endblock %}
 
 <script>
     {% include 'includes/script.js' %}

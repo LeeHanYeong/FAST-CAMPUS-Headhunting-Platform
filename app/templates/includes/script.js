@@ -14,6 +14,7 @@ var app = new Vue({
         mixin
     ],
     data: {
+        showNavMenu1: false,
         failCount: 0,
         modalSpinner: undefined
     },
@@ -75,6 +76,8 @@ var app = new Vue({
                 hideProcess();
             }
         },
+        // Header
+
 
         // ApplicantList
         bookmarkImageSrc: function (applicantPk) {
