@@ -12,6 +12,7 @@ __all__ = (
 
 
 class StaticContent(models.Model):
+    index_html = RichTextField('메인 HTML', blank=True)
     index_image = models.ImageField(
         '메인페이지 이미지', upload_to='index', blank=True)
     index_color = RGBColorField(
@@ -20,6 +21,7 @@ class StaticContent(models.Model):
         '메인페이지 이미지 세로 길이(px)', default=200,
         help_text='메인 배너 이미지의 세로 길이를 지정합니다. 가로길이는 세로 길이의 비율로 정해집니다.')
 
+    index_mobile_html = RichTextField('모바일 HTML', blank=True)
     index_mobile_image = models.ImageField(
         '메인페이지 모바일 이미지', help_text='모바일 이미지는 세로길이와 관계없이 가로를 가득 채우도록 설정됩니다',
         upload_to='index', blank=True)

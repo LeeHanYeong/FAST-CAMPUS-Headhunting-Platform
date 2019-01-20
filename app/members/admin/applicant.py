@@ -67,6 +67,8 @@ class ApplicantUserAdmin(BaseUserAdmin):
             'short_intro',
             'introduce',
             'job_groups',
+            'pdf1',
+            'pdf2',
         )}),
     )
     add_fieldsets = (

@@ -4,17 +4,24 @@
 
 {% block content %}
 <div class="index-container">
-	<div class="logo d-none d-lg-block"
+	<div class="logo d-none d-sm-block"
 	     style="
 		     {% if static_content.index_image %}
 		     background-image: url('{{ static_content.index_image.url }}');
 		     {% endif %}
 		     background-color: {{ static_content.index_color }};
-		     height: {{ static_content.index_height }}px;
-		     max-height: {{ static_content.index_height }}px;
-		     ">
+		     background-size: cover;
+             background-position: center top;
+             height: 400px;">
+        <div class="index-html"
+             style="
+             padding: 2rem;
+             line-height: 1.5;
+             color: white;">
+            {{ static_content.index_html|safe }}
+        </div>
 	</div>
-	<div class="logo d-lg-none"
+	<div class="logo d-sm-none"
 	     style="
 		     {% if static_content.index_mobile_image %}
 		     background-image: url('{{ static_content.index_mobile_image.url }}');
@@ -24,6 +31,13 @@
 	       height: {{ static_content.index_mobile_height }}px;
 		     max-height: {{ static_content.index_mobile_height }}px;
 		     ">
+        <div class="index-html"
+             style="
+             padding: 2rem;
+             line-height: 1.5;
+             color: white;">
+            {{ static_content.index_mobile_html|safe }}
+        </div>
 	</div>
 </div>
 {% endblock %}
