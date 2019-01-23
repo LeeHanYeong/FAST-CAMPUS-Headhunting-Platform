@@ -1,5 +1,8 @@
 from ckeditor.fields import RichTextField
 from colorful.fields import RGBColorField
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.db import models
 from django_extensions.db.models import TimeStampedModel
 from django_fields import DefaultStaticImageField
@@ -8,6 +11,7 @@ __all__ = (
     'StaticContent',
     'Service',
     'Company',
+    'MailingGroup',
 )
 
 
@@ -83,3 +87,43 @@ class Company(TimeStampedModel):
 
     def __str__(self):
         return self.name
+
+
+class MailingGroupManager(models.Manager):
+    CODE_COMPANY_USER_JOBGROUP_APPROVE = 'company_user_jobgroup_approve'
+    CODE_USER_JOINED = 'user_joined'
+    INITIAL_DATA = (
+        (CODE_COMPANY_USER_JOBGROUP_APPROVE, '기업회원의 채용희망직군 승인'),
+        (CODE_USER_JOINED, '사용자 회원가입')
+    )
+
+    def create_initial(self):
+        for code, name in self.INITIAL_DATA:
+            self.get_or_create(code=code, name=name)
+
+
+class MailingGroup(models.Model):
+    code = models.CharField('코드', max_length=50)
+    name = models.CharField('그룹명', max_length=100)
+    description = models.CharField('설명', max_length=200, blank=True)
+    is_applied = models.BooleanField('적용여부', default=False)
+    users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, verbose_name='구성원', blank=True,
+        related_name='mail_group_set', related_query_name='mail_group',
+    )
+
+    objects = MailingGroupManager()
+
+    class Meta:
+        verbose_name = '메일링 그룹'
+        verbose_name_plural = f'{verbose_name} 목록'
+
+    def __str__(self):
+        return self.name
+
+    def clean(self):
+        user_class = get_user_model()
+        if not all(
+                user_type == user_class.TYPE_STAFF
+                for user_type in self.users.values_list('type', flat=True)):
+            raise ValidationError('메일링 그룹에 속한 사용자는 관리자여야 합니다')

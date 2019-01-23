@@ -97,6 +97,7 @@ ADMIN_REORDER = (
     {'app': 'administrator', 'label': '기타 관리자 콘텐츠 관리', 'models': (
         'members.User',
         'administrator.StaticContent',
+        'administrator.MailingGroup',
     )},
     {'app': 'members', 'label': '기업회원 관리', 'models': (
         'members.CompanyUser',
@@ -195,6 +196,7 @@ DEFAULT_USERS = {
         'is_superuser': True,
     },
 }
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

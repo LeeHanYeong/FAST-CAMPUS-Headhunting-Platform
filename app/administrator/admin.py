@@ -1,8 +1,7 @@
 from django.contrib import admin
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.sites.models import Site
 
-from .models import StaticContent, Company, Service
+from .models import StaticContent, Company, Service, MailingGroup
 
 
 class CompanyAdmin(admin.ModelAdmin):
@@ -14,3 +13,4 @@ admin.site.register(Company, CompanyAdmin)
 admin.site.register(Service)
 admin.site.register(StaticContent)
 admin.site.register(ContentType)
+admin.site.register(MailingGroup)
