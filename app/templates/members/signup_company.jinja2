@@ -12,16 +12,29 @@
 
 {% block content %}
 <div class="container-fluid">
-    <div class="justify-content-center">
+    <div class="row justify-content-center">
         <div class="login-card card col-md-8 col-lg-5">
             <form action="" method="POST">
                 {{ csrf_input }}
                 <h4 class="text-center">개인정보</h4>
-                <div>{{ form.errors }}</div>
+                {% if form.non_field_errors %}
+                    <ul>
+                    {% for error in field.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
                 {% for field in form %}
                 <div v-show="fieldShow('{{ field.label }}')" class="form-group">
                     <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                     {{ field }}
+                    {% if field.errors %}
+                        <ul>
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
                 {% endfor %}
 

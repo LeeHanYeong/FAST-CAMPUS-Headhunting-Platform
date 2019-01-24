@@ -4,6 +4,13 @@
 #content {
   background-color: $color-bg-default;
 }
+.messages-container {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 10px;
+  text-align: center;
+}
 header.main-header {
   > .header-top {
     border-top: $border-light-gray;

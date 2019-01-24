@@ -90,20 +90,19 @@ class Company(TimeStampedModel):
 
 
 class MailingGroupManager(models.Manager):
-    CODE_COMPANY_USER_JOBGROUP_APPROVE = 'company_user_jobgroup_approve'
-    CODE_USER_JOINED = 'user_joined'
-    INITIAL_DATA = (
-        (CODE_COMPANY_USER_JOBGROUP_APPROVE, '기업회원의 채용희망직군 승인'),
-        (CODE_USER_JOINED, '사용자 회원가입')
-    )
-
     def create_initial(self):
-        for code, name in self.INITIAL_DATA:
+        for code, name in self.model.CHOICES_CODE:
             self.get_or_create(code=code, name=name)
 
 
 class MailingGroup(models.Model):
-    code = models.CharField('코드', max_length=50)
+    CODE_COMPANY_USER_JOBGROUP_APPROVE = 'company_user_jobgroup_approve'
+    CODE_USER_JOINED = 'user_joined'
+    CHOICES_CODE = (
+        (CODE_COMPANY_USER_JOBGROUP_APPROVE, '기업회원의 채용희망직군 승인'),
+        (CODE_USER_JOINED, '사용자 회원가입')
+    )
+    code = models.CharField('코드', choices=CHOICES_CODE, max_length=50)
     name = models.CharField('그룹명', max_length=100)
     description = models.CharField('설명', max_length=200, blank=True)
     is_applied = models.BooleanField('적용여부', default=False)

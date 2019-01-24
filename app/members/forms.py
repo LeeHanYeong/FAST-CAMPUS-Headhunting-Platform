@@ -1,8 +1,13 @@
 from django import forms
+from django.conf import settings
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.sites.models import Site
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
+from administrator.models import MailingGroup
 from courses.models import JobGroup
-from utils.email import send_company_user_signup_notification
 from .models import ApplicantUser, CompanyUser
 
 ATTRS_FORM_CONTROL = {
@@ -51,6 +56,32 @@ class ApplicantSignupForm(UserCreationForm):
                 **ATTRS_FORM_CONTROL
             }),
         }
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.is_active = False
+        user.save()
+        self.send_applicant_user_signup_notification(user)
+        return user
+
+    @staticmethod
+    def send_applicant_user_signup_notification(applicant_user):
+        html_content = render_to_string(
+            'email/applicant_user_signup_notification.jinja2', {
+                'user': applicant_user,
+                'site': Site.objects.get_current(),
+            }
+        )
+        text_content = strip_tags(html_content)
+        message = EmailMultiAlternatives(
+            subject='지원자 가입 안내',
+            body=text_content,
+            from_email=settings.EMAIL_HOST_USER,
+            to=list(MailingGroup.objects.get(code=MailingGroup.CODE_USER_JOINED).users.values_list('email', flat=True)),
+        )
+        message.attach_alternative(html_content, 'text/html')
+        result = message.send()
+        return result
 
 
 class CompanySignupForm(UserCreationForm):
@@ -110,5 +141,24 @@ class CompanySignupForm(UserCreationForm):
         hire_job_groups = self.cleaned_data['hire_job_groups']
         for job_group in hire_job_groups:
             user.hire_job_group_set.create(job_group=job_group)
-        send_company_user_signup_notification(user)
+        self.send_company_user_signup_notification(user)
         return user
+
+    @staticmethod
+    def send_company_user_signup_notification(company_user):
+        html_content = render_to_string(
+            'email/company_user_signup_notification.jinja2', {
+                'user': company_user,
+                'site': Site.objects.get_current(),
+            }
+        )
+        text_content = strip_tags(html_content)
+        message = EmailMultiAlternatives(
+            subject='기업회원 가입 안내',
+            body=text_content,
+            from_email=settings.EMAIL_HOST_USER,
+            to=list(MailingGroup.objects.get(code=MailingGroup.CODE_USER_JOINED).users.values_list('email', flat=True)),
+        )
+        message.attach_alternative(html_content, 'text/html')
+        result = message.send()
+        return result

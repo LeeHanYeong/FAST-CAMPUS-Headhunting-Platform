@@ -37,8 +37,9 @@ class LicenseInline(admin.TabularInline):
 
 
 class ApplicantUserAdmin(BaseUserAdmin):
-    list_display = ('name',)
-    list_filter = ()
+    list_display = ('name', 'is_active', 'email', 'phone_number', 'birth_date',)
+    list_filter = ('is_active',)
+    search_fields = ('name',)
     ordering = ('pk',)
 
     inlines = [
@@ -50,6 +51,7 @@ class ApplicantUserAdmin(BaseUserAdmin):
     ]
     fieldsets = (
         (None, {'fields': (
+            'is_active',
             'type',
             'email',
             'password',

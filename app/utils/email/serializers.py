@@ -3,7 +3,7 @@ from rest_framework.generics import get_object_or_404
 
 from members.models import ApplicantUser
 from members.serializers import ApplicantUserSerializer, UserSerializer
-from .hire import send_hire_mail
+from utils.email.case.hire import send_hire_mail
 
 __all__ = (
     'HireEmailSendSerializer',

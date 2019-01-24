@@ -1,9 +1,11 @@
+from django.contrib import messages
 from django.contrib.auth import login, get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.views import (
     LogoutView as DjangoLogoutView,
     LoginView as DjangoLoginView,
 )
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import F
 from django.db.models.functions import Concat
 from django.urls import reverse_lazy
@@ -82,14 +84,15 @@ class SignupView(TemplateView):
     template_name = 'members/signup.jinja2'
 
 
-class ApplicantSignupView(StaticContentMixin, FormView):
+class ApplicantSignupView(StaticContentMixin, SuccessMessageMixin, FormView):
     form_class = ApplicantSignupForm
     template_name = 'members/signup_applicant.jinja2'
     success_url = reverse_lazy('index')
+    success_message = '회원가입이 완료되었습니다. 관리자의 승인 후 로그인 하실 수 있습니다'
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+        # login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         return super().form_valid(form)
 
 

@@ -107,6 +107,13 @@
     </div>
     {% include 'includes/footer.jinja2' %}
     {% include 'includes/modal.jinja2' %}
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="alert alert-primary">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
 <script>
     var csrftoken = getCookie('csrftoken');

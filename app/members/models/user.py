@@ -125,7 +125,7 @@ class User(TimeStampedMixin, AbstractUser):
 
     def __str__(self):
         if self.type == self.TYPE_STAFF:
-            return f'{self.name} (관리자)'
+            return f'[관리자] {self.name} ('
         elif self.type == self.TYPE_COMPANY:
             return self.company_info
         elif self.type == self.TYPE_APPLICANT:
