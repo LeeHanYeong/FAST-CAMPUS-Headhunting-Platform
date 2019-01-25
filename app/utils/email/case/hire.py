@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.core.mail import send_mail
 
+from administrator.models import MailingGroup
+
 EMAIL_SUBJECT_APPLICANT = '채용연계기업 매칭 알림'
 EMAIL_CONTENT_APPLICANT = '''{applicant_name}님, 패스트캠퍼스입니다.
 
@@ -23,6 +25,17 @@ EMAIL_CONTENT_COMPANY = '''{company_user_name}님, 안녕하세요. 패스트캠
 
 감사합니다.
 패스트캠퍼스 드림.
+'''
+
+EMAIL_SUBJECT_STAFF = '채용연계메일 발송 알림'
+EMAIL_CONTENT_STAFF = '''{company_user_name}으로부터 {applicant_name}으로 메일 발송
+
+보내는 사람: {company_user_name} ({company_user_email})
+
+제목: {subject}
+
+본문
+{message}
 '''
 
 __all__ = (
@@ -55,5 +68,22 @@ def send_hire_mail(company_user, applicant, subject, message):
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=[company_user.email],
     )
+    result = [bool(result_applicant), bool(result_company)]
 
-    return bool(result_applicant), bool(result_company)
+    # 관리자에게 전송
+    staff_list = MailingGroup.objects.get(code=MailingGroup.CODE_SEND_HIRE_MAIL).users.all()
+    if staff_list.exists():
+        result_staff = send_mail(
+            subject=EMAIL_SUBJECT_STAFF,
+            message=EMAIL_CONTENT_STAFF.format(
+                applicant_name=applicant.name,
+                company_user_name=company_user.name,
+                company_user_email=company_user.email,
+                subject=subject,
+                message=message,
+            ),
+            from_email=settings.EMAIL_HOST_USER,
+            recipient_list=list(staff_list.values_list('email', flat=True)),
+        )
+        result.append(bool(result_staff))
+    return result

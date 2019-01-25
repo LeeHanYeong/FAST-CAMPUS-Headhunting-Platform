@@ -1,8 +1,12 @@
 import textwrap
 
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
 from django.db import models
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
+from administrator.models import MailingGroup
 from .user import User, UserManager
 
 __all__ = (
@@ -38,7 +42,27 @@ class ApplicantUser(User):
 
     def save(self, *args, **kwargs):
         self.type = User.TYPE_APPLICANT
+        ori = ApplicantUser.objects.get(pk=self.pk)
         super().save(*args, **kwargs)
+        if self.is_active and not ori.is_active:
+            self.send_applicant_user_signup_wait_approve()
+
+    def send_applicant_user_signup_wait_approve(self):
+        html_content = render_to_string(
+            'email/applicant_user_signup_approve_confirm.jinja2', {
+                'user': self,
+            }
+        )
+        text_content = strip_tags(html_content)
+        message = EmailMultiAlternatives(
+            subject='이용 승인 안내',
+            body=text_content,
+            from_email=settings.EMAIL_HOST_USER,
+            to=[self.email],
+        )
+        message.attach_alternative(html_content, 'text/html')
+        result = message.send()
+        return result
 
 
 class Link(models.Model):

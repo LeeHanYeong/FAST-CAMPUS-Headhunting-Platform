@@ -98,9 +98,11 @@ class MailingGroupManager(models.Manager):
 class MailingGroup(models.Model):
     CODE_COMPANY_USER_JOBGROUP_APPROVE = 'company_user_jobgroup_approve'
     CODE_USER_JOINED = 'user_joined'
+    CODE_SEND_HIRE_MAIL = 'send_hire_mail'
     CHOICES_CODE = (
         (CODE_COMPANY_USER_JOBGROUP_APPROVE, '기업회원의 채용희망직군 승인'),
-        (CODE_USER_JOINED, '사용자 회원가입')
+        (CODE_USER_JOINED, '사용자 회원가입'),
+        (CODE_SEND_HIRE_MAIL, '기업이 지원자에게 메일 발송'),
     )
     code = models.CharField('코드', choices=CHOICES_CODE, max_length=50)
     name = models.CharField('그룹명', max_length=100)

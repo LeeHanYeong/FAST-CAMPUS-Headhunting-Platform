@@ -17,13 +17,7 @@
                 <form action="" method="POST">
                     {{ csrf_input }}
                     <h4 class="text-center">개인정보</h4>
-                    {% if form.non_field_errors %}
-                        <ul>
-                        {% for error in field.non_field_errors %}
-                            <li>{{ error }}</li>
-                        {% endfor %}
-                        </ul>
-                    {% endif %}
+                    {{ form.non_field_errors() }}
                     {% for field in form %}
                         <div class="form-group">
                             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -57,6 +51,9 @@
                     </div>
                     <button :disabled="!checked" class="btn btn-primary btn-lg btn-block mt-4">회원가입</button>
                     <div class="text-center mt-3">
+                        <b>* 관리자의 승인 후 로그인 가능합니다. 가입 후에 승인 안내 메일을 기다려주세요.</b>
+                    </div>
+                    <div class="text-center mt-1">
                         이미 회원이신가요?
                         <a href="{{ url('members:login') }}" class="text-primary ml-1 font-weight-bold">로그인 하기</a>
                     </div>

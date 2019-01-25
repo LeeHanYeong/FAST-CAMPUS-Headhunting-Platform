@@ -15,6 +15,7 @@
 	<div class="login-card card col-md-8 col-lg-5">
 		<form action="" method="POST">
 			{{ csrf_input }}
+            {{ form.non_field_errors() }}
 			{% for field in form %}
 			<div class="form-group">
 				<label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -30,6 +31,9 @@
 			<div class="text-center mt-3">
 				비밀번호를 잊으셨나요? <a href="" class="text-primary ml-1 font-weight-bold">비밀번호 찾기</a>
 			</div>
+            <div class="text-center">
+                <b>* 가입 시, 관리자의 승인 이후 로그인 가능합니다</b>
+            </div>
 		</form>
 	</div>
 </div>

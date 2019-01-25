@@ -65,6 +65,24 @@ class ApplicantSignupForm(UserCreationForm):
         return user
 
     @staticmethod
+    def send_applicant_user_signup_wait_approve(applicant_user):
+        html_content = render_to_string(
+            'email/applicant_user_signup_approve_wait.jinja2', {
+                'user': applicant_user,
+            }
+        )
+        text_content = strip_tags(html_content)
+        message = EmailMultiAlternatives(
+            subject='가입 환영 및 안내',
+            body=text_content,
+            from_email=settings.EMAIL_HOST_USER,
+            to=[applicant_user],
+        )
+        message.attach_alternative(html_content, 'text/html')
+        result = message.send()
+        return result
+
+    @staticmethod
     def send_applicant_user_signup_notification(applicant_user):
         html_content = render_to_string(
             'email/applicant_user_signup_notification.jinja2', {

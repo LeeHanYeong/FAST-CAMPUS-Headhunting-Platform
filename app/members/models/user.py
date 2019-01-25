@@ -199,7 +199,7 @@ class CompanyUserHireJobGroupWithApprovalStatus(models.Model):
     objects = CompanyUserHireJobGroupWithApprovalStatusManager()
 
     class Meta:
-        verbose_name = '채용희망직군(상태포함)'
+        verbose_name = '기업회원의 채용희망직군 관리자 승인'
         verbose_name_plural = f'{verbose_name} 목록'
         unique_together = (
             ('company_user', 'job_group'),
