@@ -68,7 +68,8 @@ class ApplicantDetailView(UserPassesTestMixin, DetailView):
         return context
 
     def test_func(self):
-        return self.request.user.type == User.TYPE_COMPANY or self.get_object() == self.request.user
+        return self.request.user.type in (User.TYPE_COMPANY, User.TYPE_STAFF) \
+               or self.get_object() == self.request.user
 
 
 class LoginView(DjangoLoginView):
