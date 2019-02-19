@@ -131,12 +131,14 @@
                     var requestUserPk = {{ request.user.pk }};
                     console.log('clickDetail');
                     console.log(this.userType);
-                    if (this.userType === 'c' || applicantPk.toString() === requestUserPk.toString()) {
+                    if (this.userType === 's' || this.userType === 'c' || applicantPk.toString() === requestUserPk.toString()) {
                         window.location.href = url;
                     } else if (this.userType === 'a') {
                         vm.modalInfo({
                             title: '다른 지원자의 이력서는 열람할 수 없습니다'
                         });
+                    } else {
+                        alert('오류가 있습니다');
                     }
                 }
             }
