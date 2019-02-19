@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <form id="id-form-img-profile" enctype="multipart/form-data">
-                                <input type="file" id="id-img-profile" class="form-control-file">
+                                <input type="file" id="id-img-profile" v-on:change="imgProfileChanged" class="form-control-file">
                             </form>
                         </div>
                     </div>
@@ -409,6 +409,10 @@
                 linkErrors: []
             },
             methods: {
+                imgProfileChanged: function (event) {
+                    const file = event.target.files[0];
+                    this.applicantDetail.img_profile = URL.createObjectURL(file);
+                },
                 // Looking
                 getLookingClass: function (lookingDict) {
                     if (this.applicantDetail.is_looking === lookingDict[0]) {
