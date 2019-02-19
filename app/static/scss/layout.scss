@@ -7,9 +7,14 @@
 .messages-container {
   position: fixed;
   width: 100%;
+  top: 10px;
   left: 0;
-  bottom: 10px;
   text-align: center;
+}
+ul.errorlist {
+  li {
+    white-space: pre-line;
+  }
 }
 header.main-header {
   > .header-top {

@@ -41,6 +41,8 @@ class ApplicantUserAdmin(BaseUserAdmin):
     list_filter = ('is_active',)
     search_fields = ('name',)
     ordering = ('pk',)
+    readonly_fields = ('is_active',)
+    actions = ['activate']
 
     inlines = [
         EducationInline,
@@ -90,6 +92,12 @@ class ApplicantUserAdmin(BaseUserAdmin):
             'birth_date',
         )}),
     )
+
+    def activate(self, request, queryset):
+        for user in queryset:
+            user.send_applicant_user_signup_wait_approve()
+            user.save()
+    activate.short_description = '활성화 처리'
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)

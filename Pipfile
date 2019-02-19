@@ -23,6 +23,7 @@ django-colorful = "*"
 sentry-sdk = "*"
 psycopg2-binary = "*"
 django-filter = "*"
+model-mommy = "*"
 
 [dev-packages]
 ipython = "*"

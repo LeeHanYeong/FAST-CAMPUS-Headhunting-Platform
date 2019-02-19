@@ -16,6 +16,11 @@ ATTRS_FORM_CONTROL = {
 
 
 class LoginForm(AuthenticationForm):
+    error_messages = {
+        **AuthenticationForm.error_messages,
+        'inactive': '아직 계정이 활성화 되지 않았습니다.\n가입승인 안내 메일 수신 후 이용해주세요',
+    }
+
     def __init__(self, *args, **kwargs):
         self.base_fields['username'].widget = forms.TextInput(attrs={
             'class': 'form-control form-control-lg',

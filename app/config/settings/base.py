@@ -64,7 +64,7 @@ AUTH_USER_MODEL = 'members.User'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',
     'members.backends.SettingsBackend',
 ]
 
