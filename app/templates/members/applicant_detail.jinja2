@@ -49,11 +49,12 @@
 
                             <dt>한줄 소개</dt>
                             <dd>{{ applicant.short_intro }}</dd>
-
+                            {% if not request.user == applicant %}
                             <dt>Contact</dt>
                             <dd>
                                 <button v-on:click="modalHireEmail({{ applicant.pk }})" class="btn btn-primary btn-block">메일 보내기</button>
                             </dd>
+                            {% endif %}
                         </dl>
                     </div>
                 </div>
