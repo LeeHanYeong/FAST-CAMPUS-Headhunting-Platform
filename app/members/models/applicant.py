@@ -164,7 +164,7 @@ class Education(models.Model):
 
     @property
     def period(self):
-        return f'{self.start_date} ~ {self.end_date}' if self.end_date else f'{self.start_date}'
+        return f'{self.start_date} ~ {self.end_date}' if self.end_date else f'{self.start_date} ~'
 
 
 class Career(models.Model):
@@ -189,7 +189,7 @@ class Career(models.Model):
 
     @property
     def period(self):
-        return f'{self.start_date} ~ {self.end_date}' if self.end_date else f'{self.start_date}'
+        return f'{self.start_date} ~ {self.end_date}' if self.end_date else f'{self.start_date} ~'
 
 
 class License(models.Model):
