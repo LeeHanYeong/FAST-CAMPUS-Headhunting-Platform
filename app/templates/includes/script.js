@@ -73,7 +73,9 @@ var app = new Vue({
                     hideProcess();
                 }, time);
             } else {
-                hideProcess();
+                setTimeout(function () {
+                    hideProcess();
+                }, 500);
             }
         },
         // Header

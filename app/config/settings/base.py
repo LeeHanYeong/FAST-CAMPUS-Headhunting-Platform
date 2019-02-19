@@ -61,6 +61,7 @@ REST_FRAMEWORK = {
 
 # Auth
 AUTH_USER_MODEL = 'members.User'
+LOGIN_URL = 'members:login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 AUTHENTICATION_BACKENDS = [

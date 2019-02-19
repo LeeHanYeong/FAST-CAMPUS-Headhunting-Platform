@@ -489,6 +489,7 @@
                     }).done(function (response) {
                         vm.applicantLinkList = response;
                     }).fail(function (response) {
+                        console.log('link fail');
                         vm.linkErrors = response.responseJSON;
                         vm.hideModalSpinner();
                         app.modal({
@@ -538,8 +539,8 @@
                         console.log(response);
                         vm.applicantSkillList = response;
                     }).fail(function (response) {
+                        console.log('skill fail');
                         vm.skillErrors = response.responseJSON;
-                        console.log(response);
                         vm.hideModalSpinner();
                         app.modal({
                             title: '보유기술 오류',
