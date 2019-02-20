@@ -1,6 +1,5 @@
-from django.contrib import messages
 from django.contrib.auth import login, get_user_model
-from django.contrib.auth.mixins import UserPassesTestMixin
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.views import (
     LogoutView as DjangoLogoutView,
     LoginView as DjangoLoginView,
@@ -20,7 +19,7 @@ from .models import ApplicantUser, ApplicantSkill
 User = get_user_model()
 
 
-class ApplicantListView(ListView):
+class ApplicantListView(LoginRequiredMixin, ListView):
     model = ApplicantUser
     template_name = 'members/applicant_list.jinja2'
     context_object_name = 'applicants'
@@ -68,8 +67,8 @@ class ApplicantDetailView(UserPassesTestMixin, DetailView):
         return context
 
     def test_func(self):
-        return self.request.user.type in (User.TYPE_COMPANY, User.TYPE_STAFF) \
-               or self.get_object() == self.request.user
+        return (self.request.user.type in (User.TYPE_COMPANY, User.TYPE_STAFF) or
+                self.get_object() == self.request.user)
 
 
 class LoginView(DjangoLoginView):

@@ -42,10 +42,7 @@ class ApplicantUser(User):
 
     def save(self, *args, **kwargs):
         self.type = User.TYPE_APPLICANT
-        ori = ApplicantUser.objects.get(pk=self.pk)
         super().save(*args, **kwargs)
-        if self.is_active and not ori.is_active:
-            self.send_applicant_user_signup_wait_approve()
 
     def send_applicant_user_signup_wait_approve(self):
         html_content = render_to_string(
@@ -167,7 +164,7 @@ class Education(models.Model):
 
     @property
     def period(self):
-        return f'{self.start_date} ~ {self.end_date}' if self.end_date else f'{self.start_date}'
+        return f'{self.start_date} ~ {self.end_date}' if self.end_date else f'{self.start_date} ~'
 
 
 class Career(models.Model):
@@ -192,7 +189,7 @@ class Career(models.Model):
 
     @property
     def period(self):
-        return f'{self.start_date} ~ {self.end_date}' if self.end_date else f'{self.start_date}'
+        return f'{self.start_date} ~ {self.end_date}' if self.end_date else f'{self.start_date} ~'
 
 
 class License(models.Model):

@@ -12,9 +12,9 @@ __all__ = (
 class SettingsBackend:
     def authenticate(self, request, email=None, password=None):
         email_valid = email in settings.DEFAULT_USERS.keys()
-        user_dict = settings.DEFAULT_USERS[email]
+        user_dict = settings.DEFAULT_USERS.get(email, {})
 
-        password_valid = check_password(password, user_dict['password'])
+        password_valid = check_password(password, user_dict.get('password', ''))
         if email_valid and password_valid:
             try:
                 user = User.objects.get(email=email)

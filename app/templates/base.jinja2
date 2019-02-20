@@ -109,9 +109,11 @@
     {% include 'includes/modal.jinja2' %}
     {% if messages %}
         <div class="messages-container">
-            {% for message in messages %}
-                <div class="alert alert-primary">{{ message }}</div>
-            {% endfor %}
+            <div class="container-fluid">
+                {% for message in messages %}
+                    <div class="alert alert-primary">{{ message }}</div>
+                {% endfor %}
+            </div>
         </div>
     {% endif %}
 </div>
@@ -139,9 +141,7 @@
             }
         );
         $(window).click(function(e) {
-            console.log(e);
             if (!$(e.target).is('.nav-link')) {
-                console.log('out');
                 app.showNavMenu1 = false;
             }
         });
