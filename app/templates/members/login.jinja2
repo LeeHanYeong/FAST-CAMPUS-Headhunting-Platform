@@ -1,48 +1,44 @@
-{% extends 'base.jinja2' %}
+{% extends 'base_narrow_header.jinja2' %}
 
-{% block content_header %}
-<header class="content-header row justify-content-center">
-	<div class="col-md-8 col-lg-5">
-		<div class="title">
-			<span>로그인</span>
-		</div>
-	</div>
-</header>
-{% endblock %}
+{% block header_title %}로그인{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-	<div class="login-card card col-md-8 col-lg-5">
-		<form action="" method="POST">
-			{{ csrf_input }}
-            {{ form.non_field_errors() }}
-			{% for field in form %}
-			<div class="form-group">
-				<label for="{{ field.id_for_label }}">{{ field.label }}</label>
-				{{ field }}
-				{% if field.errors %}
-					{% for error in field.errors %}
-						<small class="form-text text-danger">{{ error }}</small>
-					{% endfor %}
-				{% endif %}
-			</div>
-			{% endfor %}
-			<button class="btn btn-primary btn-lg btn-block mt-4">로그인</button>
-			<div class="text-center mt-3">
-				비밀번호를 잊으셨나요? <a href="" class="text-primary ml-1 font-weight-bold">비밀번호 찾기</a>
-			</div>
-            <div class="text-center">
-                <b>* 가입 시, 관리자의 승인 이후 로그인 가능합니다</b>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="login-card card col-md-8 col-lg-5">
+                <h5 class="text-center">로그인</h5>
+                <p class="text-center">신규가입시, 관리자의 승인 이후 로그인 가능합니다.</p>
+                <form action="" method="POST">
+                    {{ csrf_input }}
+                    {{ form.non_field_errors() }}
+                    {% for field in form %}
+                        <div class="form-group row">
+                            <label for="{{ field.id_for_label }}" class="col-sm-3 col-form-label">{{ field.label }}</label>
+                            <div class="col-sm-9">
+                                {{ field }}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <button class="btn btn-primary btn-block mt-4">로그인</button>
+                    <div class="text-center mt-3">
+                        비밀번호를 잊으셨나요?
+                        <a href="{{ url('members:password-reset') }}" class="text-primary ml-1 font-weight-bold">비밀번호 찾기</a>
+                    </div>
+                </form>
             </div>
-		</form>
-	</div>
-</div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block script %}
-<script>
-	$(document).ready(function() {
-	  $('#id_username').focus();
-	});
-</script>
+    <script>
+    $(document).ready(function () {
+        $('#id_username').focus();
+    });
+    </script>
 {% endblock %}

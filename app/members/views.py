@@ -3,6 +3,10 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.views import (
     LogoutView as DjangoLogoutView,
     LoginView as DjangoLoginView,
+    PasswordResetView as DjangoPasswordResetView,
+    PasswordResetConfirmView as DjangoPasswordResetConfirmView,
+    PasswordResetDoneView as DjangoPasswordResetDoneView,
+    PasswordResetCompleteView as DjangoPasswordResetCompleteView,
 )
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import F
@@ -13,7 +17,7 @@ from django.views.generic import TemplateView, ListView, FormView, DetailView
 from administrator.mixins import StaticContentMixin
 from courses.models import JobCategory
 from .filters import ApplicantUserFilter
-from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm
+from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm, PasswordResetForm, SetPasswordForm
 from .models import ApplicantUser, ApplicantSkill
 
 User = get_user_model()
@@ -105,3 +109,24 @@ class CompanySignupView(StaticContentMixin, FormView):
         user = form.save()
         login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         return super().form_valid(form)
+
+
+class PasswordResetView(DjangoPasswordResetView):
+    email_template_name = 'members/password_reset_email.jinja2'
+    form_class = PasswordResetForm
+    subject_template_name = 'members/password_reset_subject.txt'
+    success_url = reverse_lazy('members:password-reset-done')
+    template_name = 'members/password_reset_form.jinja2'
+
+
+class PasswordResetDoneView(DjangoPasswordResetDoneView):
+    template_name = 'members/password_reset_done.jinja2'
+
+
+class PasswordResetConfirmView(DjangoPasswordResetConfirmView):
+    form_class = SetPasswordForm
+    template_name = 'members/password_reset_confirm.jinja2'
+
+
+class PasswordResetCompleteView(DjangoPasswordResetCompleteView):
+    pass

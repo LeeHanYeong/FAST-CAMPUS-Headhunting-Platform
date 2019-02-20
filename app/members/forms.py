@@ -1,6 +1,11 @@
 from django import forms
 from django.conf import settings
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import (
+    AuthenticationForm,
+    UserCreationForm,
+    PasswordResetForm as DjangoPasswordResetForm,
+    SetPasswordForm as DjangoSetPasswordForm,
+)
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -11,7 +16,7 @@ from courses.models import JobGroup
 from .models import ApplicantUser, CompanyUser
 
 ATTRS_FORM_CONTROL = {
-    'class': 'form-control form-control-lg',
+    'class': 'form-control',
 }
 
 
@@ -23,10 +28,10 @@ class LoginForm(AuthenticationForm):
 
     def __init__(self, *args, **kwargs):
         self.base_fields['username'].widget = forms.TextInput(attrs={
-            'class': 'form-control form-control-lg',
+            'class': 'form-control',
         })
         self.base_fields['password'].widget = forms.PasswordInput(attrs={
-            'class': 'form-control form-control-lg',
+            'class': 'form-control',
         })
         super().__init__(*args, **kwargs)
 
@@ -34,10 +39,10 @@ class LoginForm(AuthenticationForm):
 class ApplicantSignupForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         self.base_fields['password1'].widget = forms.PasswordInput(attrs={
-            'class': 'form-control form-control-lg',
+            'class': 'form-control',
         })
         self.base_fields['password2'].widget = forms.PasswordInput(attrs={
-            'class': 'form-control form-control-lg',
+            'class': 'form-control',
         })
         super().__init__(*args, **kwargs)
 
@@ -118,10 +123,10 @@ class CompanySignupForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         self.base_fields['password1'].widget = forms.PasswordInput(attrs={
-            'class': 'form-control form-control-lg',
+            'class': 'form-control',
         })
         self.base_fields['password2'].widget = forms.PasswordInput(attrs={
-            'class': 'form-control form-control-lg',
+            'class': 'form-control',
         })
         super().__init__(*args, **kwargs)
 
@@ -185,3 +190,21 @@ class CompanySignupForm(UserCreationForm):
         message.attach_alternative(html_content, 'text/html')
         result = message.send()
         return result
+
+
+class PasswordResetForm(DjangoPasswordResetForm):
+    email = forms.EmailField(
+        label='이메일', max_length=254,
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+            },
+        )
+    )
+
+
+class SetPasswordForm(DjangoSetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['new_password1'].widget.attrs['class'] = 'form-control'
+        self.fields['new_password2'].widget.attrs['class'] = 'form-control'
