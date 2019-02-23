@@ -45,23 +45,7 @@ class ApplicantUser(User):
         self.type = User.TYPE_APPLICANT
         super().save(*args, **kwargs)
 
-    def send_applicant_user_signup_wait_approve(self):
-        html_content = render_to_string(
-            'email/applicant_user_signup_approve_confirm.jinja2', {
-                'user': self,
-                'site': Site.objects.get_current(),
-            }
-        )
-        text_content = strip_tags(html_content)
-        message = EmailMultiAlternatives(
-            subject='이용 승인 안내',
-            body=text_content,
-            from_email=settings.EMAIL_HOST_USER,
-            to=[self.email],
-        )
-        message.attach_alternative(html_content, 'text/html')
-        result = message.send()
-        return result
+
 
 
 class Link(models.Model):

@@ -42,9 +42,11 @@ class UserAdmin(BaseUserAdmin):
 
 
 class CompanyUserAdmin(BaseUserAdmin):
-    list_display = ('name', '_company_name', '_position',)
-    list_filter = ()
+    list_display = ('name', 'is_active', '_company_name', '_position',)
+    list_filter = ('is_active',)
     ordering = ('pk',)
+    readonly_fields = ('is_active',)
+    actions = ['activate']
 
     fieldsets = (
         (None, {'fields': (
@@ -80,6 +82,14 @@ class CompanyUserAdmin(BaseUserAdmin):
         if obj:
             form.base_fields['type'].disabled = True
         return form
+
+    def activate(self, request, queryset):
+        for user in queryset:
+            user.send_signup_approve()
+            user.is_active = True
+            user.save()
+
+    activate.short_description = '활성화 처리'
 
 
 class StaffGroupInline(admin.TabularInline):

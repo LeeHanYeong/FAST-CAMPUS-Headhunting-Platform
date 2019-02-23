@@ -15,6 +15,9 @@
     {% endfor %}
     </ul>
     <div>
+        <a href="https://{{ site.domain }}{{ url('admin:members_companyuser_changelist') }}?is_active__exact=0">기업회원 활성화 처리하기</a>
+    </div>
+    <div>
         <a href="https://{{ site.domain }}{{ url('admin:members_companyuserhirejobgroupwithapprovalstatus_changelist') }}">채용 희망 직군 이력서 열람 승인 요청 처리하기</a>
     </div>
 </body>

@@ -95,9 +95,10 @@ class ApplicantUserAdmin(BaseUserAdmin):
 
     def activate(self, request, queryset):
         for user in queryset:
-            user.send_applicant_user_signup_wait_approve()
+            user.send_signup_approve()
             user.is_active = True
             user.save()
+
     activate.short_description = '활성화 처리'
 
     def get_form(self, request, obj=None, **kwargs):

@@ -1,9 +1,13 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.sites.models import Site
+from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.db.models.functions import Concat
+from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.html import strip_tags
 from django_fields import DefaultStaticImageField
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -149,6 +153,24 @@ class User(TimeStampedMixin, AbstractUser):
 
     name.fget.short_description = '이름'
     name.fget.admin_order_field = Concat('last_name', 'first_name')
+
+    def send_signup_approve(self):
+        html_content = render_to_string(
+            'email/signup_confirm.jinja2', {
+                'user': self,
+                'site': Site.objects.get_current(),
+            }
+        )
+        text_content = strip_tags(html_content)
+        message = EmailMultiAlternatives(
+            subject='이용 승인 안내',
+            body=text_content,
+            from_email=settings.EMAIL_HOST_USER,
+            to=[self.email],
+        )
+        message.attach_alternative(html_content, 'text/html')
+        result = message.send()
+        return result
 
 
 class UserLike(TimeStampedMixin, models.Model):
