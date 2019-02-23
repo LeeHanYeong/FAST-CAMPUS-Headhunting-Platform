@@ -132,7 +132,7 @@ class User(TimeStampedMixin, AbstractUser):
         if self.type == self.TYPE_STAFF:
             return f'[관리자] {self.name} ({self.email})'
         elif self.type == self.TYPE_COMPANY:
-            return f'[기업회원] {self.company_info}'
+            return f'[기업회원] {self.name} ({self.email}) | {self.company_info} '
         elif self.type == self.TYPE_APPLICANT:
             return f'[지원자] {self.name}'
         return self.name
@@ -149,7 +149,7 @@ class User(TimeStampedMixin, AbstractUser):
 
     @property
     def company_info(self):
-        return f'{self.company_name} - {self.name} ({self._position})'
+        return f'{self.company_name} ({self._position})'
 
     name.fget.short_description = '이름'
     name.fget.admin_order_field = Concat('last_name', 'first_name')

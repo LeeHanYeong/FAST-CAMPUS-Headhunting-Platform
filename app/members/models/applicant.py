@@ -1,13 +1,8 @@
 import textwrap
 
 from django.conf import settings
-from django.contrib.sites.models import Site
-from django.core.mail import EmailMultiAlternatives
 from django.db import models
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 
-from administrator.models import MailingGroup
 from .user import User, UserManager
 
 __all__ = (
@@ -38,14 +33,9 @@ class ApplicantUser(User):
         verbose_name = '지원자'
         verbose_name_plural = f'{verbose_name} 목록'
 
-    def __str__(self):
-        return self.name
-
     def save(self, *args, **kwargs):
         self.type = User.TYPE_APPLICANT
         super().save(*args, **kwargs)
-
-
 
 
 class Link(models.Model):
