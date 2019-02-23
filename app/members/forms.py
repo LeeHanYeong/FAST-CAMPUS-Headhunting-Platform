@@ -71,6 +71,7 @@ class ApplicantSignupForm(UserCreationForm):
         user = super().save(commit=False)
         user.is_active = False
         user.save()
+        self.send_applicant_user_signup_wait_approve(user)
         self.send_applicant_user_signup_notification(user)
         return user
 
@@ -87,7 +88,7 @@ class ApplicantSignupForm(UserCreationForm):
             subject='가입 환영 및 안내',
             body=text_content,
             from_email=settings.EMAIL_HOST_USER,
-            to=[applicant_user],
+            to=[applicant_user.email],
         )
         message.attach_alternative(html_content, 'text/html')
         result = message.send()
