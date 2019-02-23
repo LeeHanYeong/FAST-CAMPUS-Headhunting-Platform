@@ -42,8 +42,9 @@ class UserAdmin(BaseUserAdmin):
 
 
 class CompanyUserAdmin(BaseUserAdmin):
-    list_display = ('name', 'is_active', '_company_name', '_position',)
+    list_display = ('name', 'is_active', 'email', 'phone_number', '_company_name', '_position',)
     list_filter = ('is_active',)
+    search_fields = ('name',)
     ordering = ('pk',)
     readonly_fields = ('is_active',)
     actions = ['activate']
