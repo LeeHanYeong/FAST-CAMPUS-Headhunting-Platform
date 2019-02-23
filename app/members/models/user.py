@@ -65,6 +65,7 @@ class User(TimeStampedMixin, AbstractUser):
         (LOOKING_SWITCHING, '커리어 전환'),
     )
     username = None
+    is_active = models.BooleanField('활성화 여부', default=False)
     last_name = models.CharField('성', max_length=150)
     first_name = models.CharField('이름', max_length=30)
     type = models.CharField('타입', max_length=1, choices=CHOICES_TYPE, default=TYPE_STAFF)

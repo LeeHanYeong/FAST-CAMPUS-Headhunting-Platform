@@ -10,7 +10,7 @@
     <h4>{{ user.name }} (이메일: {{ user.email }}, 전화번호: {{ user.phone_number }})님이 가입하셨습니다.</h4>
     <p>올바른 지원자라면 계정을 활성화시켜주세요</p>
     <div>
-        <a href="https://{{ site.domain }}/{{ url('admin:members_applicantuser_change', args=(user.pk,)) }}">지원자 계정 수정화면으로 이동</a>
+        <a href="https://{{ site.domain }}/{{ url('admin:members_applicantuser_changelist') }}?is_active__exact=0">지원자 계정 수정화면으로 이동</a>
     </div>
 </body>
 </html>

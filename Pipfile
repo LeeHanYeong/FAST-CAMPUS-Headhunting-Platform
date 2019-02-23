@@ -33,6 +33,7 @@ django-compressor = "*"
 libsass = "*"
 werkzeug = "*"
 pyopenssl = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.6"
