@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="login-card card col-md-8 col-lg-5">
-                <form action="" method="POST">
+                <form id="signup-applicant-form" action="" method="POST">
                     {{ csrf_input }}
                     <h4 class="text-center">개인정보</h4>
                     {{ form.non_field_errors() }}
@@ -49,7 +49,7 @@
                             <label class="custom-control-label" for="check-signup2">동의합니다</label>
                         </div>
                     </div>
-                    <button :disabled="!checked" class="btn btn-primary btn-lg btn-block mt-4">회원가입</button>
+                    <button :disabled="!checked" id="btn-submit" class="btn btn-primary btn-lg btn-block mt-4">회원가입</button>
                     <div class="text-center mt-3">
                         <b>* 관리자의 승인 후 로그인 가능합니다. 가입 후에 승인 안내 메일을 기다려주세요.</b>
                     </div>
