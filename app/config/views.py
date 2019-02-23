@@ -13,6 +13,10 @@ from administrator.models import Company, Service
 class IndexView(StaticContentMixin, TemplateView):
     template_name = 'index.jinja2'
 
+    def render_to_response(self, context, **response_kwargs):
+        messages.success(self.request, 'Index success')
+        return super().render_to_response(context, **response_kwargs)
+
 
 class CompanyList(StaticContentMixin, ListView):
     model = Company

@@ -1,6 +1,7 @@
 import textwrap
 
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.template.loader import render_to_string
@@ -48,6 +49,7 @@ class ApplicantUser(User):
         html_content = render_to_string(
             'email/applicant_user_signup_approve_confirm.jinja2', {
                 'user': self,
+                'site': Site.objects.get_current(),
             }
         )
         text_content = strip_tags(html_content)

@@ -107,11 +107,18 @@
     </div>
     {% include 'includes/footer.jinja2' %}
     {% include 'includes/modal.jinja2' %}
-    {% if messages %}
+    {% if get_messages(request) %}
         <div class="messages-container">
             <div class="container-fluid">
-                {% for message in messages %}
-                    <div class="alert alert-primary">{{ message }}</div>
+                {% for message in get_messages(request) %}
+                    <div class="alert
+                                alert-{% if message.tags %}{{ message.tags }}{% else %}primary{% endif %}
+                                alert-dismissible
+                                fade show ">{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 {% endfor %}
             </div>
         </div>
@@ -145,6 +152,7 @@
                 app.showNavMenu1 = false;
             }
         });
+        $().alert('close');
     });
 </script>
 {% block mixin %}

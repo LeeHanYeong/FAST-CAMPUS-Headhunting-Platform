@@ -79,6 +79,7 @@ class ApplicantSignupForm(UserCreationForm):
         html_content = render_to_string(
             'email/applicant_user_signup_approve_wait.jinja2', {
                 'user': applicant_user,
+                'site': Site.objects.get_current(),
             }
         )
         text_content = strip_tags(html_content)

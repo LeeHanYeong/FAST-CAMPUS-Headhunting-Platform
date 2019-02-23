@@ -100,10 +100,11 @@ class ApplicantSignupView(StaticContentMixin, SuccessMessageMixin, FormView):
         return super().form_valid(form)
 
 
-class CompanySignupView(StaticContentMixin, FormView):
+class CompanySignupView(StaticContentMixin, SuccessMessageMixin, FormView):
     form_class = CompanySignupForm
     template_name = 'members/signup_company.jinja2'
     success_url = reverse_lazy('index')
+    success_message = '회원가입이 완료되었습니다. 관리자의 승인 후 로그인 하실 수 있습니다'
 
     def form_valid(self, form):
         user = form.save()
