@@ -1,8 +1,10 @@
-from django.contrib.auth import login, get_user_model
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.views import (
     LogoutView as DjangoLogoutView,
     LoginView as DjangoLoginView,
+    PasswordChangeView as DjangoPasswordChangeView,
+    PasswordChangeDoneView as DjangoPasswordChangeDoneView,
     PasswordResetView as DjangoPasswordResetView,
     PasswordResetConfirmView as DjangoPasswordResetConfirmView,
     PasswordResetDoneView as DjangoPasswordResetDoneView,
@@ -109,6 +111,14 @@ class CompanySignupView(StaticContentMixin, SuccessMessageMixin, FormView):
     def form_valid(self, form):
         user = form.save()
         return super().form_valid(form)
+
+
+class PasswordChangeView(DjangoPasswordChangeView):
+    pass
+
+
+class PasswordChangeDoneView(DjangoPasswordChangeDoneView):
+    pass
 
 
 class PasswordResetView(DjangoPasswordResetView):
