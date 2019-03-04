@@ -49,7 +49,7 @@ class ApplicantListView(LoginRequiredMixin, ListView):
         return context
 
 
-class ApplicantUpdateView(TemplateView):
+class ApplicantUpdateView(LoginRequiredMixin, TemplateView):
     template_name = 'members/applicant_update.jinja2'
 
 
@@ -75,6 +75,10 @@ class ApplicantDetailView(UserPassesTestMixin, DetailView):
     def test_func(self):
         return (self.request.user.type in (User.TYPE_COMPANY, User.TYPE_STAFF) or
                 self.get_object() == self.request.user)
+
+
+class ApplicantProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'members/applicant_profile.jinja2'
 
 
 class LoginView(DjangoLoginView):

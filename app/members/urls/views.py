@@ -5,8 +5,9 @@ from .. import views
 app_name = 'members'
 urlpatterns = [
     path('applicants/', views.ApplicantListView.as_view(), name='applicant-list'),
-    path('applicants/profile/', views.ApplicantUpdateView.as_view(), name='applicant-update'),
+    path('applicants/resume/', views.ApplicantUpdateView.as_view(), name='applicant-update'),
     path('applicants/<int:pk>/', views.ApplicantDetailView.as_view(), name='applicant-detail'),
+    path('applicants/profile/', views.ApplicantProfileView.as_view(), name='applicant-profile'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('signup/', views.SignupView.as_view(), name='signup'),
