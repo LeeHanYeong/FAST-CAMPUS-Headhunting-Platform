@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+from django.contrib import messages
 from djs import import_secrets
 
 from ..jinja2 import environment
@@ -76,6 +77,15 @@ PHONENUMBER_DB_FORMAT = 'NATIONAL'
 # Date/Time Format
 DATE_FORMAT = 'Y-m-d'
 DATETIME_FORMAT = 'Y-m-d'
+
+# Messages tags
+MESSAGE_TAGS = {
+    messages.DEBUG: 'secondary',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'danger',
+}
 
 # django-modeladmin-reorder
 ADMIN_REORDER = (

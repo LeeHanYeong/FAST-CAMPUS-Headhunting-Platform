@@ -1,9 +1,13 @@
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.sites.models import Site
+from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.db.models.functions import Concat
+from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.html import strip_tags
 from django_fields import DefaultStaticImageField
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -65,6 +69,7 @@ class User(TimeStampedMixin, AbstractUser):
         (LOOKING_SWITCHING, '커리어 전환'),
     )
     username = None
+    is_active = models.BooleanField('활성화 여부', default=False)
     last_name = models.CharField('성', max_length=150)
     first_name = models.CharField('이름', max_length=30)
     type = models.CharField('타입', max_length=1, choices=CHOICES_TYPE, default=TYPE_STAFF)
@@ -125,11 +130,11 @@ class User(TimeStampedMixin, AbstractUser):
 
     def __str__(self):
         if self.type == self.TYPE_STAFF:
-            return f'[관리자] {self.name} ('
+            return f'[관리자] {self.name} ({self.email})'
         elif self.type == self.TYPE_COMPANY:
-            return self.company_info
+            return f'[기업회원] {self.name} ({self.email}) | {self.company_info} '
         elif self.type == self.TYPE_APPLICANT:
-            return self.name
+            return f'[지원자] {self.name}'
         return self.name
 
     @property
@@ -144,10 +149,28 @@ class User(TimeStampedMixin, AbstractUser):
 
     @property
     def company_info(self):
-        return f'{self.company_name} - {self.name} ({self._position})'
+        return f'{self.company_name} ({self._position})'
 
     name.fget.short_description = '이름'
     name.fget.admin_order_field = Concat('last_name', 'first_name')
+
+    def send_signup_approve(self):
+        html_content = render_to_string(
+            'email/signup_confirm.jinja2', {
+                'user': self,
+                'site': Site.objects.get_current(),
+            }
+        )
+        text_content = strip_tags(html_content)
+        message = EmailMultiAlternatives(
+            subject='이용 승인 안내',
+            body=text_content,
+            from_email=settings.EMAIL_HOST_USER,
+            to=[self.email],
+        )
+        message.attach_alternative(html_content, 'text/html')
+        result = message.send()
+        return result
 
 
 class UserLike(TimeStampedMixin, models.Model):

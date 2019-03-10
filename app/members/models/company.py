@@ -18,9 +18,6 @@ class CompanyUser(User):
         verbose_name = '기업회원'
         verbose_name_plural = f'{verbose_name} 목록'
 
-    def __str__(self):
-        return self.company_info
-
     def save(self, *args, **kwargs):
         self.type = User.TYPE_COMPANY
         self.is_active = True

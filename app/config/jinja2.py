@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.templatetags.static import static
 from django.urls import reverse
 from jinja2 import Environment
@@ -26,5 +27,6 @@ def environment(**options):
         'static': static,
         'url': reverse,
         'query': query,
+        'get_messages': messages.get_messages,
     })
     return env

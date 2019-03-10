@@ -41,7 +41,7 @@
                 {% if request.user.is_authenticated %}
                     <div class="btn-container child-middle">
                         {% if request.user.get_type_display() == '지원자' %}
-                            <a href="{{ url('members:applicant-update') }}" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
+                            <a href="{{ url('members:applicant-profile') }}" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
                         {% else %}
                             <a href="#" class="btn btn-outline-secondary mr-1">{{ request.user.name }}</a>
                         {% endif %}
@@ -107,11 +107,18 @@
     </div>
     {% include 'includes/footer.jinja2' %}
     {% include 'includes/modal.jinja2' %}
-    {% if messages %}
+    {% if get_messages(request) %}
         <div class="messages-container">
             <div class="container-fluid">
-                {% for message in messages %}
-                    <div class="alert alert-primary">{{ message }}</div>
+                {% for message in get_messages(request) %}
+                    <div class="alert
+                                alert-{% if message.tags %}{{ message.tags }}{% else %}primary{% endif %}
+                                alert-dismissible
+                                fade show ">{{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                 {% endfor %}
             </div>
         </div>

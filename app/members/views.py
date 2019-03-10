@@ -1,9 +1,14 @@
-from django.contrib import messages
-from django.contrib.auth import login, get_user_model
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.contrib.auth.views import (
     LogoutView as DjangoLogoutView,
     LoginView as DjangoLoginView,
+    PasswordChangeView as DjangoPasswordChangeView,
+    PasswordChangeDoneView as DjangoPasswordChangeDoneView,
+    PasswordResetView as DjangoPasswordResetView,
+    PasswordResetConfirmView as DjangoPasswordResetConfirmView,
+    PasswordResetDoneView as DjangoPasswordResetDoneView,
+    PasswordResetCompleteView as DjangoPasswordResetCompleteView,
 )
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import F
@@ -14,7 +19,7 @@ from django.views.generic import TemplateView, ListView, FormView, DetailView
 from administrator.mixins import StaticContentMixin
 from courses.models import JobCategory
 from .filters import ApplicantUserFilter
-from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm
+from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm, PasswordResetForm, SetPasswordForm
 from .models import ApplicantUser, ApplicantSkill
 
 User = get_user_model()
@@ -44,7 +49,7 @@ class ApplicantListView(LoginRequiredMixin, ListView):
         return context
 
 
-class ApplicantUpdateView(TemplateView):
+class ApplicantUpdateView(LoginRequiredMixin, TemplateView):
     template_name = 'members/applicant_update.jinja2'
 
 
@@ -72,6 +77,10 @@ class ApplicantDetailView(UserPassesTestMixin, DetailView):
                 self.get_object() == self.request.user)
 
 
+class ApplicantProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'members/applicant_profile.jinja2'
+
+
 class LoginView(DjangoLoginView):
     form_class = LoginForm
     template_name = 'members/login.jinja2'
@@ -97,12 +106,41 @@ class ApplicantSignupView(StaticContentMixin, SuccessMessageMixin, FormView):
         return super().form_valid(form)
 
 
-class CompanySignupView(StaticContentMixin, FormView):
+class CompanySignupView(StaticContentMixin, SuccessMessageMixin, FormView):
     form_class = CompanySignupForm
     template_name = 'members/signup_company.jinja2'
     success_url = reverse_lazy('index')
+    success_message = '회원가입이 완료되었습니다. 관리자의 승인 후 로그인 하실 수 있습니다'
 
     def form_valid(self, form):
         user = form.save()
-        login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
         return super().form_valid(form)
+
+
+class PasswordChangeView(DjangoPasswordChangeView):
+    pass
+
+
+class PasswordChangeDoneView(DjangoPasswordChangeDoneView):
+    pass
+
+
+class PasswordResetView(DjangoPasswordResetView):
+    email_template_name = 'members/password_reset_email.jinja2'
+    form_class = PasswordResetForm
+    subject_template_name = 'members/password_reset_subject.txt'
+    success_url = reverse_lazy('members:password-reset-done')
+    template_name = 'members/password_reset_form.jinja2'
+
+
+class PasswordResetDoneView(DjangoPasswordResetDoneView):
+    template_name = 'members/password_reset_done.jinja2'
+
+
+class PasswordResetConfirmView(DjangoPasswordResetConfirmView):
+    form_class = SetPasswordForm
+    template_name = 'members/password_reset_confirm.jinja2'
+
+
+class PasswordResetCompleteView(DjangoPasswordResetCompleteView):
+    pass
