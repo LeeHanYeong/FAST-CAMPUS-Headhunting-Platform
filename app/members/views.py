@@ -57,7 +57,7 @@ class ApplicantUpdateView(LoginRequiredMixin, TemplateView):
     template_name = 'members/applicant_update.jinja2'
 
 
-class ApplicantDetailView(UserPassesTestMixin, DetailView):
+class ApplicantDetailView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = ApplicantUser
     queryset = ApplicantUser.objects.prefetch_related(
         'skills__skill',
@@ -77,8 +77,17 @@ class ApplicantDetailView(UserPassesTestMixin, DetailView):
         return context
 
     def test_func(self):
-        return (self.request.user.type in (User.TYPE_COMPANY, User.TYPE_STAFF) or
-                self.get_object() == self.request.user)
+        user = self.request.user
+        applicant = self.get_object()
+        if user.type == User.TYPE_STAFF:
+            return True
+        elif user.type == User.TYPE_APPLICANT:
+            return user == applicant
+        elif user.type == User.TYPE_COMPANY:
+            return user.hire_job_group_set.filter(
+                job_group__in=applicant.job_groups.all(),
+                status=CompanyUserHireJobGroupWithApprovalStatus.STATUS_APPROVAL,
+            ).exists()
 
 
 class ApplicantProfileView(LoginRequiredMixin, TemplateView):
