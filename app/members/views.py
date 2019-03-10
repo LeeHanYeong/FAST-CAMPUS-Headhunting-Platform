@@ -13,11 +13,14 @@ from django.contrib.auth.views import (
 from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import F, Exists, OuterRef
 from django.db.models.functions import Concat
+from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import TemplateView, ListView, FormView, DetailView
 
 from administrator.mixins import StaticContentMixin
-from courses.models import JobCategory
+from courses.models import JobCategory, JobGroup
 from .filters import ApplicantUserFilter
 from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm, PasswordResetForm, SetPasswordForm, \
     PasswordChangeForm
@@ -123,7 +126,7 @@ class CompanyUserProfileView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-    
+
         # 승인여부를 QuerySet에 포함
         wait_hire_job_groups = CompanyUserHireJobGroupWithApprovalStatus.objects.filter(
             job_group=OuterRef('pk'),
@@ -142,6 +145,14 @@ class CompanyUserProfileView(LoginRequiredMixin, TemplateView):
             'Exists': Exists,
         }
         return context
+
+
+class CompanyUserHireJobGroupAddRequestView(LoginRequiredMixin, View):
+    def post(self, request):
+        job_group_pk_list = request.POST.getlist('job_group')
+        for job_group_pk in job_group_pk_list:
+            self.request.user.hire_job_group_set.create(job_group=JobGroup.objects.get(pk=job_group_pk))
+        return redirect('members:company-user-profile')
 
 
 class PasswordChangeView(DjangoPasswordChangeView):

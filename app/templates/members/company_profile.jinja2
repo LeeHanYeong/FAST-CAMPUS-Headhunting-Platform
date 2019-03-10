@@ -21,7 +21,7 @@
                 </div>
                 <h5 class="text-center">채용희망직군</h5>
                 <p class="text-center">변경/추가 승인을 원할 경우, 원하는 직군에 체크 후 아래 '추가신청'버튼을 눌러주세요</p>
-                <form action="">
+                <form action="{{ url('members:hire-job-group') }}" method="POST">
                     {{ csrf_input }}
                     <table class="table">
                         <thead>
