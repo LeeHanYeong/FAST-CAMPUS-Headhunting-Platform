@@ -1,17 +1,74 @@
-{% extends 'base_narrow_header.jinja2' %}
+{% extends 'base.jinja2' %}
 
-{% block header_title %}마이페이지{% endblock %}
+{% block content_header %}
+    <header class="content-header">
+        <div class="title">
+            <span>마이페이지</span>
+        </div>
+    </header>
+{% endblock %}
 
 
 {% block content %}
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="login-card card col-md-8 col-lg-5">
+            <div class="login-card card col-md-10 col-lg-8">
                 <h5 class="text-center">마이페이지</h5>
                 <p class="text-center"></p>
-                <div class="list-group">
-                    <a class="list-group-item list-group-item-action" href="{{ url('members:password-change') }}">비밀번호 변경</a>
+                <div class="list-group mb-3">
+                    <a class="list-group-item list-group-item-action"
+                       href="{{ url('members:password-change') }}">비밀번호 변경</a>
                 </div>
+                <h5 class="text-center">채용희망직군</h5>
+                <p class="text-center">변경/추가 승인을 원할 경우, 원하는 직군에 체크 후 아래 '추가신청'버튼을 눌러주세요</p>
+                <form action="">
+                    {{ csrf_input }}
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>카테고리</th>
+                                <th>직군명</th>
+                                <th>승인여부</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for job_category in job_category_set %}
+                                {% for job_group in job_category.group_set.annotate(
+                                    wait=subquery_set.Exists(subquery_set.wait),
+                                    approval=subquery_set.Exists(subquery_set.approval)) %}
+                                    <tr>
+                                        {% if loop.index == 1 %}
+                                            <td rowspan="{{ job_category.group_set.count() }}">
+                                                {{ job_category.title }}
+                                            </td>
+                                        {% endif %}
+                                        <td>{{ job_group.title }}</td>
+                                        <td class="{% if job_group.approval %}table-success{% elif job_group.wait %}table-warning{% endif %}">
+                                            {% if job_group.wait %}
+                                                <span>승인 대기중</span>
+                                            {% elif job_group.approval %}
+                                                <span>승인됨</span>
+                                            {% else %}
+                                            <label>
+                                                <input type="checkbox" name="job_group" value="{{ job_group.pk }}">
+                                                &nbsp;미신청
+                                            </label>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3">
+                                    <button class="btn btn-primary btn-block">채용희망직군 추가신청</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </form>
             </div>
         </div>
     </div>

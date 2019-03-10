@@ -11,7 +11,7 @@ from django.contrib.auth.views import (
     PasswordResetCompleteView as DjangoPasswordResetCompleteView,
 )
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import F
+from django.db.models import F, Exists, OuterRef
 from django.db.models.functions import Concat
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, FormView, DetailView
@@ -21,7 +21,7 @@ from courses.models import JobCategory
 from .filters import ApplicantUserFilter
 from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm, PasswordResetForm, SetPasswordForm, \
     PasswordChangeForm
-from .models import ApplicantUser, ApplicantSkill
+from .models import ApplicantUser, ApplicantSkill, CompanyUserHireJobGroupWithApprovalStatus
 
 User = get_user_model()
 
@@ -120,6 +120,28 @@ class CompanySignupView(StaticContentMixin, SuccessMessageMixin, FormView):
 
 class CompanyUserProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'members/company_profile.jinja2'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+    
+        # 승인여부를 QuerySet에 포함
+        wait_hire_job_groups = CompanyUserHireJobGroupWithApprovalStatus.objects.filter(
+            job_group=OuterRef('pk'),
+            company_user=self.request.user,
+            status=CompanyUserHireJobGroupWithApprovalStatus.STATUS_WAIT
+        )
+        approval_hire_job_groups = CompanyUserHireJobGroupWithApprovalStatus.objects.filter(
+            job_group=OuterRef('pk'),
+            company_user=self.request.user,
+            status=CompanyUserHireJobGroupWithApprovalStatus.STATUS_APPROVAL
+        )
+        context['job_category_set'] = JobCategory.objects.prefetch_related('group_set')
+        context['subquery_set'] = {
+            'wait': wait_hire_job_groups,
+            'approval': approval_hire_job_groups,
+            'Exists': Exists,
+        }
+        return context
 
 
 class PasswordChangeView(DjangoPasswordChangeView):
