@@ -42,7 +42,7 @@ class UserAdmin(BaseUserAdmin):
 
 
 class CompanyUserAdmin(BaseUserAdmin):
-    list_display = ('name', '_company_name', '_position',)
+    list_display = ('name', 'email', '_company_name', '_position',)
     list_filter = ()
     ordering = ('pk',)
 

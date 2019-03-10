@@ -23,6 +23,7 @@ class CompanyUser(User):
 
     def save(self, *args, **kwargs):
         self.type = User.TYPE_COMPANY
+        self.is_active = True
         super().save(*args, **kwargs)
 
     @property
