@@ -19,7 +19,8 @@ from django.views.generic import TemplateView, ListView, FormView, DetailView
 from administrator.mixins import StaticContentMixin
 from courses.models import JobCategory
 from .filters import ApplicantUserFilter
-from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm, PasswordResetForm, SetPasswordForm
+from .forms import LoginForm, ApplicantSignupForm, CompanySignupForm, PasswordResetForm, SetPasswordForm, \
+    PasswordChangeForm
 from .models import ApplicantUser, ApplicantSkill
 
 User = get_user_model()
@@ -122,11 +123,13 @@ class CompanyUserProfileView(LoginRequiredMixin, TemplateView):
 
 
 class PasswordChangeView(DjangoPasswordChangeView):
-    pass
+    form_class = PasswordChangeForm
+    template_name = 'members/password_change_form.jinja2'
+    success_url = reverse_lazy('members:password-change-done')
 
 
 class PasswordChangeDoneView(DjangoPasswordChangeDoneView):
-    pass
+    template_name = 'members/password_change_done.jinja2'
 
 
 class PasswordResetView(DjangoPasswordResetView):

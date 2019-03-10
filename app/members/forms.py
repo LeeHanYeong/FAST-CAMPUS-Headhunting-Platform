@@ -5,6 +5,7 @@ from django.contrib.auth.forms import (
     UserCreationForm,
     PasswordResetForm as DjangoPasswordResetForm,
     SetPasswordForm as DjangoSetPasswordForm,
+    PasswordChangeForm as DjangoPasswordChangeForm,
 )
 from django.contrib.sites.models import Site
 from django.core.mail import EmailMultiAlternatives
@@ -208,5 +209,13 @@ class PasswordResetForm(DjangoPasswordResetForm):
 class SetPasswordForm(DjangoSetPasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.fields['new_password1'].widget.attrs['class'] = 'form-control'
+        self.fields['new_password2'].widget.attrs['class'] = 'form-control'
+
+
+class PasswordChangeForm(DjangoPasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['old_password'].widget.attrs['class'] = 'form-control'
         self.fields['new_password1'].widget.attrs['class'] = 'form-control'
         self.fields['new_password2'].widget.attrs['class'] = 'form-control'
