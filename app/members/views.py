@@ -117,6 +117,10 @@ class CompanySignupView(StaticContentMixin, SuccessMessageMixin, FormView):
         return super().form_valid(form)
 
 
+class CompanyUserProfileView(LoginRequiredMixin, TemplateView):
+    template_name = 'members/company_profile.jinja2'
+
+
 class PasswordChangeView(DjangoPasswordChangeView):
     pass
 

@@ -8,6 +8,7 @@ urlpatterns = [
     path('applicants/resume/', views.ApplicantUpdateView.as_view(), name='applicant-update'),
     path('applicants/<int:pk>/', views.ApplicantDetailView.as_view(), name='applicant-detail'),
     path('applicants/profile/', views.ApplicantProfileView.as_view(), name='applicant-profile'),
+    path('company-user/profile/', views.CompanyUserProfileView.as_view(), name='company-user-profile'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', views.LogoutView.as_view(), name='logout'),
     path('signup/', views.SignupView.as_view(), name='signup'),
