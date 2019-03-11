@@ -43,6 +43,20 @@ __all__ = (
 )
 
 
+class HireEmailSendException(Exception):
+    def __init__(self, recipient, subject, message):
+        self.recipient = recipient
+        self.subject = subject
+        self.message = message
+
+    def __str__(self):
+        return '채용매칭 메일 발송 오류 (수신: {recipient}, 제목: {subject}, 내용: {message}'.format(
+            recipient=f'{self.recipient.name} ({self.recipient.email})',
+            subject=self.subject,
+            message=self.message,
+        )
+
+
 def send_hire_mail(company_user, applicant, subject, message):
     # 지원자에게 전송
     result_applicant = send_mail(
@@ -68,7 +82,20 @@ def send_hire_mail(company_user, applicant, subject, message):
         from_email=settings.EMAIL_HOST_USER,
         recipient_list=[company_user.email],
     )
-    result = [bool(result_applicant), bool(result_company)]
+
+    if not result_applicant:
+        raise HireEmailSendException(
+            recipient=applicant,
+            subject=subject,
+            message=message,
+        )
+
+    if not result_company:
+        raise HireEmailSendException(
+            recipient=company_user,
+            subject=subject,
+            message=message,
+        )
 
     # 관리자에게 전송
     staff_list = MailingGroup.objects.get(code=MailingGroup.CODE_SEND_HIRE_MAIL).users.all()
@@ -85,5 +112,3 @@ def send_hire_mail(company_user, applicant, subject, message):
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=list(staff_list.values_list('email', flat=True)),
         )
-        result.append(bool(result_staff))
-    return result
