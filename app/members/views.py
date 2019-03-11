@@ -193,4 +193,4 @@ class PasswordResetConfirmView(DjangoPasswordResetConfirmView):
 
 
 class PasswordResetCompleteView(DjangoPasswordResetCompleteView):
-    pass
+    template_name = 'members/password_reset_complete.jinja2'
