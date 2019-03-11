@@ -651,7 +651,7 @@
                                 processData: false,
                                 contentType: false,
                             }).done(function (response) {
-                                vm.errors = {}
+                                vm.errors = {};
                                 vm.applicantDetail = response;
                                 $('#id-img-profile').val('');
                             });
@@ -677,7 +677,7 @@
                                 processData: false,
                                 contentType: false,
                             }).done(function (response) {
-                                vm.errors = {}
+                                vm.errors = {};
                                 vm.applicantDetail = response;
                                 $('#id-pdf1').val('');
                                 $('#id-pdf2').val('');
@@ -748,6 +748,7 @@
         app.getApplicantLinkList();
         app.getApplicantSkillList();
         app.getApplicantProfile();
+
         var editor = CKEDITOR.replace('id-intro', {
             toolbar: 'Default',
             height: 500

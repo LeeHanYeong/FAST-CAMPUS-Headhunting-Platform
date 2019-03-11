@@ -189,6 +189,7 @@ class PasswordResetDoneView(DjangoPasswordResetDoneView):
 class PasswordResetConfirmView(DjangoPasswordResetConfirmView):
     form_class = SetPasswordForm
     template_name = 'members/password_reset_confirm.jinja2'
+    success_url = reverse_lazy('members:password-reset-complete')
 
 
 class PasswordResetCompleteView(DjangoPasswordResetCompleteView):
