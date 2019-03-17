@@ -40,8 +40,9 @@ class EducationSerializer(serializers.ModelSerializer):
         )
 
     def to_internal_value(self, data):
-        if data['end_date'] == '':
+        if 'end_date' in data and data['end_date'] == '':
             data.pop('end_date')
+        data = super().to_internal_value(data)
         return data
 
 
@@ -58,8 +59,9 @@ class CareerSerializer(serializers.ModelSerializer):
         )
 
     def to_internal_value(self, data):
-        if data['end_date'] == '':
+        if 'end_date' in data and data['end_date'] == '':
             data.pop('end_date')
+        data = super().to_internal_value(data)
         return data
 
 
@@ -113,9 +115,6 @@ class ApplicantUserSerializer(WritableNestedModelSerializer):
         ret = super().to_representation(instance)
         ret['phone_number'] = instance.phone_number.as_national if instance.phone_number else ''
         return ret
-
-    def to_internal_value(self, data):
-        return data
 
     def get_choices_looking(self, obj):
         return ApplicantUser.CHOICES_LOOKING
