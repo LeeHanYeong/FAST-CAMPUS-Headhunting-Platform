@@ -7,7 +7,7 @@ from django.core.management import BaseCommand
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        ip = request.urlopen('http://ip.42.pl/raw').read().decode('utf-8')
+        ip = request.urlopen('http://ifconfig.me/ip').read().decode('utf-8')
         session = boto3.session.Session(
             profile_name=settings.AWS_EB_SESSION_PROFILE,
             region_name='ap-northeast-2',
