@@ -21,7 +21,7 @@ server {
     listen 80;
     listen 443;
 
-    server_name localhost fc-headhunting.ap-northeast-2.elasticbeanstalk.com fc-headhunting.lhy.kr;
+    server_name localhost fc-headhunting.ap-northeast-2.elasticbeanstalk.com fc-headhunting.lhy.kr link.fastcampus.co.kr;
 
     charset utf-8;
     client_max_body_size 128M;
