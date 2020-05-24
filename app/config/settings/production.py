@@ -7,6 +7,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from .base import *
 
 AWS_SECRETS_MANAGER_SECRET_SECTION = 'fc-headhunting:production'
+ALLOWED_HOSTS += SECRETS['ALLOWED_HOSTS']
 
 DEBUG = False or (
         len(sys.argv) > 1

@@ -5,9 +5,7 @@ AWS_SECRETS_MANAGER_SECRET_SECTION = 'fc-headhunting:local'
 DEBUG = True
 
 WSGI_APPLICATION = 'config.wsgi.local.application'
-ALLOWED_HOSTS += [
-    'localhost',
-]
+ALLOWED_HOSTS += SECRETS['ALLOWED_HOSTS']
 
 # django-debug-toolbar
 INSTALLED_APPS += [
