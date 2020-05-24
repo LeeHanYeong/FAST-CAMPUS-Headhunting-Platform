@@ -1,29 +1,12 @@
 from .local import *
 
-import_secrets()
+AWS_SECRETS_MANAGER_SECRET_SECTION = 'fc-headhunting:dev'
 
-DEBUG = True
+ALLOWED_HOSTS += [
+    'amazonaws.com',
+    'elasticbeanstalk.com',
 
-# Static
-DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
+]
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-# LOGGING = {
-#     'disable_existing_loggers': False,
-#     'version': 1,
-#     'handlers': {
-#         'console': {
-#             'class': 'logging.StreamHandler',
-#             'level': 'DEBUG',
-#         },
-#     },
-#     'loggers': {
-#         'django.db': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',
-#             'propagate': False,
-#         },
-#     },
-# }

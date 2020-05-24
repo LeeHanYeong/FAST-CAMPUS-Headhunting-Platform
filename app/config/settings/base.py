@@ -13,9 +13,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 import os
 
 from django.contrib import messages
-from djs import import_secrets
-
-from ..jinja2 import environment
+from django_secrets import SECRETS
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ROOT_DIR = os.path.dirname(BASE_DIR)
@@ -23,8 +21,23 @@ SECRETS_DIR = os.path.join(ROOT_DIR, '.secrets')
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
-PRINT_JSON_SETTINGS = False
-import_secrets()
+AWS_SECRETS_MANAGER_SECRET_NAME = 'lhy'
+AWS_SECRETS_MANAGER_PROFILE = 'lhy-secrets-manager'
+AWS_SECRETS_MANAGER_SECRET_SECTION = 'fc-headhunting:base'
+AWS_SECRETS_MANAGER_REGION_NAME = 'ap-northeast-2'
+
+# Secrets
+SECRET_KEY = SECRETS['SECRET_KEY']
+DATABASES = SECRETS['DATABASES']
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = SECRETS['EMAIL_HOST']
+EMAIL_HOST_USER = SECRETS['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = SECRETS['EMAIL_HOST_PASSWORD']
+EMAIL_PORT = SECRETS['EMAIL_PORT']
+EMAIL_USE_SSL = SECRETS['EMAIL_USE_SSL']
+DEFAULT_FROM_EMAIL = SECRETS['DEFAULT_FROM_EMAIL']
 
 # Essential
 SITE_ID = 1
@@ -38,19 +51,14 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 STATIC_ROOT = os.path.join(ROOT_DIR, '.static')
 
-# django-sass-processor, django-compressor
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'sass_processor.finders.CssFinder',
-]
-COMPRESS_JINJA2_GET_ENVIRONMENT = environment
-
 # AWS
+AWS_S3_ACCESS_KEY_ID = SECRETS['AWS_S3_ACCESS_KEY_ID']
+AWS_S3_SECRET_ACCESS_KEY = SECRETS['AWS_S3_SECRET_ACCESS_KEY']
+AWS_DEFAULT_ACL = 'private'
+AWS_BUCKET_ACL = 'private'
 AWS_AUTO_CREATE_BUCKET = True
-AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_S3_FILE_OVERWRITE = True
 AWS_S3_REGION_NAME = 'ap-northeast-2'
-AWS_DEFAULT_ACL = None
 
 # DRF
 REST_FRAMEWORK = {
@@ -145,11 +153,6 @@ CKEDITOR_CONFIGS = {
     },
 }
 
-# Email
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
 ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'administrator.apps.AdministratorConfig',
@@ -173,7 +176,6 @@ INSTALLED_APPS = [
     'django_fields',
     'phonenumber_field',
     'rest_framework',
-    'sass_processor',
     'storages',
 ]
 
@@ -207,7 +209,6 @@ DEFAULT_USERS = {
         'is_superuser': True,
     },
 }
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

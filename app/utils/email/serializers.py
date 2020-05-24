@@ -10,8 +10,6 @@ __all__ = (
 )
 
 
-
-
 class HireEmailSendSerializer(serializers.Serializer):
     subject = serializers.CharField(required=True)
     message = serializers.CharField(required=True)

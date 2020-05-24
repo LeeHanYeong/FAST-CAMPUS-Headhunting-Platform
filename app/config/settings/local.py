@@ -1,15 +1,12 @@
 from .base import *
 
-import_secrets()
+AWS_SECRETS_MANAGER_SECRET_SECTION = 'fc-headhunting:local'
 
 DEBUG = True
 
 WSGI_APPLICATION = 'config.wsgi.local.application'
 ALLOWED_HOSTS += [
     'localhost',
-    '192.168.1.179',
-    'amazonaws.com',
-    'elasticbeanstalk.com',
 ]
 
 # django-debug-toolbar

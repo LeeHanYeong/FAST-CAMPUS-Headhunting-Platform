@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "fc-headhunting"
+version = "0.1.0"
+description = ""
+authors = ["lhy <dev@lhy.kr>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+# Django
+django = "<3"
+djangorestframework = "^3.11.0"
+django-extensions = "^2.2.9"
+django-secrets-manager = "^0.1.13"
+django-phonenumber-field = "^4.0.0"
+django-modeladmin-reorder = "^0.3.1"
+django-storages = "^1.9.1"
+drf-writable-nested = "^0.6.0"
+django-default-imagefield = "^0.5.5"
+django-ckeditor = "^5.9.0"
+django-colorful = "^1.3"
+django-filter = "^2.2.0"
+
+# Others
+boto3 = "^1.13.16"
+gunicorn = "^20.0.4"
+jinja2 = "^2.11.2"
+pillow = "^7.1.2"
+phonenumbers = "^8.12.4"
+psycopg2-binary = "^2.8.5"
+sentry-sdk = "^0.14.4"
+
+# Test
+model-bakery = "^1.1.0"
+
+[tool.poetry.dev-dependencies]
+notebook = "^6.0.3"
+django-debug-toolbar = "^2.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

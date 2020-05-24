@@ -19,7 +19,6 @@ def query(request=None, only=False, **kwargs):
 
 def environment(**options):
     extensions = options.get('extensions', [])
-    extensions.append('sass_processor.jinja2.ext.SassSrc')
     options['extensions'] = extensions
 
     env = Environment(**options)

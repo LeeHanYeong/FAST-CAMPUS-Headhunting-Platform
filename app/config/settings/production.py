@@ -6,8 +6,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 from .base import *
 
-PRINT_JSON_SETTINGS = False
-secrets = import_secrets()
+AWS_SECRETS_MANAGER_SECRET_SECTION = 'fc-headhunting:production'
 
 DEBUG = False or (
         len(sys.argv) > 1
@@ -23,12 +22,9 @@ CSRF_COOKIE_SECURE = True
 # WSGI
 WSGI_APPLICATION = 'config.wsgi.production.application'
 
-# Static
-DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
-
 # Sentry
 sentry_sdk.init(
-    dsn=secrets['SENTRY_DSN'],
+    dsn=SECRETS['SENTRY_DSN'],
     integrations=[DjangoIntegration()]
 )
 
