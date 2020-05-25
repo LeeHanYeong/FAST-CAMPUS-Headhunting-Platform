@@ -7,9 +7,6 @@ dump.json
 app/cert.crt
 app/cert.key
 
-# CSS files
-/app/static/scss/*.css
-
 # Static dirs
 /.media
 /.static

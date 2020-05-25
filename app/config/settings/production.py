@@ -15,10 +15,13 @@ DEBUG = False or (
         and platform.system() != 'Linux'
 )
 
+# Static
+DEFAULT_FILE_STORAGE = 'config.storages.MediaStorage'
+
 # SSL
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-CSRF_COOKIE_SECURE = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True
+# CSRF_COOKIE_SECURE = True
 
 # WSGI
 WSGI_APPLICATION = 'config.wsgi.production.application'
