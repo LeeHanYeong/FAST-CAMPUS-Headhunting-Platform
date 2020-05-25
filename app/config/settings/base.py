@@ -28,7 +28,6 @@ AWS_SECRETS_MANAGER_REGION_NAME = 'ap-northeast-2'
 
 # Secrets
 SECRET_KEY = SECRETS['SECRET_KEY']
-DATABASES = SECRETS['DATABASES']
 
 # Email
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -74,8 +73,8 @@ LOGIN_URL = 'members:login'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.AllowAllUsersModelBackend',
     'members.backends.SettingsBackend',
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',
 ]
 
 # django-phonenumber-field
@@ -198,8 +197,17 @@ DEFAULT_USERS = {
         'phone_number': '010-1235-1235',
         'birth_date': '1980-01-01',
     },
+    'jocd.ux@gmail.com': {
+        'password': 'pbkdf2_sha256$150000$K6j4VIzNU7Cs$df1qRRCj0h5YdjuLnaqgqR4XHBz7GZ5lXpxjDN2zhlk=',
+        'last_name': '조',
+        'first_name': '찬일',
+        'type': 's',
+        'phone_number': '010-2592-6922',
+        'is_staff': True,
+        'is_superuser': True,
+    },
     'dev@lhy.kr': {
-        'password': 'pbkdf2_sha256$120000$6bRc6EXjatPi$KjmUANv30sG+5rJBeozHndl2EEw2aLGoCdpkpDSRArk=',
+        'password': 'pbkdf2_sha256$150000$7m32hnHAbqvu$Zobn+vImQFdgG956M93vRVdkQNAJq+HE6UhcwU2iPIU=',
         'last_name': '이',
         'first_name': '한영',
         'type': 's',
