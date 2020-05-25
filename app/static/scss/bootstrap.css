@@ -1,0 +1,72 @@
+.container-fluid {
+  max-width: 1400px; }
+
+header.main-header nav#main-navbar {
+  padding-top: .35rem;
+  padding-bottom: .35rem;
+  font-size: 1.1rem; }
+  header.main-header nav#main-navbar li.nav-item a.nav-link {
+    padding-top: 0;
+    padding-bottom: 0; }
+
+.alert {
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  box-sizing: border-box; }
+
+.btn {
+  border-radius: 1px; }
+
+.btn-star {
+  position: absolute;
+  margin-left: .2rem;
+  margin-top: .2rem;
+  z-index: 1000; }
+  .btn-star.btn-outline-primary:hover {
+    color: #ed234b;
+    background-color: transparent;
+    border-color: #ed234b; }
+
+.card {
+  border: none;
+  border-radius: 1px;
+  margin-bottom: 1.5rem; }
+  .card .card-header {
+    font-weight: bold;
+    border: none;
+    background-color: #ebebeb; }
+
+.dropdown .dropdown-header.border-top {
+  border-top: 1px solid #ced4da; }
+
+.form-control {
+  border-radius: 1px; }
+
+.form-group > .form-check-input {
+  position: relative; }
+
+.shadow-xs {
+  -webkit-box-shadow: 0 0.15rem 0.15rem rgba(0, 0, 0, 0.35) !important;
+  box-shadow: 0 0.15rem 0.15rem rgba(0, 0, 0, 0.35) !important; }
+
+.table-edit tr.editable {
+  line-height: 1; }
+  .table-edit tr.editable td {
+    vertical-align: middle;
+    padding: 0;
+    box-sizing: border-box; }
+    .table-edit tr.editable td .form-control {
+      width: inherit; }
+    .table-edit tr.editable td input[type=text], .table-edit tr.editable td input[type=password] {
+      border: none;
+      padding: 0.75rem;
+      box-sizing: border-box; }
+    .table-edit tr.editable td select, .table-edit tr.editable td button {
+      margin: 0.75rem; }
+    .table-edit tr.editable td small.form-text {
+      border-top: 1px solid #cc1136;
+      padding: .2rem .75rem .5rem; }
+
+.modal-content {
+  border-radius: 1px; }
+
+/*# sourceMappingURL=bootstrap.css.map */
