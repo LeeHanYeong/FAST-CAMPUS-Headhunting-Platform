@@ -23,7 +23,6 @@ django-filter = "^2.2.0"
 
 # Others
 boto3 = "^1.13.16"
-gunicorn = "^20.0.4"
 jinja2 = "^2.11.2"
 pillow = "^7.1.2"
 phonenumbers = "^8.12.4"
