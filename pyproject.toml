@@ -31,6 +31,7 @@ sentry-sdk = "^0.14.4"
 
 # Test
 model-bakery = "^1.1.0"
+gunicorn = "^20.0.4"
 
 [tool.poetry.dev-dependencies]
 notebook = "^6.0.3"
